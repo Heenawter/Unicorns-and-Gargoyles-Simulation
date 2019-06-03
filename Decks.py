@@ -12,8 +12,8 @@ class Deck:
                 for num_cards in range(all_cards[type][card]):
                     self.deck.append(card)
 
-    def shuffle(self):
-        deck = shuffle(self.deck)
+    def shuffle_deck(self):
+        shuffle(self.deck)
 
     def draw_card(self):
         return self.deck.pop(0)

@@ -3,22 +3,28 @@ import Decks
 
 if __name__ == "__main__":
     deck = Decks.Deck()
-    deck.shuffle()
+    deck.shuffle_deck()
 
     goals = Decks.Goals()
     current_goal = goals.current_goal()
 
-    player1 = Player.Player()
-    # player2 = Player.Player()
-    # players = [player1, player2]
+
+    players = []
+    # build the player list
+    for i in range(3):
+        players.append(Player.Player())
 
     win = False
-    while not win:        
-        win = player1.take_turn(deck, current_goal)
-        if win:
-            print("Player wins!")
-            print("Goal: ", current_goal)
-            player1.print_cards()
+    while not win: 
+        player_num = 0
+        for player in players:       
+            player_num += 1
+            win = player.take_turn(deck, current_goal)
+            if win:
+                print("Player", player_num, "wins!")
+                print("Goal: ", current_goal)
+                player.print_cards()
+                break
 
     # player = Player(test_deck)
 
