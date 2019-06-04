@@ -1,9 +1,11 @@
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <string>
 #include <algorithm>
 #include <map>
-#include <vector>
+#include <list>
 
 const short UNICORN = 0, GARGOYLE = 1, REVERSE = 2, ROTATE_R = 3, ROTATE_L = 4, DOUBLE = 5, 
             APPEND_1 = 6, APPEND_2 = 7, APPEND_3 = 8, REMOVE_1 = 9, REMOVE_2 = 10, REMOVE_3 = 11;
@@ -11,9 +13,9 @@ const short UNICORN = 0, GARGOYLE = 1, REVERSE = 2, ROTATE_R = 3, ROTATE_L = 4, 
 class Deck {
     private:
         std::map<std::string, short> map;
-
-    public:
-        Deck() {
+        std::list<short> cards;
+        
+        void initializeMap() {
             map["unicorn"] = UNICORN;
             map["gargoyle"] = GARGOYLE;
             map["reverse order"] = REVERSE;
@@ -28,8 +30,57 @@ class Deck {
             map["remove 3"] = REMOVE_3;
         }
 
+        void readGameStats() {
+            std::ifstream file;
+            file.open("Draft1_Stats.txt");
+
+            if(file.is_open()) {
+                std::string line;
+                int numCards;
+
+                std::getline(file, line); // garbage read of first line
+                file >> numCards; // the number of cards to read
+                std::getline(file, line); // garbage read of new line
+    
+                std::string cardName;
+                int count;
+                short cardType;
+                for(int i = 0; i < numCards - 2; i++) { // -2 because I want to ignore comment/uncomment for now
+                    std::getline(file, line);
+
+                    cardName = line.substr(0, line.find_first_of(','));
+                    count = int(line[line.length() - 1]) - 48; // -48 to convert from ascii to int
+
+                    for(int j = 0; j < count; j++) {
+                        cardType = getCardType(cardName);
+                        cards.push_back(cardType);
+                    }
+                }
+                file.close();
+            }
+        }
+
         short getCardType(std::string card) {
             return map[card];
+        }
+
+        // WARNING: inefficient - avoid use
+        // mostly for debugging purposes
+        std::string getCardName(short cardType) {
+            for (std::map<std::string, short>::iterator it = map.begin(); it != map.end(); it++)
+                if (it->second == cardType)
+                    return it->first;
+        }
+
+    public:
+        Deck() {
+            // ORDER MATTERS here - initialize map FIRST then read
+            initializeMap();
+            readGameStats();
+        }
+
+        void drawCard() {
+            std::cout << getCardName(2) << std::endl;
         }
 
         void playCard(std::string card, std::string &current) {
@@ -89,8 +140,11 @@ class Deck {
 
 int main() {
     Deck deck;
+    // deck.readGameStats();
     std::string testString = "[ ][*][ ][G][ ]";
     std::cout << testString << std::endl;
     deck.playCard("reverse order", testString);
     std::cout << testString << std::endl;
+
+    deck.drawCard();
 }
