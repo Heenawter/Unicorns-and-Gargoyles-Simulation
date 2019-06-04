@@ -5,7 +5,11 @@
 #include <string>
 #include <algorithm>
 #include <map>
-#include <list>
+#include <vector>
+#include <cstdlib> // random numbers
+#include <ctime> // need time for randomness
+#include <random>
+#include <chrono> // std::chrono::system_clock
 
 const short UNICORN = 0, GARGOYLE = 1, REVERSE = 2, ROTATE_R = 3, ROTATE_L = 4, DOUBLE = 5, 
             APPEND_1 = 6, APPEND_2 = 7, APPEND_3 = 8, REMOVE_1 = 9, REMOVE_2 = 10, REMOVE_3 = 11;
@@ -13,7 +17,7 @@ const short UNICORN = 0, GARGOYLE = 1, REVERSE = 2, ROTATE_R = 3, ROTATE_L = 4, 
 class Deck {
     private:
         std::map<std::string, short> map;
-        std::list<short> cards;
+        std::vector<short> cards;
         
         void initializeMap() {
             map["unicorn"] = UNICORN;
@@ -72,15 +76,24 @@ class Deck {
                     return it->first;
         }
 
+        void shuffleDeck() {
+            unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+            std::shuffle(cards.begin(), cards.end(), std::default_random_engine(seed));
+        }
+
     public:
         Deck() {
             // ORDER MATTERS here - initialize map FIRST then read
             initializeMap();
             readGameStats();
+            shuffleDeck();
         }
 
-        void drawCard() {
-            std::cout << getCardName(2) << std::endl;
+        short drawCard() {
+            short newCard = cards.back();
+            std::cout << getCardName(newCard) << std::endl;
+            cards.pop_back();
+            return newCard;
         }
 
         void playCard(std::string card, std::string &current) {
