@@ -2,6 +2,7 @@
 #include <iostream>
 #include <list>
 #include <algorithm> // for using copy (library function)
+#include "Deck.h"
 
 const int PERM_COUNT = 11;
 
