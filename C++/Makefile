@@ -2,8 +2,8 @@
 all: main.exe
 	.\main.exe
 
-main.exe: Game.o Decks.o StringDeck.o GoalsDeck.o
-	g++ -o main.exe Game.o Decks.o StringDeck.o GoalsDeck.o 
+main.exe: Main.o Game.o Decks.o StringDeck.o GoalsDeck.o Player.o 
+	g++ -o main.exe Main.o Game.o Decks.o StringDeck.o GoalsDeck.o Player.o
 
 Game.o: Game.cpp
 	g++ -std=c++11 -c Game.cpp
@@ -16,6 +16,9 @@ StringDeck.o: StringDeck.cpp
 
 GoalsDeck.o: GoalsDeck.cpp
 	g++ -std=c++11 -c GoalsDeck.cpp
+
+Player.o: Player.cpp
+	g++ -std=c++11 -c Player.cpp
 
 clean: 
 	del *.exe

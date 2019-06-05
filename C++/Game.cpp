@@ -1,8 +1,8 @@
 #include "Decks.h"
+#include "Player.h"
 #include "Game.h"
-
-#include <iostream>
 #include <fstream>
+// #include <iostream>
 
 void Game::readGameStats() {
     std::ifstream file;
@@ -40,17 +40,10 @@ void Game::readGameStats() {
     }
 }
 
-
-int main() {
-    Game simulation;
-    simulation.readGameStats();
-
-    StringDeck deck;
-
-    std::string testString = "[ ][*][ ][G][ ]";
-    std::cout << testString << std::endl;
-    deck.playCard("reverse order", testString);
-    std::cout << testString << std::endl;
-
-    std::cout << "this is a test" << std::endl;
+void Game::initializeGame() {
+    deck.initializeMap();
+    readGameStats();
+    deck.shuffleDeck();
 }
+
+StringDeck Game::getDeck() { return deck; }

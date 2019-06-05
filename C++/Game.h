@@ -8,9 +8,14 @@ class Game {
     private:
         StringDeck deck;
         GoalsDeck goals;
+        Player player;
+
+        void readGameStats();
 
     public:
-        void readGameStats();
+        void initializeGame();     
+
+        StringDeck getDeck();  
 };
 
 #endif

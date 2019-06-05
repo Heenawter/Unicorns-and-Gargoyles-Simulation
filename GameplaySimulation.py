@@ -17,7 +17,7 @@ if __name__ == "__main__":
     win = False
     while not win: 
         player_num = 0
-        for player in players:       
+        for player in players:      
             player_num += 1
             win = player.take_turn(deck, current_goal)
             if win:

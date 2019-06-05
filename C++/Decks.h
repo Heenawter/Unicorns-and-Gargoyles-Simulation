@@ -6,9 +6,7 @@
 #include <map>
 #include <vector>
 #include <algorithm>
-
-const short UNICORN = 0, GARGOYLE = 1, REVERSE = 2, ROTATE_R = 3, ROTATE_L = 4, DOUBLE = 5, 
-            APPEND_1 = 6, APPEND_2 = 7, APPEND_3 = 8, REMOVE_1 = 9, REMOVE_2 = 10, REMOVE_3 = 11;
+#include <iostream>
 
 class Deck {
     protected:
@@ -18,24 +16,24 @@ class Deck {
         short getCardType(std::string card);
         std::string getCardName(short cardType); // WARNING: inefficient - avoid use
                                                  // mostly for debugging purposes
-        void shuffleDeck();
         virtual void initializeMap() = 0;
 
     public:
         void addToDeck(std::string line);
         short drawCard();
+        void shuffleDeck();
+        std::vector<short> getCards(){ return cards; }
 };
 
-class StringDeck : public Deck {
-    private:
-        void initializeMap();
-
-    public:
-        void playCard(std::string card, std::string &current);
+class StringDeck : public Deck
+{
+        public:
+            void playCard(std::string card, std::string &current);
+            void initializeMap();
 };
 
 class GoalsDeck : public Deck {
-    private:
+    public:
         void initializeMap();
 };
 

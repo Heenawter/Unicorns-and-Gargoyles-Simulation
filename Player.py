@@ -41,32 +41,35 @@ class Player:
     def print_cards(self):
         print("Action cards: ", self.action_cards)
         print("Current cards: ", self.current_hand)
-        print("Current string: ", self.generate_string(self.current_hand))
-    
+        print("Current string: ", self.generate_string(self.current_hand))    
+
     # -- Find the hand that results in a string that has ** the most possible ** similarities
-    def find_best_hand(self, goal):  
+    def find_best_hand(self, goal):
         # find the permutation that makes the string as close as possible to the goal
         # start by setting the default values using the first permutation
         if(len(self.all_hands) > 0):
             current_best_hand = self.all_hands[0]
             best_string = self.generate_string(current_best_hand)
-            max_similarity = SequenceMatcher(None, current_best_hand, goal).ratio()
+            max_similarity = SequenceMatcher(
+                None, current_best_hand, goal).ratio()
             # now find the maximum similarity by comparing it to the others
             for try_hand in self.all_hands:  # all possible rotations
                 # if you have already found a perfect match, might as well stop
                 if max_similarity == 1:
-                    break;
+                    break
                 # otherwise, try the next permutation to see if it can be improved :)
                 try_hand = list(try_hand)
-                try_string = self.generate_string(try_hand)  # try based on new hand
-                try_similarity = SequenceMatcher(None, try_string, goal).ratio()
+                try_string = self.generate_string(
+                    try_hand)  # try based on new hand
+                try_similarity = SequenceMatcher(
+                    None, try_string, goal).ratio()
                 if(try_similarity > max_similarity):
                     # if try hand makes better string, try is the new best
                     current_best_hand = try_hand
                     max_similarity = try_similarity
 
-            self.current_hand = list(current_best_hand)   # set the best as the new current
-        
+            # set the best as the new current
+            self.current_hand = list(current_best_hand)
 
     def take_turn(self, deck, goal):
         self.draw_card(deck)

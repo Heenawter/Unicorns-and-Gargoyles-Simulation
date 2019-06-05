@@ -1,9 +1,10 @@
 #include "Decks.h"
 
 #include <chrono> // need std::chrono::system_clock for randomness
+#include <iostream>
 
 short Deck::getCardType(std::string card)
-{
+{    
     return map[card];
 }
 
