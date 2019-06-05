@@ -1,6 +1,6 @@
 #include "Decks.h"
 
-const short UNICORN = 0, GARGOYLE = 1, REVERSE = 2, ROTATE_R = 3, ROTATE_L = 4, DOUBLE = 5,
+const char UNICORN = 0, GARGOYLE = 1, REVERSE = 2, ROTATE_R = 3, ROTATE_L = 4, DOUBLE = 5,
             APPEND_1 = 6, APPEND_2 = 7, APPEND_3 = 8, REMOVE_1 = 9, REMOVE_2 = 10, REMOVE_3 = 11;
 
 void StringDeck::initializeMap()
@@ -19,7 +19,7 @@ void StringDeck::initializeMap()
     map["remove 3"] = REMOVE_3;
 }
 
-void StringDeck::playCard(short type, std::string &current)
+void StringDeck::playCard(char type, std::string &current)
 {
     int left;
     int right;

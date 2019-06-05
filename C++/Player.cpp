@@ -7,14 +7,14 @@
 
 void Player::drawCard(StringDeck &deck)
 {
-    short newCard = deck.drawCard();
-    std::vector<short> currentHand;
+    char newCard = deck.drawCard();
+    std::vector<char> currentHand;
     int numHands = allHands.size();
     int numCards;
 
     int i, j;
     if(numHands == 0) {
-        std::vector<short> newHand;
+        std::vector<char> newHand;
         newHand.push_back(newCard);
         allHands.push_back(newHand);
     } else {
@@ -26,7 +26,7 @@ void Player::drawCard(StringDeck &deck)
 
             for (j = 0; j < numCards + 1; j++)
             {
-                std::vector<short> newHand(currentHand);
+                std::vector<char> newHand(currentHand);
                 newHand.insert(newHand.begin() + j, newCard);
                 allHands.push_back(newHand);
                 newHand = currentHand;
@@ -39,17 +39,17 @@ void Player::drawCard(StringDeck &deck)
     // hand.push_back(newCard);
 }
 
-void Player::generateString(StringDeck &deck, std::vector<short> &hand, std::string &current)
+void Player::generateString(StringDeck &deck, std::vector<char> &hand, std::string &current)
 {
-    std::vector<short>::iterator it;
+    std::vector<char>::iterator it;
     for (it = hand.begin(); it < hand.end(); it++) {
         deck.playCard(*it, current);
     }
 }
 
-void Player::printHand(StringDeck &deck, std::vector<short> &hand)
+void Player::printHand(StringDeck &deck, std::vector<char> &hand)
 {
-    std::vector<short>::iterator it;
+    std::vector<char>::iterator it;
     for (it = hand.begin(); it < hand.end(); it++)
     {
         std::cout << "[" << deck.getCardName(*it) << "]";
@@ -64,12 +64,12 @@ void Player::takeTurn(StringDeck &deck)
 
 void Player::printAll() {
     // std::cout << "print..." << std::endl;
-    // std::list<std::vector<short>>::iterator it;
-    // std::vector<short> hand;
+    // std::list<std::vector<char>>::iterator it;
+    // std::vector<char> hand;
     // for (it = allHands.begin(); it != allHands.end(); it++)
     // {
     //     hand = *it;
-    //     std::vector<short>::iterator it2;
+    //     std::vector<char>::iterator it2;
     //     for (it2 = hand.begin(); it2 != hand.end(); it2++)
     //     {
     //         std::cout << *it2 << "-";

@@ -8,7 +8,7 @@
 
 class Player {    
     private:
-        std::list<std::vector<short> > allHands;
+        std::list<std::vector<char> > allHands;
         std::vector<std::string> allStrings;
 
         int currentHandIndex;
@@ -16,10 +16,10 @@ class Player {
 
     public:
         void drawCard(StringDeck &deck);
-        void generateString(StringDeck &deck, std::vector<short> &hand, std::string &current);
+        void generateString(StringDeck &deck, std::vector<char> &hand, std::string &current);
         void takeTurn(StringDeck &deck);
         void printAll();
-        void printHand(StringDeck &deck, std::vector<short> &hand);
+        void printHand(StringDeck &deck, std::vector<char> &hand);
 };
 
 #endif

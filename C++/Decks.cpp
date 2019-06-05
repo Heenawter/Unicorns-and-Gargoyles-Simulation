@@ -3,14 +3,14 @@
 #include <chrono> // need std::chrono::system_clock for randomness
 #include <iostream>
 
-short Deck::getCardType(std::string card)
+char Deck::getCardType(std::string card)
 {    
     return map[card];
 }
 
-std::string Deck::getCardName(short cardType)
+std::string Deck::getCardName(char cardType)
 {
-    for (std::map<std::string, short>::iterator it = map.begin(); it != map.end(); it++)
+    for (std::map<std::string, char>::iterator it = map.begin(); it != map.end(); it++)
         if (it->second == cardType)
             return it->first;
 }
@@ -25,7 +25,7 @@ void Deck::addToDeck(std::string line)
 {
     std::string cardName;
     int count;
-    short cardType;
+    char cardType;
 
     cardName = line.substr(0, line.find_first_of(','));
     count = int(line[line.length() - 1]) - 48; // -48 to convert from ascii to int
@@ -37,9 +37,9 @@ void Deck::addToDeck(std::string line)
     }
 }
 
-short Deck::drawCard()
+char Deck::drawCard()
 {
-    short newCard = cards.back();
+    char newCard = cards.back();
     cards.pop_back();
     return newCard;
 }

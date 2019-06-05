@@ -10,27 +10,27 @@
 
 class Deck {
     protected:
-        std::map<std::string, short> map;
-        std::vector<short> cards;
+        std::map<std::string, char> map;
+        std::vector<char> cards;
 
-        short getCardType(std::string card);
+        char getCardType(std::string card);
         
         virtual void initializeMap() = 0;
 
     public:
         void addToDeck(std::string line);
-        short drawCard();
+        char drawCard();
         void shuffleDeck();
-        std::vector<short> getCards(){ return cards; }
+        std::vector<char> getCards(){ return cards; }
 
-        std::string getCardName(short cardType); // WARNING: inefficient - avoid use
+        std::string getCardName(char cardType); // WARNING: inefficient - avoid use
                                                  // mostly for debugging purposes
 };
 
 class StringDeck : public Deck
 {
         public:
-            void playCard(short type, std::string &current);
+            void playCard(char type, std::string &current);
             void initializeMap();
 };
 
