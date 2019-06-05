@@ -39,9 +39,22 @@ void Player::drawCard(StringDeck &deck)
     // hand.push_back(newCard);
 }
 
-void Player::generateString(StringDeck &deck)
+void Player::generateString(StringDeck &deck, std::vector<short> &hand, std::string &current)
 {
+    std::vector<short>::iterator it;
+    for (it = hand.begin(); it < hand.end(); it++) {
+        deck.playCard(*it, current);
+    }
+}
 
+void Player::printHand(StringDeck &deck, std::vector<short> &hand)
+{
+    std::vector<short>::iterator it;
+    for (it = hand.begin(); it < hand.end(); it++)
+    {
+        std::cout << "[" << deck.getCardName(*it) << "]";
+    }
+    std::cout << std::endl;
 }
 
 void Player::takeTurn(StringDeck &deck)

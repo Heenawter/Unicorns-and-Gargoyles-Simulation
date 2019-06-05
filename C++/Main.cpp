@@ -13,10 +13,19 @@ int main()
     StringDeck deck = simulation.getDeck();
 
     Player test;
+    std::vector<short> testHand;
+    testHand.push_back(1);
+    testHand.push_back(6);
+    testHand.push_back(2);
+    test.printHand(deck, testHand);
+    std::string testString = "[ ][*][ ][G][ ][ ]";
+    test.generateString(deck, testHand, testString);
 
-    for(int i = 0; i < 11; i++) {
-        test.drawCard(deck);
-    }
+    std::cout << testString << std::endl;
 
-    test.printAll();
+    // for(int i = 0; i < 11; i++) {
+    //     test.drawCard(deck);
+    // }
+
+    // test.printAll();
 }

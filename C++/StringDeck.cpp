@@ -19,9 +19,8 @@ void StringDeck::initializeMap()
     map["remove 3"] = REMOVE_3;
 }
 
-void StringDeck::playCard(std::string card, std::string &current)
+void StringDeck::playCard(short type, std::string &current)
 {
-    short type = getCardType(card);
     int left;
     int right;
 

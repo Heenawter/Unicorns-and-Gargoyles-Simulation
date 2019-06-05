@@ -14,8 +14,7 @@ class Deck {
         std::vector<short> cards;
 
         short getCardType(std::string card);
-        std::string getCardName(short cardType); // WARNING: inefficient - avoid use
-                                                 // mostly for debugging purposes
+        
         virtual void initializeMap() = 0;
 
     public:
@@ -23,12 +22,15 @@ class Deck {
         short drawCard();
         void shuffleDeck();
         std::vector<short> getCards(){ return cards; }
+
+        std::string getCardName(short cardType); // WARNING: inefficient - avoid use
+                                                 // mostly for debugging purposes
 };
 
 class StringDeck : public Deck
 {
         public:
-            void playCard(std::string card, std::string &current);
+            void playCard(short type, std::string &current);
             void initializeMap();
 };
 

@@ -16,9 +16,10 @@ class Player {
 
     public:
         void drawCard(StringDeck &deck);
-        void generateString(StringDeck &deck);
+        void generateString(StringDeck &deck, std::vector<short> &hand, std::string &current);
         void takeTurn(StringDeck &deck);
-        void printAll();  
+        void printAll();
+        void printHand(StringDeck &deck, std::vector<short> &hand);
 };
 
 #endif
