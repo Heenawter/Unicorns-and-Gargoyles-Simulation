@@ -18,7 +18,7 @@ class Player {
         void drawCard(StringDeck &deck);
         void generateString(StringDeck &deck);
         void takeTurn(StringDeck &deck);
-        
+        void printAll();  
 };
 
 #endif

@@ -23,28 +23,14 @@ void Player::drawCard(StringDeck &deck)
             currentHand = allHands.front();
             allHands.pop_front();
             numCards = currentHand.size();
-            for (j = 0; j < numCards; j++)
+
+            for (j = 0; j < numCards + 1; j++)
             {
                 std::vector<short> newHand(currentHand);
-                newHand.push_back(newCard);
-                // newHand = currentHand;
-                std::cout << &newHand << " vs " << &currentHand << std::endl;
-
+                newHand.insert(newHand.begin() + j, newCard);
                 allHands.push_back(newHand);
+                newHand = currentHand;
             }
-        }
-
-        std::cout << "print..." << std::endl;
-        std::list<std::vector<short> >::iterator it;
-        std::vector<short> hand;
-        for (it = allHands.begin(); it != allHands.end(); it++)
-        {
-            hand = *it;
-            std::vector<short>::iterator it2;
-            for (it2 = hand.begin(); it2 != hand.end(); it2++) {
-                std::cout << *it2 << std::endl;
-            }
-            // std::cout << &it << std::endl;
         }
     }
 
@@ -61,4 +47,22 @@ void Player::generateString(StringDeck &deck)
 void Player::takeTurn(StringDeck &deck)
 {
     drawCard(deck);
+}
+
+void Player::printAll() {
+    // std::cout << "print..." << std::endl;
+    // std::list<std::vector<short>>::iterator it;
+    // std::vector<short> hand;
+    // for (it = allHands.begin(); it != allHands.end(); it++)
+    // {
+    //     hand = *it;
+    //     std::vector<short>::iterator it2;
+    //     for (it2 = hand.begin(); it2 != hand.end(); it2++)
+    //     {
+    //         std::cout << *it2 << "-";
+    //     }
+    //     std::cout << std::endl;
+    // }
+
+    std::cout <<  allHands.size() << std:: endl;
 }
