@@ -39,14 +39,6 @@ void Player::drawCard(StringDeck &deck)
                 if(result.second) { // if insert happened...
                     allHands.push_back(newHand);
                 }
-
-
-                // if (std::find(allStrings.begin(), v.end(), x) != v.end()) {
-
-                // }
-
-                // allHands.push_back(newHand);
-                // newHand = currentHand;
             }
         }
     }

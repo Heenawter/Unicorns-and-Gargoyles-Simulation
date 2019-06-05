@@ -41,5 +41,6 @@ char Deck::drawCard()
 {
     char newCard = cards.back();
     cards.pop_back();
+    std::cout << "Draw..." << getCardName(newCard) << std::endl;
     return newCard;
 }
