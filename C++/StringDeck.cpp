@@ -19,6 +19,15 @@ void StringDeck::initializeMap()
     map["remove 3"] = REMOVE_3;
 }
 
+void StringDeck::removeHelper(std::string &current, int numToRemove) {
+    int stringLength = current.size();
+    if (stringLength >= numToRemove) {
+        current.erase(current.end() - numToRemove, current.end());
+    } else {
+        current.clear();
+    }
+}
+
 void StringDeck::playCard(char type, std::string &current)
 {
     int left;
@@ -27,50 +36,56 @@ void StringDeck::playCard(char type, std::string &current)
     // do the correct action based on the card type
     switch (type)
     {
-    case UNICORN:
-        current.append("[*]");
-        break;
-    case GARGOYLE:
-        current.append("[G]");
-        break;
-    case REVERSE:                     // only need to swap every "third" character, ignoring '[' and ']'
-        left = 1;                     // right-most index to swap
-        right = current.length() - 2; // left-most index to swap
+        case UNICORN:
+            current.append("[*]");
+            break;
+        case GARGOYLE:
+            current.append("[G]");
+            break;
+        case REVERSE:                     // only need to swap every "third" character, ignoring '[' and ']'
+            if(!current.empty()) {
+                left = 1;                     // right-most index to swap
+                right = current.length() - 2; // left-most index to swap
 
-        // while still things left to swap, keep swapping...
-        while (left < right)
-        {
-            std::swap(current[left], current[right]); // character swap
-            left += 3;
-            right -= 3;
-        }
-        break;
-    case ROTATE_R: // rotate to the right by 3 characters
-        std::rotate(current.begin(), current.end() - 3, current.end());
-        break;
-    case ROTATE_L: // rotate to the left by 3 characters
-        std::rotate(current.begin(), current.begin() + 3, current.end());
-        break;
-    case DOUBLE:
-        current.append(current);
-        break;
-    case APPEND_1:
-        current.append("[ ]");
-        break;
-    case APPEND_2:
-        current.append("[ ][ ]");
-        break;
-    case APPEND_3:
-        current.append("[ ][ ][ ]");
-        break;
-    case REMOVE_1: // remove a single string element [?], i.e. 3 characters
-        current.erase(current.end() - 3, current.end());
-        break;
-    case REMOVE_2: // remove two string elements [?][?], i.e. 6 characters
-        current.erase(current.end() - 6, current.end());
-        break;
-    case REMOVE_3: // remove three string elements [?][?][?], i.e. 9 characters
-        current.erase(current.end() - 9, current.end());
-        break;
+                // while still things left to swap, keep swapping...
+                while (left < right)
+                {
+                    std::swap(current[left], current[right]); // character swap
+                    left += 3;
+                    right -= 3;
+                }
+            }
+            break;
+        case ROTATE_R: // rotate to the right by 3 characters
+            if (!current.empty())
+                std::rotate(current.begin(), current.end() - 3, current.end());
+            break;
+        case ROTATE_L: // rotate to the left by 3 characters
+            if (!current.empty())
+                std::rotate(current.begin(), current.begin() + 3, current.end());
+            break;
+        case DOUBLE:
+            current.append(current);
+            break;
+        case APPEND_1:
+            current.append("[ ]");
+            break;
+        case APPEND_2:
+            current.append("[ ][ ]");
+            break;
+        case APPEND_3:
+            current.append("[ ][ ][ ]");
+            break;
+        case REMOVE_1: // remove a single string element [?], i.e. 3 characters
+            removeHelper(current, 3);
+            break;
+        case REMOVE_2: // remove two string elements [?][?], i.e. 6 characters
+            removeHelper(current, 6);
+            break;
+        case REMOVE_3: // remove three string elements [?][?][?], i.e. 9 characters
+            removeHelper(current, 9);
+            break;
+        default:
+            std::cout << "Something went wrong - check yo switch statement, boo." << std::endl;
     }
 }

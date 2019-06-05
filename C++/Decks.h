@@ -29,9 +29,12 @@ class Deck {
 
 class StringDeck : public Deck
 {
-        public:
-            void playCard(char type, std::string &current);
-            void initializeMap();
+    private:
+        void removeHelper(std::string &current, int numToRemove);
+
+    public:
+        void playCard(char type, std::string &current);
+        void initializeMap();
 };
 
 class GoalsDeck : public Deck {
