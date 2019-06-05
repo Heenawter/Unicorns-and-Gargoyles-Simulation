@@ -1,14 +1,11 @@
 #pragma once
 
-#include <iostream> 
-#include <fstream> 
-#include <string>  
-#include <algorithm>
-#include <map>
-#include <vector> 
-#include <chrono> // need std::chrono::system_clock for randomness
-
 #ifndef DECK_H // include guard
+
+#include <string>
+#include <map>
+#include <vector>
+#include <algorithm>
 
 const short UNICORN = 0, GARGOYLE = 1, REVERSE = 2, ROTATE_R = 3, ROTATE_L = 4, DOUBLE = 5, 
             APPEND_1 = 6, APPEND_2 = 7, APPEND_3 = 8, REMOVE_1 = 9, REMOVE_2 = 10, REMOVE_3 = 11;
@@ -25,6 +22,7 @@ class Deck {
         virtual void initializeMap() = 0;
 
     public:
+        void addToDeck(std::string line);
         short drawCard();
 };
 
@@ -36,10 +34,10 @@ class StringDeck : public Deck {
         void playCard(std::string card, std::string &current);
 };
 
-// class GoalsDeck : public Deck {
-    
-
-// };
+class GoalsDeck : public Deck {
+    private:
+        void initializeMap();
+};
 
 #endif
 

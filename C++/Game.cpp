@@ -1,58 +1,50 @@
 #include "Decks.h"
+#include "Game.h"
 
-// class Game {
-//     private: 
-//         Deck mainDeck;
-//         Goals goalDeck;
+#include <iostream>
+#include <fstream>
 
-//         std::string readCardStats() {
-//             std::getline(file, line);
+void Game::readGameStats() {
+    std::ifstream file;
+    file.open("Draft1_Stats.txt");
 
-//             std::string cardName = line.substr(0, line.find_first_of(','));
-//             int count = int(line[line.length() - 1]) - 48; // -48 to convert from ascii to int
+    if(file.is_open()) {
+        std::string line;
+        int numCards;
+        int i;
 
-//             for(int j = 0; j < count; j++) {
-//                 cardType = getCardType(cardName);
-//                 cards.push_back(cardType);
-//             }
+        /* read the string deck */
+        std::getline(file, line); // garbage read of first line
+        file >> numCards; // the number of cards to read
+        std::getline(file, line); // garbage read of new line
+        for(i = 0; i < numCards - 2; i++)
+        { // -2 because I want to ignore comment/uncomment for now
+            std::getline(file, line);
+            deck.addToDeck(line);
+        }
 
-//             return 
-//         }
-    
-//     public:
-//         void readGameStats() {
-//             std::ifstream file;
-//             file.open("Draft1_Stats.txt");
+        /* skip comment/uncomment and action cards */
+        for(i = 0; i < NUM_LINES_TO_SKIP; i++) 
+            std::getline(file, line); // garbage read
+        
+        /* read the goal deck */
+        file >> numCards;         // the number of cards to read
+        std::getline(file, line); // garbage read of new line
+        for (int i = 0; i < numCards; i++)
+        { 
+            std::getline(file, line);
+            goals.addToDeck(line);
+        }
 
-//             if(file.is_open()) {
-//                 std::string line;
-//                 int numCards;
+        file.close();
+    }
+}
 
-//                 std::getline(file, line); // garbage read of first line
-//                 file >> numCards; // the number of cards to read
-//                 std::getline(file, line); // garbage read of new line
-    
-//                 std::string cardName;
-//                 int count;
-//                 short cardType;
-//                 for(int i = 0; i < numCards - 2; i++) { // -2 because I want to ignore comment/uncomment for now
-//                     std::getline(file, line);
-
-//                     cardName = line.substr(0, line.find_first_of(','));
-//                     count = int(line[line.length() - 1]) - 48; // -48 to convert from ascii to int
-
-//                     for(int j = 0; j < count; j++) {
-//                         cardType = getCardType(cardName);
-//                         cards.push_back(cardType);
-//                     }
-//                 }
-//                 file.close();
-//             }
-//         }
-
-// };
 
 int main() {
+    Game simulation;
+    simulation.readGameStats();
+
     StringDeck deck;
 
     std::string testString = "[ ][*][ ][G][ ]";
