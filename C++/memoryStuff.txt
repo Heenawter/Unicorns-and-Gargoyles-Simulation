@@ -1,0 +1,3 @@
+9 cards:  7,620,480? bytes   --> ~7.6Mb
+10 cards: 79,833,600 bytes  --> ~79.8Mb
+11 cards: 918,086,400 bytes --> ~918.1Mb

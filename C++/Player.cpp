@@ -9,20 +9,16 @@ void Player::drawCard(StringDeck &deck)
 {
     char newCard = deck.drawCard();
     std::vector<char> currentHand;
-    std::string newString;
     std::pair<std::set<std::string>::iterator, bool> result;
 
     int numHands = allHands.size();
     int numCards;
-
 
     int i, j;
     if(numHands == 0) {
         std::vector<char> newHand;
         newHand.push_back(newCard);
         allHands.push_back(newHand);
-        newString = generateString(deck, newHand, currentString);
-        allStrings.insert(newString);
     } else {
         for (i = 0; i < numHands; i++)
         {
@@ -34,18 +30,10 @@ void Player::drawCard(StringDeck &deck)
             {
                 std::vector<char> newHand(currentHand);
                 newHand.insert(newHand.begin() + j, newCard);
-                newString = generateString(deck, newHand, currentString);
-                result = allStrings.insert(newString);
-                if(result.second) { // if insert happened...
-                    allHands.push_back(newHand);
-                }
+                allHands.push_back(newHand);
             }
         }
     }
-
-    // allHands.push_back(new hand)
-
-    // hand.push_back(newCard);
 }
 
 std::string Player::generateString(StringDeck &deck, std::vector<char> &hand, std::string current)
@@ -82,6 +70,16 @@ void Player::printAll(StringDeck &deck)
     {
         printHand(deck, *it);
     }
+}
 
-    std::cout <<  allHands.size() << std:: endl;
+void Player::printSize(int numCards) {
+    int numPerms = allHands.size();
+    int elementSize = sizeof(char) * numCards;
+    int handSize = elementSize + sizeof(std::vector<char>);
+    int permSize = handSize * numPerms;
+
+    std::cout << "Number of permutations:   " << numPerms << std::endl;
+    std::cout << "Size of each hand:        " << elementSize << " bytes" << std::endl; 
+    std::cout << "Size of each vector:      " << handSize << " bytes" << std::endl;
+    std::cout << "Size of all permutations: " << permSize << " bytes" << std::endl;
 }

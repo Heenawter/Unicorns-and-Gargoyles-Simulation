@@ -23,9 +23,11 @@ int main()
 
     // std::cout << testString << std::endl;
 
-    for(int i = 0; i < 10; i++) {
+    const int NUM_CARDS = 9;
+    for(int i = 0; i < NUM_CARDS; i++) {
         test.drawCard(deck);
     }
 
-    test.printAll(deck);
+    test.printSize(NUM_CARDS);
+    
 }
