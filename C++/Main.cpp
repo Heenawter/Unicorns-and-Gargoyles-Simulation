@@ -23,7 +23,7 @@ int main()
 
     // std::cout << testString << std::endl;
 
-    const int NUM_CARDS = 9;
+    const int NUM_CARDS = 10;
     for(int i = 0; i < NUM_CARDS; i++) {
         test.drawCard(deck);
     }
