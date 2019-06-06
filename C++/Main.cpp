@@ -28,6 +28,12 @@ int main()
         test.drawCard(deck);
     }
 
+    // test.generate_permutations(deck);
+
+    // test.drawCard(deck);
+    // test.generate_permutations(deck);
+
     test.printSize(NUM_CARDS);
+    // test.printAll(deck);
     
 }

@@ -4,10 +4,28 @@
 
 #include <vector>
 #include <iostream>
+#include <algorithm>
+
+void Player::generate_permutations(StringDeck &deck)
+{
+    int permCount = 0;
+
+    std::sort(allCards.begin(), allCards.end());
+
+    do {
+        // std::cout << "Perm #" << permCount + 1 << ": ";
+        // printHand(deck, allCards);
+        permCount++;
+    } while (std::next_permutation(allCards.begin(), allCards.end()));
+
+    std::cout << "Perm count: " << permCount << std::endl;
+}
 
 void Player::drawCard(StringDeck &deck)
 {
     char newCard = deck.drawCard();
+    // allCards.push_back(newCard);
+
     std::vector<char> currentHand;
     std::pair<std::set<std::string>::iterator, bool> result;
 
@@ -30,7 +48,8 @@ void Player::drawCard(StringDeck &deck)
             {
                 std::vector<char> newHand(currentHand);
                 newHand.insert(newHand.begin() + j, newCard);
-                allHands.push_back(newHand);
+                if (find(allHands.begin(), allHands.end(), newHand) == allHands.end())
+                    allHands.push_back(newHand);
             }
         }
     }

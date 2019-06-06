@@ -2,7 +2,7 @@
 #include <iostream>
 #include <list>
 #include <algorithm> // for using copy (library function)
-#include "Deck.h"
+// #include "Deck.h"
 
 const int PERM_COUNT = 11;
 
@@ -44,7 +44,7 @@ void generate_permutations(int *list, int start, int end, std::list<int*>& all_p
     if(start == end) {
         int *new_perm = new int[PERM_COUNT];
         std::copy(list, list + end + 1, new_perm);
-        all_perms.push_back(new_perm);
+        // all_perms.push_back(new_perm);
     } else {
         for (i = start; i <= end; i++) {
             swap(list + start, list + i);

@@ -17,8 +17,8 @@ std::string Deck::getCardName(char cardType)
 
 void Deck::shuffleDeck()
 {
-    // unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-    std::shuffle(cards.begin(), cards.end(), std::default_random_engine(5));
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::shuffle(cards.begin(), cards.end(), std::default_random_engine(seed));
 }
 
 void Deck::addToDeck(std::string line)
