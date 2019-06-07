@@ -27,7 +27,6 @@ void Player::drawCard(StringDeck &deck)
     // allCards.push_back(newCard);
 
     std::vector<char> currentHand;
-    std::pair<std::set<std::string>::iterator, bool> result;
 
     int numHands = allHands.size();
     int numCards;
@@ -36,22 +35,24 @@ void Player::drawCard(StringDeck &deck)
     if(numHands == 0) {
         std::vector<char> newHand;
         newHand.push_back(newCard);
-        allHands.push_back(newHand);
+        allHands.insert(newHand);
     } else {
-        for (i = 0; i < numHands; i++)
-        {
-            currentHand = allHands.front();
-            allHands.pop_front();
-            numCards = currentHand.size();
+        std::unordered_set<std::vector<char>, VectorHash>::iterator it;
+        std::unordered_set<std::vector<char>, VectorHash> newHands;
 
+        for(it = allHands.begin(); it != allHands.end(); it++)
+        {
+            currentHand = *it;
+            numCards = currentHand.size();
             for (j = 0; j <= numCards; j++)
             {
                 std::vector<char> newHand(currentHand);
                 newHand.insert(newHand.begin() + j, newCard);
-                if (find(allHands.begin(), allHands.end(), newHand) == allHands.end())
-                    allHands.push_back(newHand);
+                newHands.insert(newHand);
             }
         }
+
+        allHands = newHands;
     }
 }
 
@@ -65,7 +66,7 @@ std::string Player::generateString(StringDeck &deck, std::vector<char> &hand, st
     return current;
 }
 
-void Player::printHand(StringDeck &deck, std::vector<char> &hand)
+void Player::printHand(StringDeck &deck, std::vector<char> hand)
 {
     std::vector<char>::iterator it;
     for (it = hand.begin(); it < hand.end(); it++)
@@ -83,7 +84,9 @@ void Player::takeTurn(StringDeck &deck)
 void Player::printAll(StringDeck &deck)
 {
     std::cout << "print..." << std::endl;
-    std::list<std::vector<char>>::iterator it;
+    // std::list<std::vector<char>>::iterator it;
+    std::unordered_set<std::vector<char>, VectorHash>::iterator it;
+
     std::vector<char> hand;
     for (it = allHands.begin(); it != allHands.end(); it++)
     {

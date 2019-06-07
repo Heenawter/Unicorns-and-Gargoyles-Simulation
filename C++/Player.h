@@ -5,14 +5,26 @@
 #include <vector>
 #include <list>
 #include <string>
-#include <set>
+#include <unordered_set>
 
+struct VectorHash
+{
+    size_t operator()(const std::vector<char> &v) const
+    {
+        std::hash<int> hasher;
+        size_t seed = 0;
+        for (int i : v)
+        {
+            seed ^= hasher(i) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+        }
+        return seed;
+    }
+};
 
-    class Player
+class Player
 {
 private:
-    std::list<std::vector<char> > allHands;
-    // std::set<std::vector<char> > allHands;
+    std::unordered_set<std::vector<char>, VectorHash> allHands;
     int currentHandIndex;
     std::string currentString;
 
@@ -25,7 +37,7 @@ public:
 
     void printSize(int numCards);
     void printAll(StringDeck &deck);
-    void printHand(StringDeck &deck, std::vector<char> &hand);
+    void printHand(StringDeck &deck, std::vector<char> hand);
 
     void generate_permutations(StringDeck &deck);
 };

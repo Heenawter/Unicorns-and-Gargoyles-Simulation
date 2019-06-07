@@ -23,7 +23,7 @@ int main()
 
     // std::cout << testString << std::endl;
 
-    const int NUM_CARDS = 10;
+    const int NUM_CARDS = 11;
     for(int i = 0; i < NUM_CARDS; i++) {
         test.drawCard(deck);
     }
@@ -33,7 +33,7 @@ int main()
     // test.drawCard(deck);
     // test.generate_permutations(deck);
 
-    test.printSize(NUM_CARDS);
     // test.printAll(deck);
+    test.printSize(NUM_CARDS);
     
 }
