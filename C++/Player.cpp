@@ -6,6 +6,12 @@
 #include <iostream>
 #include <algorithm>
 
+#include <limits>
+
+Player::~Player() {
+    // delete[] allHands;
+}
+
 void Player::drawCard(StringDeck &deck)
 {
     char newCard = deck.drawCard();
@@ -64,16 +70,16 @@ void Player::printHand(StringDeck &deck, std::vector<char> hand)
 bool Player::takeTurn(StringDeck &deck, std::string goalString)
 {
     std::unordered_set<std::vector<char>, VectorHash>::iterator it;
-    std::string currentString;
+    std::string tryString;
 
     drawCard(deck);
     for (it = allHands.begin(); it != allHands.end(); it++)
     {
-        currentString = generateString(deck, *it, "");
+        tryString = generateString(deck, *it, currentString);
         
         // std::cout << currentString << std::endl;
-        if(currentString == goalString) {
-            // printHand(deck, *it);
+        if(tryString == goalString) {
+            printHand(deck, *it);
             return true;
         }
     }

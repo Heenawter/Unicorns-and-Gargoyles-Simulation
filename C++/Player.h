@@ -25,7 +25,6 @@ class Player
 {
 private:
     std::unordered_set<std::vector<char>, VectorHash> allHands;
-    int currentHandIndex;
     std::string currentString = "";
 
     std::string generateString(StringDeck &deck, std::vector<char> hand, std::string current);
@@ -41,7 +40,6 @@ public:
 
     void printSize(int numCards);
     void printAll(StringDeck &deck);
-
 };
 
 #endif
