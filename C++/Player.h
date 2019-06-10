@@ -28,18 +28,18 @@ private:
     int currentHandIndex;
     std::string currentString;
 
-    std::vector<char> allCards;
+    std::string generateString(StringDeck &deck, std::vector<char> hand, std::string current);
+    void drawCard(StringDeck &deck);
+
+    void printHand(StringDeck &deck, std::vector<char> hand);
 
 public:
-    void drawCard(StringDeck &deck);
-    std::string generateString(StringDeck &deck, std::vector<char> &hand, std::string current);
-    void takeTurn(StringDeck &deck);
+    ~Player();
+
+    bool takeTurn(StringDeck &deck, std::string goalString);
 
     void printSize(int numCards);
     void printAll(StringDeck &deck);
-    void printHand(StringDeck &deck, std::vector<char> hand);
-
-    void generate_permutations(StringDeck &deck);
 };
 
 #endif

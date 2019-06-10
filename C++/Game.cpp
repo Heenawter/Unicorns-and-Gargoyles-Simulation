@@ -4,7 +4,25 @@
 #include <fstream>
 // #include <iostream>
 
-void Game::readGameStats() {
+Game::Game(int numPlayers)
+{
+    deck.initializeMap();
+    readGameStats();
+    deck.shuffleDeck();
+
+    for (int i = 0; i < numPlayers; i++)
+        players.push_back(new Player());
+}
+
+Game::~Game() {
+    std::vector<Player*>::iterator it;
+    for(it = players.begin(); it != players.end(); it++) {
+        delete *it;
+    }
+}
+
+void Game::readGameStats()
+{
     std::ifstream file;
     file.open("Draft1_Stats.txt");
 
@@ -40,10 +58,10 @@ void Game::readGameStats() {
     }
 }
 
-void Game::initializeGame() {
-    deck.initializeMap();
-    readGameStats();
-    deck.shuffleDeck();
+StringDeck* Game::getDeck() {
+    return &deck;
 }
 
-StringDeck Game::getDeck() { return deck; }
+Player* Game::getPlayer(int index) {
+    return players.at(index);
+}

@@ -5,35 +5,30 @@
 
 #include <iostream>
 
+const int NUM_PLAYERS = 2;
+const int NUM_ROUNDS = 1000;
+const int NUM_CARDS = 8;
+
 int main()
 {
-    Game simulation;
-    simulation.initializeGame();
+    int wins = 0;
+    bool win;
 
-    StringDeck deck = simulation.getDeck();
-
-    Player test;
-    // std::vector<char> testHand;
-    // testHand.push_back(1);
-    // testHand.push_back(6);
-    // testHand.push_back(2);
-    // test.printHand(deck, testHand);
-    // std::string testString = "[ ][*][ ][G][ ][ ]";
-    // test.generateString(deck, testHand, testString);
-
-    // std::cout << testString << std::endl;
-
-    const int NUM_CARDS = 11;
-    for(int i = 0; i < NUM_CARDS; i++) {
-        test.drawCard(deck);
+    for (int k = 0; k < NUM_ROUNDS; k++)
+    {  
+        Game* simulation = new Game(NUM_PLAYERS);
+        StringDeck* deck = simulation->getDeck();
+   
+        Player* player = simulation->getPlayer(0);
+        for(int i = 0; i < NUM_CARDS; i++) {
+            win = player->takeTurn(*deck, "[ ][ ][*]");
+            if(win) {
+                wins++;
+                break;
+            }
+        }
+        delete simulation;
     }
 
-    // test.generate_permutations(deck);
-
-    // test.drawCard(deck);
-    // test.generate_permutations(deck);
-
-    // test.printAll(deck);
-    test.printSize(NUM_CARDS);
-    
+    std::cout << "We won " << wins << " times and lost " << NUM_ROUNDS - wins << " times!" << std::endl;
 }

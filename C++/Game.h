@@ -8,14 +8,17 @@ class Game {
     private:
         StringDeck deck;
         GoalsDeck goals;
-        Player player;
+        std::vector<Player*> players;
 
         void readGameStats();
 
-    public:
-        void initializeGame();     
+    public:   
+        Game(int numPlayers);
+        ~Game();
 
-        StringDeck getDeck();  
+        void generatePlayers(int numPlayers);
+        StringDeck* getDeck();
+        Player* getPlayer(int index);
 };
 
 #endif

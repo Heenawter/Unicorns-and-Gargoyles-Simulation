@@ -6,21 +6,6 @@
 #include <iostream>
 #include <algorithm>
 
-void Player::generate_permutations(StringDeck &deck)
-{
-    int permCount = 0;
-
-    std::sort(allCards.begin(), allCards.end());
-
-    do {
-        // std::cout << "Perm #" << permCount + 1 << ": ";
-        // printHand(deck, allCards);
-        permCount++;
-    } while (std::next_permutation(allCards.begin(), allCards.end()));
-
-    std::cout << "Perm count: " << permCount << std::endl;
-}
-
 void Player::drawCard(StringDeck &deck)
 {
     char newCard = deck.drawCard();
@@ -56,7 +41,7 @@ void Player::drawCard(StringDeck &deck)
     }
 }
 
-std::string Player::generateString(StringDeck &deck, std::vector<char> &hand, std::string current)
+std::string Player::generateString(StringDeck &deck, std::vector<char> hand, std::string current)
 {
     std::vector<char>::iterator it;
     for (it = hand.begin(); it < hand.end(); it++) {
@@ -76,18 +61,31 @@ void Player::printHand(StringDeck &deck, std::vector<char> hand)
     std::cout << std::endl;
 }
 
-void Player::takeTurn(StringDeck &deck)
+bool Player::takeTurn(StringDeck &deck, std::string goalString)
 {
+    std::unordered_set<std::vector<char>, VectorHash>::iterator it;
+    std::string currentString;
+
     drawCard(deck);
+    for (it = allHands.begin(); it != allHands.end(); it++)
+    {
+        currentString = generateString(deck, *it, "");
+        
+        // std::cout << currentString << std::endl;
+        if(currentString == goalString) {
+            printHand(deck, *it);
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void Player::printAll(StringDeck &deck)
 {
-    std::cout << "print..." << std::endl;
     // std::list<std::vector<char>>::iterator it;
     std::unordered_set<std::vector<char>, VectorHash>::iterator it;
 
-    std::vector<char> hand;
     for (it = allHands.begin(); it != allHands.end(); it++)
     {
         printHand(deck, *it);
@@ -98,7 +96,7 @@ void Player::printSize(int numCards) {
     int numPerms = allHands.size();
     int elementSize = sizeof(char) * numCards;
     int handSize = elementSize + sizeof(std::vector<char>);
-    int permSize = handSize * numPerms;
+    int permSize = sizeof(std::unordered_set<std::vector<char>, VectorHash>) + handSize * numPerms;
 
     std::cout << "Number of permutations:   " << numPerms << std::endl;
     std::cout << "Size of each hand:        " << elementSize << " bytes" << std::endl; 
