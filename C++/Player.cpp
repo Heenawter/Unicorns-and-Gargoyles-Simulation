@@ -73,7 +73,7 @@ bool Player::takeTurn(StringDeck &deck, std::string goalString)
         
         // std::cout << currentString << std::endl;
         if(currentString == goalString) {
-            printHand(deck, *it);
+            // printHand(deck, *it);
             return true;
         }
     }

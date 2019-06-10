@@ -26,13 +26,13 @@ class Player
 private:
     std::unordered_set<std::vector<char>, VectorHash> allHands;
     int currentHandIndex;
-    std::string currentString;
+    std::string currentString = "";
 
     std::string generateString(StringDeck &deck, std::vector<char> hand, std::string current);
     void drawCard(StringDeck &deck);
 
     void printHand(StringDeck &deck, std::vector<char> hand);
-
+    int stringDistance(const std::string &string1, const std::string &string2);
 
 public:
     ~Player();
@@ -42,7 +42,6 @@ public:
     void printSize(int numCards);
     void printAll(StringDeck &deck);
 
-    int stringDistance(const std::string &string1, const std::string &string2);
 };
 
 #endif
