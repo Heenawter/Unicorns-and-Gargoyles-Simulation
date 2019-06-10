@@ -103,3 +103,39 @@ void Player::printSize(int numCards) {
     std::cout << "Size of each vector:      " << handSize << " bytes" << std::endl;
     std::cout << "Size of all permutations: " << permSize << " bytes" << std::endl;
 }
+
+// https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C++
+int Player::stringDistance(const std::string &string1, const std::string &string2)
+{
+    if(string1.size() > string2.size())
+        return stringDistance(string2, string1);
+
+    int minSize = string1.size();
+    int maxSize = string2.size();
+    std::vector<int> levenshteinDistance(minSize + 1);
+
+    for(int k = 0; k <= minSize; k++) 
+        levenshteinDistance[k] = k;
+
+    for (int j = 1; j <= maxSize; j++)
+    {
+        int previous_diagonal = levenshteinDistance[0];
+        int previous_diagonal_save;
+        levenshteinDistance[0]++;
+
+        for (int i = 1; i <= minSize; i++)
+        {
+            previous_diagonal_save = levenshteinDistance[i];
+            if (string1[i - 1] == string2[j - 1])
+                levenshteinDistance[i] = previous_diagonal;
+            else
+                levenshteinDistance[i] = std::min(std::min(levenshteinDistance[i - 1], levenshteinDistance[i]), previous_diagonal) + 1;
+            
+            previous_diagonal = previous_diagonal_save;
+        }
+    }
+
+    int result = levenshteinDistance[minSize];
+
+    return result;
+}

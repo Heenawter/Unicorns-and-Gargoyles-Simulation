@@ -11,24 +11,28 @@ const int NUM_CARDS = 8;
 
 int main()
 {
-    int wins = 0;
-    bool win;
+    Player test;
+    int tryMe = test.stringDistance("[ ][*][ ]", "[ ][*][ ][ ]");
+    std::cout << tryMe << std::endl;
 
-    for (int k = 0; k < NUM_ROUNDS; k++)
-    {  
-        Game* simulation = new Game(NUM_PLAYERS);
-        StringDeck* deck = simulation->getDeck();
+    // int wins = 0;
+    // bool win;
+
+    // for (int k = 0; k < NUM_ROUNDS; k++)
+    // {  
+    //     Game* simulation = new Game(NUM_PLAYERS);
+    //     StringDeck* deck = simulation->getDeck();
    
-        Player* player = simulation->getPlayer(0);
-        for(int i = 0; i < NUM_CARDS; i++) {
-            win = player->takeTurn(*deck, "[ ][ ][*]");
-            if(win) {
-                wins++;
-                break;
-            }
-        }
-        delete simulation;
-    }
+    //     Player* player = simulation->getPlayer(0);
+    //     for(int i = 0; i < NUM_CARDS; i++) {
+    //         win = player->takeTurn(*deck, "[ ][ ][*]");
+    //         if(win) {
+    //             wins++;
+    //             break;
+    //         }
+    //     }
+    //     delete simulation;
+    // }
 
-    std::cout << "We won " << wins << " times and lost " << NUM_ROUNDS - wins << " times!" << std::endl;
+    // std::cout << "We won " << wins << " times and lost " << NUM_ROUNDS - wins << " times!" << std::endl;
 }
