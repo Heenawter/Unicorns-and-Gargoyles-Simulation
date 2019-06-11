@@ -1,11 +1,11 @@
 
+#include "Constants.h"
 #include "Decks.h"
 #include "Player.h"
 
 #include <vector>
 #include <iostream>
 #include <algorithm>
-
 #include <limits>
 
 Player::~Player() {
@@ -16,24 +16,31 @@ Player::Player() {
     // totalCards = 0;
 }
 
-void Player::drawCard(Deck &deck)
+bool Player::drawCard(Deck &deck)
 {
     char newCard = deck.drawCard();
+    
+    if(newCard == 'x')
+        return false;
+
     std::vector<char> currentHand;
 
     int numHands = allHands.size();
     int numCards;
 
     int i, j;
-    if(numHands == 0) {
+    if (numHands == 0)
+    {
         std::vector<char> newHand;
         newHand.push_back(newCard);
         allHands.insert(newHand);
-    } else {
+    }
+    else
+    {
         std::unordered_set<std::vector<char>, VectorHash>::iterator it;
         std::unordered_set<std::vector<char>, VectorHash> newHands;
 
-        for(it = allHands.begin(); it != allHands.end(); it++)
+        for (it = allHands.begin(); it != allHands.end(); it++)
         {
             currentHand = *it;
             numCards = currentHand.size();
@@ -47,6 +54,8 @@ void Player::drawCard(Deck &deck)
 
         allHands = newHands;
     }
+
+    return true;
 }
 
 std::string Player::generateString(Deck &deck, std::vector<char> hand, std::string current)
@@ -69,24 +78,28 @@ void Player::printHand(Deck &deck, std::vector<char> hand)
     std::cout << std::endl;
 }
 
-bool Player::takeTurn(Deck &deck, std::string goalString)
+char Player::takeTurn(Deck &deck, std::string goalString)
 {
     std::unordered_set<std::vector<char>, VectorHash>::iterator it;
     std::string tryString;
 
-    drawCard(deck);
+    bool success = drawCard(deck);
+    
+    if(!success)
+        return RAN_OUT_OF_CARDS;
+
     for (it = allHands.begin(); it != allHands.end(); it++)
     {
         tryString = generateString(deck, *it, currentString);
-        
         // std::cout << currentString << std::endl;
-        if(tryString == goalString) {
+        if (tryString == goalString)
+        {
             // printHand(deck, *it);
-            return true;
+            return WIN;
         }
     }
 
-    return false;
+    return NO_WIN;
 }
 
 void Player::printAll(Deck &deck)

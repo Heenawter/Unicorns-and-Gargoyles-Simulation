@@ -1,39 +1,43 @@
 
+#include "Constants.h"
 #include "Decks.h"
 #include "Player.h"
 #include "Game.h"
 
+
 #include <iostream>
-#include<iomanip>
+#include <iomanip>
 #include <chrono>
-
-const int NUM_PLAYERS = 4;
-const int NUM_ROUNDS = 3;
-const int NUM_CARDS = 7;
-
-const int NUM_LINES_TO_SKIP = 24;
 
 std::vector<std::string> readGoals();
 
-    int main()
+int main()
 {
-    int wins[NUM_PLAYERS];
-    int playerNum;
-    for (playerNum = 0; playerNum < NUM_PLAYERS; playerNum++)
-        wins[playerNum] = 0;
-    bool win;
+    int wins[NUM_PLAYERS]; // keep track of the number of wins per player
+    
+    // counters
+    int playerNum = 0;
+    int cardNum = 0;
+    int numFails = 0;
+    int totalCards = 0;
 
-    int cardNum;
+    // game stuff
     Player *player;
     Game *simulation;
     Deck *deck;
+    char playerStatus; // used to determine win, lose, ran out of cards
+    std::vector<std::string>::iterator it; // used to loop through goal list
 
-    std::vector<std::string>
-    goals = readGoals();
-    std::vector<std::string>::iterator it;
+    // initialize the wins with 0 for each player
+    for (playerNum = 0; playerNum < NUM_PLAYERS; playerNum++)
+        wins[playerNum] = 0;
+
+    std::vector<std::string> goals = readGoals(); // list of all goals
+    
     // for each goal....
     for(it = goals.begin(); it < goals.end(); it++) {
         std::cout << "----" << " GOAL " << std::left << std::setw(15) << *it << " ----" << std::endl;    
+        totalCards = 0;
 
         auto t1 = std::chrono::high_resolution_clock::now();
         // run k simulations of that goal...
@@ -43,38 +47,45 @@ std::vector<std::string> readGoals();
             simulation = new Game(NUM_PLAYERS);
             deck = simulation->getDeck();
             
-            win = false;
+            playerStatus = ' ';
             cardNum = 1;
-            while(!win)
+            while (playerStatus != WIN and playerStatus != RAN_OUT_OF_CARDS)
             {
                 std::cout << ".";
                 for (playerNum = 0; playerNum < NUM_PLAYERS; playerNum++)
                 {
                     player = simulation->getPlayer(playerNum);
-                    win = player->takeTurn(*deck, *it);
-                    if (win)
+                    playerStatus = player->takeTurn(*deck, *it);
+                    if (playerStatus == WIN)
                     {
                         std::cout << " Player " << playerNum << " wins!";
                         wins[playerNum]++;
+                        break;
+                    } else if (playerStatus == RAN_OUT_OF_CARDS) {
+                        std::cout << "Ran out of cards!";
+                        numFails++;
                         break;
                     }
                 }
                 cardNum++;
             }
             std::cout << std::endl;
+            totalCards += cardNum;
 
             delete simulation;
         }
 
         auto t2 = std::chrono::high_resolution_clock::now();
+
+        auto difference = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
+        std::cout << "Each round took approximately " << difference / NUM_ROUNDS << " milliseconds to complete." << std::endl;
+        std::cout << "It took, on average, " << totalCards / NUM_ROUNDS << " cards to win." << std::endl;
     }
 
-    // for(playerNum = 0; playerNum < NUM_PLAYERS; playerNum++) {
-    //     std::cout << "Player " << playerNum + 1 << " won " << wins[playerNum] << " times." << std::endl;
-    // }
+    for(playerNum = 0; playerNum < NUM_PLAYERS; playerNum++) 
+        std::cout << "Player " << playerNum + 1 << " won " << wins[playerNum] << " times." << std::endl;
 
-    // auto difference = std::chrono::duration_cast<std::chrono::milliseconds>(t2-t1).count();
-    // std::cout << "Each round took approximately " << difference / NUM_ROUNDS << " milliseconds to complete." << std::endl;
+    std::cout << "The game failed " << numFails << " times." << std::endl;
 }
 
 std::vector<std::string> readGoals()

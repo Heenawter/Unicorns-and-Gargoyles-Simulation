@@ -1,10 +1,8 @@
+#include "Constants.h"
 #include "Decks.h"
 
 #include <chrono> // need std::chrono::system_clock for randomness
 #include <iostream>
-
-const char UNICORN = 0, GARGOYLE = 1, REVERSE = 2, ROTATE_R = 3, ROTATE_L = 4, DOUBLE = 5,
-           APPEND_1 = 6, APPEND_2 = 7, APPEND_3 = 8, REMOVE_1 = 9, REMOVE_2 = 10, REMOVE_3 = 11;
 
 std::string Deck::getCardName(char cardType)
 {
@@ -36,8 +34,13 @@ void Deck::addToDeck(std::string line, char cardType)
 
 char Deck::drawCard()
 {
-    char newCard = cards.back();
-    cards.pop_back();
+    char newCard;
+    if(cards.size() > 0) {
+        newCard = cards.back();
+        cards.pop_back();
+    } else {
+        newCard = 'x';
+    }
     // std::cout << "Draw..." << getCardName(newCard) << std::endl;
     return newCard;
 }
