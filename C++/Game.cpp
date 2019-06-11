@@ -6,9 +6,9 @@
 
 Game::Game(int numPlayers)
 {
-    deck.initializeMap();
     readGameStats();
     deck.shuffleDeck();
+    goals.shuffleDeck();
 
     for (int i = 0; i < numPlayers; i++)
         players.push_back(new Player());
@@ -30,6 +30,7 @@ void Game::readGameStats()
         std::string line;
         int numCards;
         int i;
+        char cardCounter = 0;
 
         /* read the string deck */
         std::getline(file, line); // garbage read of first line
@@ -38,7 +39,8 @@ void Game::readGameStats()
         for(i = 0; i < numCards - 2; i++)
         { // -2 because I want to ignore comment/uncomment for now
             std::getline(file, line);
-            deck.addToDeck(line);
+            deck.addToDeck(line, cardCounter);
+            cardCounter++;
         }
 
         /* skip comment/uncomment and action cards */
@@ -51,7 +53,8 @@ void Game::readGameStats()
         for (int i = 0; i < numCards; i++)
         { 
             std::getline(file, line);
-            goals.addToDeck(line);
+            goals.addToDeck(line, cardCounter);
+            cardCounter++;
         }
 
         file.close();

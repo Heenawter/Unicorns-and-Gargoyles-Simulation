@@ -1,23 +1,7 @@
 #include "Decks.h"
 
 const char UNICORN = 0, GARGOYLE = 1, REVERSE = 2, ROTATE_R = 3, ROTATE_L = 4, DOUBLE = 5,
-            APPEND_1 = 6, APPEND_2 = 7, APPEND_3 = 8, REMOVE_1 = 9, REMOVE_2 = 10, REMOVE_3 = 11;
-
-void StringDeck::initializeMap()
-{
-    map["unicorn"] = UNICORN;
-    map["gargoyle"] = GARGOYLE;
-    map["reverse order"] = REVERSE;
-    map["rotate right"] = ROTATE_R;
-    map["rotate left"] = ROTATE_L;
-    map["double row"] = DOUBLE;
-    map["append 1"] = APPEND_1;
-    map["append 2"] = APPEND_2;
-    map["append 3"] = APPEND_3;
-    map["remove 1"] = REMOVE_1;
-    map["remove 2"] = REMOVE_2;
-    map["remove 3"] = REMOVE_3;
-}
+           APPEND_1 = 6, APPEND_2 = 7, APPEND_3 = 8, REMOVE_1 = 9, REMOVE_2 = 10, REMOVE_3 = 11;
 
 void StringDeck::removeHelper(std::string &current, int numToRemove) {
     int stringLength = current.size();

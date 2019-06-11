@@ -7,7 +7,7 @@ const char NUM_LINES_TO_SKIP = 10;
 class Game {
     private:
         StringDeck deck;
-        GoalsDeck goals;
+        Deck goals;
         std::vector<Player*> players;
 
         void readGameStats();

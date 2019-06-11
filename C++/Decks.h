@@ -13,12 +13,8 @@ class Deck {
         std::map<std::string, char> map;
         std::vector<char> cards;
 
-        char getCardType(std::string card);
-        
-        virtual void initializeMap() = 0;
-
     public:
-        void addToDeck(std::string line);
+        void addToDeck(std::string line, char cardType);
         char drawCard();
         void shuffleDeck();
         std::vector<char> getCards(){ return cards; }
@@ -34,12 +30,6 @@ class StringDeck : public Deck
 
     public:
         void playCard(char type, std::string &current);
-        void initializeMap();
-};
-
-class GoalsDeck : public Deck {
-    public:
-        void initializeMap();
 };
 
 #endif
