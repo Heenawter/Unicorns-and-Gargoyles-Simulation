@@ -9,9 +9,11 @@
 #include <iostream>
 
 class Deck {
-    protected:
+    private:
         std::map<std::string, char> map;
         std::vector<char> cards;
+
+        void removeHelper(std::string &current, int numToRemove);
 
     public:
         void addToDeck(std::string line, char cardType);
@@ -21,14 +23,7 @@ class Deck {
 
         std::string getCardName(char cardType); // WARNING: inefficient - avoid use
                                                  // mostly for debugging purposes
-};
-
-class StringDeck : public Deck
-{
-    private:
-        void removeHelper(std::string &current, int numToRemove);
-
-    public:
+  
         void playCard(char type, std::string &current);
 };
 

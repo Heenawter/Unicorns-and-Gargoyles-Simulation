@@ -16,7 +16,7 @@ Player::Player() {
     // totalCards = 0;
 }
 
-void Player::drawCard(StringDeck &deck)
+void Player::drawCard(Deck &deck)
 {
     char newCard = deck.drawCard();
     std::vector<char> currentHand;
@@ -49,7 +49,7 @@ void Player::drawCard(StringDeck &deck)
     }
 }
 
-std::string Player::generateString(StringDeck &deck, std::vector<char> hand, std::string current)
+std::string Player::generateString(Deck &deck, std::vector<char> hand, std::string current)
 {
     std::vector<char>::iterator it;
     for (it = hand.begin(); it < hand.end(); it++) {
@@ -59,7 +59,7 @@ std::string Player::generateString(StringDeck &deck, std::vector<char> hand, std
     return current;
 }
 
-void Player::printHand(StringDeck &deck, std::vector<char> hand)
+void Player::printHand(Deck &deck, std::vector<char> hand)
 {
     std::vector<char>::iterator it;
     for (it = hand.begin(); it < hand.end(); it++)
@@ -69,7 +69,7 @@ void Player::printHand(StringDeck &deck, std::vector<char> hand)
     std::cout << std::endl;
 }
 
-bool Player::takeTurn(StringDeck &deck, std::string goalString)
+bool Player::takeTurn(Deck &deck, std::string goalString)
 {
     std::unordered_set<std::vector<char>, VectorHash>::iterator it;
     std::string tryString;
@@ -89,7 +89,7 @@ bool Player::takeTurn(StringDeck &deck, std::string goalString)
     return false;
 }
 
-void Player::printAll(StringDeck &deck)
+void Player::printAll(Deck &deck)
 {
     // std::list<std::vector<char>>::iterator it;
     std::unordered_set<std::vector<char>, VectorHash>::iterator it;

@@ -1,14 +1,13 @@
 #include "Decks.h"
 #include "Player.h"
 #include "Game.h"
-#include <fstream>
+
 // #include <iostream>
 
 Game::Game(int numPlayers)
 {
     readGameStats();
     deck.shuffleDeck();
-    goals.shuffleDeck();
 
     for (int i = 0; i < numPlayers; i++)
         players.push_back(new Player());
@@ -43,25 +42,11 @@ void Game::readGameStats()
             cardCounter++;
         }
 
-        /* skip comment/uncomment and action cards */
-        for(i = 0; i < NUM_LINES_TO_SKIP; i++) 
-            std::getline(file, line); // garbage read
-        
-        /* read the goal deck */
-        file >> numCards;         // the number of cards to read
-        std::getline(file, line); // garbage read of new line
-        for (int i = 0; i < numCards; i++)
-        { 
-            std::getline(file, line);
-            goals.addToDeck(line, cardCounter);
-            cardCounter++;
-        }
-
         file.close();
     }
 }
 
-StringDeck* Game::getDeck() {
+Deck* Game::getDeck() {
     return &deck;
 }
 

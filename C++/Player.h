@@ -26,21 +26,21 @@ class Player
 private:
     std::unordered_set<std::vector<char>, VectorHash> allHands;
     std::string currentString = "";
-    
-    std::string generateString(StringDeck &deck, std::vector<char> hand, std::string current);
-    void drawCard(StringDeck &deck);
 
-    void printHand(StringDeck &deck, std::vector<char> hand);
+    std::string generateString(Deck &deck, std::vector<char> hand, std::string current);
+    void drawCard(Deck &deck);
+
+    void printHand(Deck &deck, std::vector<char> hand);
     int stringDistance(const std::string &string1, const std::string &string2);
 
 public:
     ~Player();
     Player();
 
-    bool takeTurn(StringDeck &deck, std::string goalString);
+    bool takeTurn(Deck &deck, std::string goalString);
 
     void printSize(int numCards);
-    void printAll(StringDeck &deck);
+    void printAll(Deck &deck);
 };
 
 #endif

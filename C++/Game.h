@@ -2,12 +2,11 @@
 
 #ifndef GAME_H
 
-const char NUM_LINES_TO_SKIP = 10;
+#include <fstream>
 
 class Game {
     private:
-        StringDeck deck;
-        Deck goals;
+        Deck deck;
         std::vector<Player*> players;
 
         void readGameStats();
@@ -17,7 +16,7 @@ class Game {
         ~Game();
 
         void generatePlayers(int numPlayers);
-        StringDeck* getDeck();
+        Deck* getDeck();
         Player* getPlayer(int index);
 };
 
