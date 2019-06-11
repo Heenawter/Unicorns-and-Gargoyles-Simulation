@@ -7,6 +7,7 @@
 #include <iostream>
 #include <algorithm>
 #include <limits>
+#include <chrono>
 
 Player::~Player() {
     // delete[] allHands;
@@ -37,11 +38,19 @@ bool Player::drawCard(Deck &deck)
     }
     else
     {
+        auto tStart = std::chrono::high_resolution_clock::now();
         std::unordered_set<std::vector<char>, VectorHash>::iterator it;
         std::unordered_set<std::vector<char>, VectorHash> newHands;
 
         for (it = allHands.begin(); it != allHands.end(); it++)
         {
+            auto tEnd = std::chrono::high_resolution_clock::now();
+            auto difference = std::chrono::duration_cast<std::chrono::seconds>(tEnd - tStart).count();
+
+            if(difference > 60) {
+                return false;
+            }
+
             currentHand = *it;
             numCards = currentHand.size();
             for (j = 0; j <= numCards; j++)

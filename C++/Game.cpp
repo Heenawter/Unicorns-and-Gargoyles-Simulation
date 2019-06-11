@@ -24,7 +24,7 @@ Game::~Game() {
 void Game::readGameStats()
 {
     std::ifstream file;
-    file.open("Draft1_Stats.txt");
+    file.open(INPUT_FILE);
 
     if(file.is_open()) {
         std::string line;

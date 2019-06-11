@@ -1,0 +1,7 @@
+---- GOAL [ ][*][ ]       ----
+Each round took approximately 898 milliseconds to complete.
+It took, on average, 8 cards to win.
+---- GOAL [ ][ ][ ][ ]    ----
+Each round took approximately 61 milliseconds to complete.
+It took, on average, 6 cards to win.
+---- GOAL [*][ ][ ][*]    ----
