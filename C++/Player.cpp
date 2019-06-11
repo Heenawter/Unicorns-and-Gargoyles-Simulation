@@ -12,11 +12,13 @@ Player::~Player() {
     // delete[] allHands;
 }
 
+Player::Player() {
+    // totalCards = 0;
+}
+
 void Player::drawCard(StringDeck &deck)
 {
     char newCard = deck.drawCard();
-    // allCards.push_back(newCard);
-
     std::vector<char> currentHand;
 
     int numHands = allHands.size();
@@ -79,7 +81,7 @@ bool Player::takeTurn(StringDeck &deck, std::string goalString)
         
         // std::cout << currentString << std::endl;
         if(tryString == goalString) {
-            printHand(deck, *it);
+            // printHand(deck, *it);
             return true;
         }
     }

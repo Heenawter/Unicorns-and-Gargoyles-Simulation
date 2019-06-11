@@ -26,7 +26,7 @@ class Player
 private:
     std::unordered_set<std::vector<char>, VectorHash> allHands;
     std::string currentString = "";
-
+    
     std::string generateString(StringDeck &deck, std::vector<char> hand, std::string current);
     void drawCard(StringDeck &deck);
 
@@ -35,6 +35,7 @@ private:
 
 public:
     ~Player();
+    Player();
 
     bool takeTurn(StringDeck &deck, std::string goalString);
 
