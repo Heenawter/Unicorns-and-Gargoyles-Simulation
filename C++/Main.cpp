@@ -26,6 +26,7 @@ int main()
     // for (int k = 0; k < NUM_ROUNDS; k++)
     // {  
 
+
         Game *simulation = new Game(NUM_PLAYERS);
         StringDeck *deck = simulation->getDeck();
         while(!win)
@@ -42,7 +43,7 @@ int main()
                 }
             }
         }
-    
+
         delete simulation;
     // }
 

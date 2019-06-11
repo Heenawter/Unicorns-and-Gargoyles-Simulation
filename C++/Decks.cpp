@@ -20,12 +20,11 @@ void Deck::addToDeck(std::string line, char cardType)
 {
     std::string cardName;
     int count;
-    
-    map[cardName] = cardType;
 
     cardName = line.substr(0, line.find_first_of(','));
-    count = int(line[line.length() - 1]) - 48; // -48 to convert from ascii to int
+    map[cardName] = cardType;
 
+    count = int(line[line.length() - 1]) - 48; // -48 to convert from ascii to int
     for (int j = 0; j < count; j++)
     {
         cards.push_back(cardType);
