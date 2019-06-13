@@ -16,7 +16,7 @@ static const int NUM_ROUNDS = 500;
 
 static const int NUM_LINES_TO_SKIP = 24;
 
-static const char *INPUT_FILE = "Simulations/Draft6_Stats.txt";
-static const char *OUTPT_FILE = "Simulations/Draft6_Results_v2 (500 Rounds).txt";
+static const char *INPUT_FILE = "Simulations/Draft1_Stats.txt";
+static const char *OUTPT_FILE = "Simulations/Draft1_Results_v5 (500 Rounds).txt";
 
 #endif
