@@ -17,17 +17,21 @@ Player::Player() {
     // totalCards = 0;
 }
 
-bool Player::drawCard(Deck &deck)
+char Player::drawCard(Deck &deck)
 {
     char newCard = deck.drawCard();
     
     if(newCard == 'x')
-        return false;
+        return RAN_OUT_OF_CARDS;
 
     std::vector<char> currentHand;
 
     int numHands = allHands.size();
     int numCards;
+
+    std::chrono::high_resolution_clock::time_point tStart;
+    std::chrono::high_resolution_clock::time_point tEnd;
+    int difference;
 
     int i, j;
     if (numHands == 0)
@@ -38,17 +42,17 @@ bool Player::drawCard(Deck &deck)
     }
     else
     {
-        auto tStart = std::chrono::high_resolution_clock::now();
+        tStart = std::chrono::high_resolution_clock::now();
         std::unordered_set<std::vector<char>, VectorHash>::iterator it;
         std::unordered_set<std::vector<char>, VectorHash> newHands;
 
         for (it = allHands.begin(); it != allHands.end(); it++)
         {
-            auto tEnd = std::chrono::high_resolution_clock::now();
-            auto difference = std::chrono::duration_cast<std::chrono::seconds>(tEnd - tStart).count();
+            tEnd = std::chrono::high_resolution_clock::now();
+            difference = std::chrono::duration_cast<std::chrono::seconds>(tEnd - tStart).count();
 
-            if(difference > 60) {
-                return false;
+            if(difference > 10) {
+                return RAN_OUT_OF_TIME;
             }
 
             currentHand = *it;
@@ -64,7 +68,7 @@ bool Player::drawCard(Deck &deck)
         allHands = newHands;
     }
 
-    return true;
+    return SUCCESSFUL_CARD_DRAW;
 }
 
 std::string Player::generateString(Deck &deck, std::vector<char> hand, std::string current)
@@ -92,23 +96,23 @@ char Player::takeTurn(Deck &deck, std::string goalString)
     std::unordered_set<std::vector<char>, VectorHash>::iterator it;
     std::string tryString;
 
-    bool success = drawCard(deck);
-    
-    if(!success)
-        return RAN_OUT_OF_CARDS;
+    char success = drawCard(deck);
 
-    for (it = allHands.begin(); it != allHands.end(); it++)
-    {
-        tryString = generateString(deck, *it, currentString);
-        // std::cout << currentString << std::endl;
-        if (tryString == goalString)
+    if (success == SUCCESSFUL_CARD_DRAW) {
+        for (it = allHands.begin(); it != allHands.end(); it++)
         {
-            // printHand(deck, *it);
-            return WIN;
+            tryString = generateString(deck, *it, currentString);
+            // std::cout << currentString << std::endl;
+            if (tryString == goalString)
+            {
+                return WIN;
+            }
         }
-    }
+        // finished all and no win
+        return NO_WIN;
+    } 
 
-    return NO_WIN;
+    return success;
 }
 
 void Player::printAll(Deck &deck)
@@ -122,7 +126,8 @@ void Player::printAll(Deck &deck)
     }
 }
 
-void Player::printSize(int numCards) {
+void Player::printSize(int numCards)
+{
     int numPerms = allHands.size();
     int elementSize = sizeof(char) * numCards;
     int handSize = elementSize + sizeof(std::vector<char>);

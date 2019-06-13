@@ -37,8 +37,9 @@ void simulateGame(std::ofstream& outputFile)
     // counters
     int playerNum = 0;
     int cardNum = 0;
-    int numFails = 0;
     int totalCards = 0;
+    int ranOutOfTime = 0;
+    int ranOutOfCards = 0;
 
     // game stuff
     Player *player;
@@ -54,9 +55,10 @@ void simulateGame(std::ofstream& outputFile)
     std::vector<std::string> goals = readGoals(); // list of all goals
 
     // for each goal....
+    bool keepLooping;
     for (it = goals.begin(); it < goals.end(); it++)
     {
-        std::cout << "----" << " GOAL " << std::left << std::setw(15) << *it << " ----" << std::endl;
+        std::cout << "\n----" << " GOAL " << std::left << std::setw(15) << *it << " ----" << std::endl;
         outputFile << "----" << " GOAL " << std::left << std::setw(15) << *it << " ----" << std::endl;
         totalCards = 0;
 
@@ -64,44 +66,39 @@ void simulateGame(std::ofstream& outputFile)
         // run k simulations of that goal...
         for (int k = 0; k < NUM_ROUNDS; k++)
         {
-            std::cout << "Round " << k + 1;
+            // std::cout << "Round " << k + 1;
             simulation = new Game(NUM_PLAYERS);
             deck = simulation->getDeck();
 
             playerStatus = ' ';
             cardNum = 1;
-            while (playerStatus != WIN and playerStatus != RAN_OUT_OF_CARDS)
+            keepLooping = true;
+            while (keepLooping)
             {
                 std::cout << ".";
-                for (playerNum = 0; playerNum < NUM_PLAYERS; playerNum++)
+                for (playerNum = 0; playerNum < NUM_PLAYERS & keepLooping; playerNum++)
                 {
                     player = simulation->getPlayer(playerNum);
 
-                    if (cardNum > 10)
-                    {
-                        numFails++;
-                        std::cout << "Too many cards!!";
-                        playerStatus = RAN_OUT_OF_CARDS;
-                        break;
-                    }
-
                     playerStatus = player->takeTurn(*deck, *it);
-                    if (playerStatus == WIN)
+                    if (playerStatus != NO_WIN)
                     {
-                        std::cout << " Player " << playerNum << " wins!";
-                        wins[playerNum]++;
-                        break;
-                    }
-                    else if (playerStatus == RAN_OUT_OF_CARDS)
-                    {
-                        std::cout << "Ran out of cards!";
-                        numFails++;
-                        break;
+                        keepLooping = false;
+                        if (playerStatus == WIN) {
+                            // std::cout << " Player " << playerNum << " wins!";
+                            wins[playerNum]++;
+                        } else if (playerStatus == RAN_OUT_OF_CARDS) {
+                            // std::cout << "Ran out of cards!";
+                            ranOutOfCards++;
+                        } else if (playerStatus == RAN_OUT_OF_TIME) {
+                            // std::cout << "Ran out of time!";
+                            ranOutOfTime++;
+                        }
                     }
                 }
                 cardNum++;
             }
-            std::cout << std::endl;
+            // std::cout << std::endl;
             totalCards += cardNum;
             delete simulation;
         }
@@ -109,14 +106,21 @@ void simulateGame(std::ofstream& outputFile)
         auto t2 = std::chrono::high_resolution_clock::now();
 
         auto difference = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
-        outputFile << "Each round took approximately " << difference / NUM_ROUNDS << " milliseconds to complete." << std::endl;
-        outputFile << "It took, on average, " << totalCards / NUM_ROUNDS << " cards to win." << std::endl;
+        outputFile << "\t~" << difference / NUM_ROUNDS << " milliseconds to complete." << std::endl;
+        outputFile << "\t~" << totalCards / NUM_ROUNDS << " cards to win." << std::endl;
     }
 
-    for (playerNum = 0; playerNum < NUM_PLAYERS; playerNum++)
-        outputFile << "Player " << playerNum + 1 << " won " << wins[playerNum] << " times." << std::endl;
+    outputFile << "\n-------------------------------------\n" << std::endl;
 
-    outputFile << "The game failed " << numFails << " times." << std::endl;
+
+    for (playerNum = 0; playerNum < NUM_PLAYERS; playerNum++)
+    {
+        outputFile << "Player " << playerNum + 1 << " won " << wins[playerNum] << " times ";
+        outputFile << "(i.e. " << (wins[playerNum] / double(NUM_ROUNDS * 8)) * 100 << "%)." << std::endl;
+    }
+  
+    outputFile << "Ran out of time " << ranOutOfTime << " times." << std::endl;
+    outputFile << "Ran out of cards " << ranOutOfCards << " times." << std::endl;
 }
 
 std::vector<std::string> readGoals()

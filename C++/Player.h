@@ -28,7 +28,7 @@ private:
     std::string currentString = "";
 
     std::string generateString(Deck &deck, std::vector<char> hand, std::string current);
-    bool drawCard(Deck &deck);
+    char drawCard(Deck &deck);
 
     void printHand(Deck &deck, std::vector<char> hand);
     int stringDistance(const std::string &string1, const std::string &string2);

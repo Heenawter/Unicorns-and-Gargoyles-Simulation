@@ -1,0 +1,34 @@
+--- String Cards ---
+14
+unicorn,	8
+gargoyle, 	4
+reverse order,	3
+rotate right,	3
+rotate left,	3
+double row,	2
+append 1,	4
+append 2,	4
+append 3, 	4
+remove 1, 	4
+remove 2,	4
+remove 3,	4
+comment,	4
+uncomment,	2
+
+--- Action Cards --- (impact everyone)
+3
+action: discard 1 card,		1
+action: discard multiple cards,	1
+action: draw 1 card,		1
+
+--- Goal Cards ---
+8
+[ ][*][ ]
+[ ][ ][ ][ ]
+[*][ ][ ][*]
+[ ][ ][ ][*]
+[ ][ ][*][*]
+[ ][*][ ][ ][ ]
+[ ][ ][*][ ][ ]
+[ ][ ][ ][ ][ ]
+
