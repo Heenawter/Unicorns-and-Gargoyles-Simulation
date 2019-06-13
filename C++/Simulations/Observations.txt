@@ -1,0 +1,4 @@
+- Easiest goal: [ ][ ][ ][*] --- takes fewest cards to win on average (3-4)
+- More players means faster solutions + fewer cards
+- First player advantage:
+	- First player wins 10-20% more than the final player
