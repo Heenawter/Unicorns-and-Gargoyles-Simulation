@@ -41,6 +41,7 @@ char Deck::drawCard()
     } else {
         newCard = 'x';
     }
+
     // std::cout << "Draw..." << getCardName(newCard) << std::endl;
     return newCard;
 }

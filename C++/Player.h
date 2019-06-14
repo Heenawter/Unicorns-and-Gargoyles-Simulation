@@ -24,11 +24,12 @@ struct VectorHash
 class Player
 {
 private:
-    std::unordered_set<std::vector<char>, VectorHash> allHands;
-    std::string currentString = "";
+    // std::unordered_set<std::vector<char>, VectorHash> allHands;
+    std::string currentString;
+    std::vector<char> currentHand;
+    int numCards;
 
-    std::string generateString(Deck &deck, std::vector<char> hand, std::string current);
-    char drawCard(Deck &deck);
+    std::string generateString(Deck &deck, std::vector<char> hand);
 
     void printHand(Deck &deck, std::vector<char> hand);
     int stringDistance(const std::string &string1, const std::string &string2);
@@ -37,10 +38,11 @@ public:
     ~Player();
     Player();
 
-    char takeTurn(Deck &deck, std::string goalString);
+    char drawCard(Deck &deck, std::string goalString);
 
-    void printSize(int numCards);
-    void printAll(Deck &deck);
+    char takeTurn(Deck &deck, std::string goalString);
+    // void printSize(int numCards);
+    // void printAll(Deck &deck);
 };
 
 #endif
