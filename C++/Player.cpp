@@ -27,7 +27,7 @@ Player::Player() {
 // return the string distance and the hand
 std::pair<int, std::vector<char> > Player::drawCard(Deck &deck, std::string goalString)
 {
-    std::cout << "DRAW CARD";
+    std::cout << "DRAW CARD" << std::endl;
     char newCard = deck.drawCard(); 
     // choose the best position to place the new card
 
@@ -52,7 +52,6 @@ std::pair<int, std::vector<char> > Player::drawCard(Deck &deck, std::string goal
         {
             testString = generateString(deck, testHand);
             testDistance = stringDistance(testString, goalString);
-            std::cout << "..." << testDistance;
             if(testDistance < bestDistance)
             {
                 bestDistance = testDistance;
@@ -65,13 +64,12 @@ std::pair<int, std::vector<char> > Player::drawCard(Deck &deck, std::string goal
     }
 
     numCards++;
-    std::cout << std::endl;
     return std::make_pair(bestDistance, bestHand);
 }
 
 std::pair<int, std::vector<char> > Player::swapCards(Deck &deck, std::string goalString)
 {
-    std::cout << "SWAP";
+    std::cout << "SWAP" << std::endl;
     std::vector<char> bestHand, testHand;
     int bestDistance = MAX_INT, testDistance;
     std::string bestString, testString;
@@ -88,8 +86,6 @@ std::pair<int, std::vector<char> > Player::swapCards(Deck &deck, std::string goa
 
                 testString = generateString(deck, testHand);
                 testDistance = stringDistance(testString, goalString);
-                std::cout << "..." << testDistance;
-
                 if (testDistance < bestDistance)
                 {
                     bestDistance = testDistance;
@@ -101,7 +97,6 @@ std::pair<int, std::vector<char> > Player::swapCards(Deck &deck, std::string goa
         }
     }
 
-    std::cout << std::endl;
     return std::make_pair(bestDistance, bestHand);
 }
 
@@ -158,7 +153,6 @@ char Player::takeTurn(Deck &deck, std::string goalString)
     currentHand = best.second;
     printHand(deck, currentHand);
     std::string testString = generateString(deck, currentHand);
-    std::cout << testString << std::endl;
     return 'y';
 }
 

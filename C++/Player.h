@@ -29,7 +29,6 @@ private:
     std::vector<char> currentHand;
     int numCards;
     int currentDistance;
-std::pair<int, std::vector<char> >
     std::string generateString(Deck &deck, std::vector<char> hand);
 
     void printHand(Deck &deck, std::vector<char> hand);
