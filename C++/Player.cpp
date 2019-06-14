@@ -14,7 +14,6 @@ Player::~Player() {
 }
 
 Player::Player() {
-    // totalCards = 0;
     currentString = "";
     numCards = 0;
 }
@@ -39,7 +38,6 @@ int Player::drawCard(Deck &deck, std::string goalString)
         bestHand.push_back(newCard);
         bestString = generateString(deck, bestHand);
         bestDistance = stringDistance(bestString, goalString);
-        printHand(deck, bestHand);
     }
     else
     {
@@ -50,7 +48,6 @@ int Player::drawCard(Deck &deck, std::string goalString)
         std::vector<char>::reverse_iterator it = testHand.rbegin();
         for(int i = 0; i <= numCards; i++)
         {
-            printHand(deck, testHand);
             testString = generateString(deck, testHand);
             testDistance = stringDistance(testString, goalString);
             if(testDistance < bestDistance)
@@ -63,10 +60,6 @@ int Player::drawCard(Deck &deck, std::string goalString)
             if(i < numCards) // only swap if valid (not at the end)
                 std::swap(*(it + i), *(it + i + 1));
         }
-
-        std::cout << "Best distance of " << bestDistance << ": ";
-        printHand(deck, bestHand);
-        std::cout << "Best string:\t    " << bestString << std::endl;
     }
 
     numCards++;
@@ -75,6 +68,7 @@ int Player::drawCard(Deck &deck, std::string goalString)
     return bestDistance;
 }
 
+// using the hand, generate the string from empty
 std::string Player::generateString(Deck &deck, std::vector<char> hand)
 {
     std::string current = "";
@@ -86,6 +80,8 @@ std::string Player::generateString(Deck &deck, std::vector<char> hand)
     return current;
 }
 
+// print the given hand using the card types rather than the chars
+// that represent each card (i.e. "unicorn" instead of char(0))
 void Player::printHand(Deck &deck, std::vector<char> hand)
 {
     std::vector<char>::iterator it;
@@ -96,53 +92,60 @@ void Player::printHand(Deck &deck, std::vector<char> hand)
     std::cout << std::endl;
 }
 
+
+// first try every combination of swapping two cards im the
+// current hand; if none of these swaps get you closer to th
+// goalString, draw a new card instead
 char Player::takeTurn(Deck &deck, std::string goalString)
 {
-    std::unordered_set<std::vector<char>, vectorHash>::iterator it;
-    std::string tryString;
+    // std::unordered_set<std::vector<char>, vectorHash>::iterator it;
+    // std::string tryString;
 
-//     char success = drawCard(deck, goalString);
+    // if you have 0 or 1 cards, no point swapping - might as well
+    // draw another card
+    if(numCards <= 1) {
+        drawCard(deck, goalString);
+        return 'z';
+    }
+    
+    // otherwise, try swaps before drawing card
 
-//     if (success == SUCCESSFUL_CARD_DRAW) {
-//         for (it = allHands.begin(); it < allHands.end(); it++)
-//         {
-//             tryString = generateString(deck, *it, currentString);
-//             // std::cout << currentString << std::endl;
-//             if (tryString == goalString)
-//             {
-//                 return WIN;
-//             }
-//         }
-//         // finished all and no win
-//         return NO_WIN;
-//     } 
+    std::vector<char> testHand;
+    copy(currentHand.begin(), currentHand.end(), std::back_inserter(testHand));
+    int swap1, swap2;
+    std::vector<char>::iterator it = testHand.begin();
+    printHand(deck, testHand);
 
-//     return success;
+    for(swap1 = 0; swap1 < numCards; swap1++) {
+        for(swap2 = swap1; swap2 < numCards; swap2++) {
+            if(swap1 != swap2) 
+            {
+                std::swap(*(testHand.begin() + swap1), *(testHand.begin() + swap2));
+                // std::cout << swap1 << " <-> " << swap2 << std::endl;
+                // std::cout << "swap " << deck.getCardName(testHand.at(swap1)) << " with " << deck.getCardName(testHand.at(swap2)) << std::endl;
+                printHand(deck, testHand);
+                copy(currentHand.begin(), currentHand.end(), testHand.begin());
+            }
+        }
+    }
+
+    // int numSwaps = testHand.size() - 1;
+    // std::vector<char>::iterator card2swap;
+    // for (card2swap = testHand.begin(); card2swap < testHand.end(); card2swap++)
+    // {
+    //     std::cout << "Card 2 swap: " << deck.getCardName(*card2swap)<< std::endl;
+    //     printHand(deck, testHand);
+    //     for(int i = 0; i <= numSwaps; i++) {
+    //         std::swap(*card2swap, *(testHand.begin() + i));
+    //         printHand(deck, testHand);
+    //     }
+    // }
+
+    
+
+    return 'y';
 }
 
-// void Player::printAll(Deck &deck)
-// {
-//     // std::vector<std::vector<char>>::iterator it;
-//     std::unordered_set<std::vector<char>, vectorHash>::iterator it;
-
-//     for (it = allHands.begin(); it != allHands.end(); it++)
-//     {
-//         printHand(deck, *it);
-//     }
-// }
-
-// void Player::printSize(int numCards)
-// {
-//     int numPerms = allHands.size();
-//     int elementSize = sizeof(char) * numCards;
-//     int handSize = elementSize + sizeof(std::vector<char>);
-//     int permSize = sizeof(std::unordered_set<std::vector<char>, vectorHash>) + handSize * numPerms;
-
-//     std::cout << "Number of permutations:   " << numPerms << std::endl;
-//     std::cout << "Size of each hand:        " << elementSize << " bytes" << std::endl; 
-//     std::cout << "Size of each vector:      " << handSize << " bytes" << std::endl;
-//     std::cout << "Size of all permutations: " << permSize << " bytes" << std::endl;
-// }
 
 // https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C++
 int Player::stringDistance(const std::string &string1, const std::string &string2)

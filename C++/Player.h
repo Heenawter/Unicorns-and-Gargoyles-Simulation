@@ -40,8 +40,6 @@ public:
     int drawCard(Deck &deck, std::string goalString);
 
     char takeTurn(Deck &deck, std::string goalString);
-    // void printSize(int numCards);
-    // void printAll(Deck &deck);
 };
 
 #endif
