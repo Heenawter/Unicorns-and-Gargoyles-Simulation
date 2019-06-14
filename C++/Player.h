@@ -3,11 +3,10 @@
 #ifndef PLAYER_H
 
 #include <vector>
-#include <list>
 #include <string>
 #include <unordered_set>
 
-struct VectorHash
+struct vectorHash
 {
     size_t operator()(const std::vector<char> &v) const
     {
@@ -24,7 +23,7 @@ struct VectorHash
 class Player
 {
 private:
-    // std::unordered_set<std::vector<char>, VectorHash> allHands;
+    // std::unordered_set<std::vector<char>, vectorHash> allHands;
     std::string currentString;
     std::vector<char> currentHand;
     int numCards;

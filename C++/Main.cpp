@@ -27,6 +27,8 @@ int main()
 
     std::string goal = "[*][ ][ ][*]";
     player->drawCard(*deck, goal);
+    player->drawCard(*deck, goal);
+    player->drawCard(*deck, goal);
 
     // std::ofstream file;
     // file.open(OUTPT_FILE);
