@@ -128,7 +128,7 @@ void Player::printHand(Deck &deck, std::vector<char> hand)
 // first try every combination of swapping two cards im the
 // current hand; if none of these swaps get you closer to th
 // goalString, draw a new card instead
-char Player::takeTurn(Deck &deck, std::string goalString)
+int Player::takeTurn(Deck &deck, std::string goalString)
 {
     std::cout << "CURRENT DISTANCE: " << currentDistance << std::endl;
     std::pair<int, std::vector<char> > best;
@@ -153,7 +153,7 @@ char Player::takeTurn(Deck &deck, std::string goalString)
     currentHand = best.second;
     printHand(deck, currentHand);
     std::string testString = generateString(deck, currentHand);
-    return 'y';
+    return currentDistance;
 }
 
 

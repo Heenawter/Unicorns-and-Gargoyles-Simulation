@@ -39,7 +39,7 @@ private:
 public:
     ~Player();
     Player();
-    char takeTurn(Deck &deck, std::string goalString);
+    int takeTurn(Deck &deck, std::string goalString);
 };
 
 #endif
