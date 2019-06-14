@@ -37,7 +37,7 @@ public:
     ~Player();
     Player();
 
-    char drawCard(Deck &deck, std::string goalString);
+    int drawCard(Deck &deck, std::string goalString);
 
     char takeTurn(Deck &deck, std::string goalString);
     // void printSize(int numCards);

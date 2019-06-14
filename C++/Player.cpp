@@ -24,7 +24,8 @@ Player::Player() {
 // a card instead of swapping.
 // However, we need to find the most advantageous
 // position for that card!
-char Player::drawCard(Deck &deck, std::string goalString)
+// return the string distance
+int Player::drawCard(Deck &deck, std::string goalString)
 {
     char newCard = deck.drawCard(); 
     // choose the best position to place the new card
@@ -43,11 +44,13 @@ char Player::drawCard(Deck &deck, std::string goalString)
     else
     {
         copy(currentHand.begin(), currentHand.end(), std::back_inserter(testHand));
-
-        std::vector<char>::iterator it = testHand.begin();
-        it = testHand.insert(it, newCard);
+        // it is more efficient to insert at the back
+        testHand.push_back(newCard); 
+        // so make swaps from back to front to generate all insert positions
+        std::vector<char>::reverse_iterator it = testHand.rbegin();
         for(int i = 0; i <= numCards; i++)
         {
+            printHand(deck, testHand);
             testString = generateString(deck, testHand);
             testDistance = stringDistance(testString, goalString);
             if(testDistance < bestDistance)
@@ -68,61 +71,8 @@ char Player::drawCard(Deck &deck, std::string goalString)
 
     numCards++;
     currentHand = bestHand;
-
-    return 'n';
-
-
-
-    // char newCard = deck.drawCard();
-    
-    // if(newCard == 'x')
-    //     return RAN_OUT_OF_CARDS;
-
-    // std::vector<char> currentHand;
-
-    // int numHands = allHands.size();
-    // int numCards;
-
-    // std::chrono::high_resolution_clock::time_point tStart;
-    // std::chrono::high_resolution_clock::time_point tEnd;
-    // int difference;
-
-    // int i, j;
-    // if (numHands == 0)
-    // {
-    //     std::vector<char> newHand;
-    //     newHand.push_back(newCard);
-    //     allHands.insert(newHand);
-    // }
-    // else
-    // {
-    //     tStart = std::chrono::high_resolution_clock::now();
-    //     std::unordered_set<std::vector<char>, vectorHash>::iterator it;
-    //     std::unordered_set<std::vector<char>, vectorHash> newHands;
-
-    //     for (it = allHands.begin(); it != allHands.end(); it++)
-    //     {
-    //         tEnd = std::chrono::high_resolution_clock::now();
-    //         difference = std::chrono::duration_cast<std::chrono::seconds>(tEnd - tStart).count();
-
-    //         if(difference > 10) {
-    //             return RAN_OUT_OF_TIME;
-    //         }
-
-    //         currentHand = *it;
-    //         numCards = currentHand.size();
-    //         for (j = 0; j <= numCards; j++)
-    //         {
-    //             std::vector<char> newHand(currentHand);
-    //             newHand.insert(newHand.begin() + j, newCard);
-    //             newHands.insert(newHand);
-    //         }
-    //     }
-
-    //     allHands = newHands;
-    // }
-
-    return SUCCESSFUL_CARD_DRAW;
+    currentString = bestString;
+    return bestDistance;
 }
 
 std::string Player::generateString(Deck &deck, std::vector<char> hand)
