@@ -46,25 +46,24 @@ char Player::drawCard(Deck &deck, std::string goalString)
 
         std::vector<char>::iterator it = testHand.begin();
         it = testHand.insert(it, newCard);
-        printHand(deck, testHand);
-        for(int i = 0; i < numCards; i++)
+        for(int i = 0; i <= numCards; i++)
         {
-            std::swap(*(it + i), *(it + i + 1));
-            printHand(deck, testHand);
-
-            // testString = generateString(deck, testHand);
-            // testDistance = stringDistance(testString, goalString);
-            // if(testDistance < bestDistance)
-            // {
-            //     bestDistance = testDistance;
-            //     bestHand.assign(testHand.begin(), testHand.end());
-
-            // }
-            // testHand.erase(it);
-            // printHand(deck, testHand);
-        }
+            testString = generateString(deck, testHand);
+            testDistance = stringDistance(testString, goalString);
+            if(testDistance < bestDistance)
+            {
+                bestDistance = testDistance;
+                bestHand.assign(testHand.begin(), testHand.end());
+                bestString = testString;
+            }
         
-        bestHand = testHand;
+            if(i < numCards) // only swap if valid (not at the end)
+                std::swap(*(it + i), *(it + i + 1));
+        }
+
+        std::cout << "Best distance of " << bestDistance << ": ";
+        printHand(deck, bestHand);
+        std::cout << "Best string:\t    " << bestString << std::endl;
     }
 
     numCards++;
@@ -129,10 +128,10 @@ char Player::drawCard(Deck &deck, std::string goalString)
 std::string Player::generateString(Deck &deck, std::vector<char> hand)
 {
     std::string current = "";
-    // std::vector<char>::iterator it;
-    // for (it = hand.begin(); it < hand.end(); it++) {
-    //     deck.playCard(*it, current);
-    // }
+    std::vector<char>::iterator it;
+    for (it = hand.begin(); it < hand.end(); it++) {
+        deck.playCard(*it, current);
+    }
 
     return current;
 }
@@ -198,35 +197,35 @@ char Player::takeTurn(Deck &deck, std::string goalString)
 // https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C++
 int Player::stringDistance(const std::string &string1, const std::string &string2)
 {
-    // if(string1.size() > string2.size())
-    //     return stringDistance(string2, string1);
+    if(string1.size() > string2.size())
+        return stringDistance(string2, string1);
 
-    // int minSize = string1.size();
-    // int maxSize = string2.size();
-    // std::vector<int> levenshteinDistance(minSize + 1);
+    int minSize = string1.size();
+    int maxSize = string2.size();
+    std::vector<int> levenshteinDistance(minSize + 1);
 
-    // for(int k = 0; k <= minSize; k++) 
-    //     levenshteinDistance[k] = k;
+    for(int k = 0; k <= minSize; k++) 
+        levenshteinDistance[k] = k;
 
-    // for (int j = 1; j <= maxSize; j++)
-    // {
-    //     int previous_diagonal = levenshteinDistance[0];
-    //     int previous_diagonal_save;
-    //     levenshteinDistance[0]++;
+    for (int j = 1; j <= maxSize; j++)
+    {
+        int previous_diagonal = levenshteinDistance[0];
+        int previous_diagonal_save;
+        levenshteinDistance[0]++;
 
-    //     for (int i = 1; i <= minSize; i++)
-    //     {
-    //         previous_diagonal_save = levenshteinDistance[i];
-    //         if (string1[i - 1] == string2[j - 1])
-    //             levenshteinDistance[i] = previous_diagonal;
-    //         else
-    //             levenshteinDistance[i] = std::min(std::min(levenshteinDistance[i - 1], levenshteinDistance[i]), previous_diagonal) + 1;
+        for (int i = 1; i <= minSize; i++)
+        {
+            previous_diagonal_save = levenshteinDistance[i];
+            if (string1[i - 1] == string2[j - 1])
+                levenshteinDistance[i] = previous_diagonal;
+            else
+                levenshteinDistance[i] = std::min(std::min(levenshteinDistance[i - 1], levenshteinDistance[i]), previous_diagonal) + 1;
             
-    //         previous_diagonal = previous_diagonal_save;
-    //     }
-    // }
+            previous_diagonal = previous_diagonal_save;
+        }
+    }
 
-    // int result = levenshteinDistance[minSize];
+    int result = levenshteinDistance[minSize];
 
-    // return result;
+    return result;
 }
