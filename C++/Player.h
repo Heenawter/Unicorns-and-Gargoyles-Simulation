@@ -6,6 +6,7 @@
 #include <string>
 #include <unordered_set>
 
+
 struct vectorHash
 {
     size_t operator()(const std::vector<char> &v) const
@@ -38,8 +39,8 @@ public:
     ~Player();
     Player();
 
-    int drawCard(Deck &deck, std::string goalString);
-    int swapCards(Deck &deck, std::string goalString);
+    std::pair<int, std::vector<char> > drawCard(Deck &deck, std::string goalString);
+    std::pair<int, std::vector<char> > swapCards(Deck &deck, std::string goalString);
 
     char takeTurn(Deck &deck, std::string goalString);
 };
