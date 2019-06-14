@@ -26,13 +26,17 @@ int main()
     Deck *deck = simulation->getDeck();
 
     std::string goal = "[*][ ][ ][*]";
-    player->drawCard(*deck, goal);
-    player->drawCard(*deck, goal);
-    player->drawCard(*deck, goal);
-    player->drawCard(*deck, goal);
+    // player->drawCard(*deck, goal);
+    // player->drawCard(*deck, goal);
+    // player->drawCard(*deck, goal);
+    // player->drawCard(*deck, goal);
 
     // player->swapCards(*deck, goal);
-    // player->takeTurn(*deck, goal);
+    player->takeTurn(*deck, goal);
+    player->takeTurn(*deck, goal);
+    player->takeTurn(*deck, goal);
+    player->takeTurn(*deck, goal);
+    player->takeTurn(*deck, goal);
 
     // player->drawCard(*deck, goal);
     // player->drawCard(*deck, goal);

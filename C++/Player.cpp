@@ -27,6 +27,7 @@ Player::Player() {
 // return the string distance and the hand
 std::pair<int, std::vector<char> > Player::drawCard(Deck &deck, std::string goalString)
 {
+    std::cout << "DRAW CARD";
     char newCard = deck.drawCard(); 
     // choose the best position to place the new card
 
@@ -42,7 +43,6 @@ std::pair<int, std::vector<char> > Player::drawCard(Deck &deck, std::string goal
     }
     else
     {
-        std::cout << "??" << std::endl;
         copy(currentHand.begin(), currentHand.end(), std::back_inserter(testHand));
         // it is more efficient to insert at the back
         testHand.push_back(newCard); 
@@ -52,6 +52,7 @@ std::pair<int, std::vector<char> > Player::drawCard(Deck &deck, std::string goal
         {
             testString = generateString(deck, testHand);
             testDistance = stringDistance(testString, goalString);
+            std::cout << "..." << testDistance;
             if(testDistance < bestDistance)
             {
                 bestDistance = testDistance;
@@ -64,11 +65,13 @@ std::pair<int, std::vector<char> > Player::drawCard(Deck &deck, std::string goal
     }
 
     numCards++;
+    std::cout << std::endl;
     return std::make_pair(bestDistance, bestHand);
 }
 
 std::pair<int, std::vector<char> > Player::swapCards(Deck &deck, std::string goalString)
 {
+    std::cout << "SWAP";
     std::vector<char> bestHand, testHand;
     int bestDistance = MAX_INT, testDistance;
     std::string bestString, testString;
@@ -77,18 +80,16 @@ std::pair<int, std::vector<char> > Player::swapCards(Deck &deck, std::string goa
     copy(currentHand.begin(), currentHand.end(), std::back_inserter(testHand));
     for (swap1 = 0; swap1 < numCards; swap1++)
     {
-    //     std::cout << "---";
-    //     printHand(deck, testHand);
         for (swap2 = swap1; swap2 < numCards; swap2++)
         {
             if (swap1 != swap2)
             {
-                std::cout << swap1 << " <-> " << swap2 << std::endl;
                 std::swap(*(testHand.begin() + swap1), *(testHand.begin() + swap2));
-                printHand(deck, testHand);
 
                 testString = generateString(deck, testHand);
                 testDistance = stringDistance(testString, goalString);
+                std::cout << "..." << testDistance;
+
                 if (testDistance < bestDistance)
                 {
                     bestDistance = testDistance;
@@ -100,7 +101,7 @@ std::pair<int, std::vector<char> > Player::swapCards(Deck &deck, std::string goa
         }
     }
 
-
+    std::cout << std::endl;
     return std::make_pair(bestDistance, bestHand);
 }
 
@@ -134,18 +135,30 @@ void Player::printHand(Deck &deck, std::vector<char> hand)
 // goalString, draw a new card instead
 char Player::takeTurn(Deck &deck, std::string goalString)
 {
-    // std::unordered_set<std::vector<char>, vectorHash>::iterator it;
-    // std::string tryString;
+    std::cout << "CURRENT DISTANCE: " << currentDistance << std::endl;
+    std::pair<int, std::vector<char> > best;
 
     // if you have 0 or 1 cards, no point swapping - might as well
     // draw another card
-    if(numCards <= 1) {
-        drawCard(deck, goalString);
-        return 'z';
+    if(numCards <= 1)
+        best = drawCard(deck, goalString);
+    else
+    {
+        // otherwise, try swaps before drawing card
+        best = swapCards(deck, goalString);
+        if(currentDistance <= best.first)
+        {
+            // swapping cards did not get you any closer
+            // to meeting the goal, so instead draw a 
+            best = drawCard(deck, goalString);
+        }
     }
     
-    // otherwise, try swaps before drawing card
-
+    currentDistance = best.first;
+    currentHand = best.second;
+    printHand(deck, currentHand);
+    std::string testString = generateString(deck, currentHand);
+    std::cout << testString << std::endl;
     return 'y';
 }
 
