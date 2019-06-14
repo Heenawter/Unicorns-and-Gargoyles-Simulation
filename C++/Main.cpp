@@ -31,7 +31,7 @@ int main()
     player->drawCard(*deck, goal);
     player->drawCard(*deck, goal);
 
-    player->takeTurn(*deck, goal);
+    player->swapCards(*deck, goal);
     // player->takeTurn(*deck, goal);
 
     // player->drawCard(*deck, goal);

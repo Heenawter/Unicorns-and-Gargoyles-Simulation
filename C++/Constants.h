@@ -4,6 +4,8 @@
 
 #include <string>
 
+static const int MAX_INT = 2147483647;
+
 static const char RAN_OUT_OF_CARDS = 'c';
 static const char RAN_OUT_OF_TIME = 't';
 static const char SUCCESSFUL_CARD_DRAW = 's';

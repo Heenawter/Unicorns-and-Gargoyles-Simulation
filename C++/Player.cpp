@@ -16,6 +16,7 @@ Player::~Player() {
 Player::Player() {
     currentString = "";
     numCards = 0;
+    currentDistance = MAX_INT;
 }
 
 // assume we tried swapping, and it didn't get us any
@@ -29,7 +30,7 @@ int Player::drawCard(Deck &deck, std::string goalString)
     char newCard = deck.drawCard(); 
     // choose the best position to place the new card
 
-    int bestDistance = 100, testDistance;
+    int bestDistance = MAX_INT, testDistance;
     std::string bestString = "", testString;
     std::vector<char> bestHand, testHand;
 
@@ -65,6 +66,44 @@ int Player::drawCard(Deck &deck, std::string goalString)
     numCards++;
     currentHand = bestHand;
     currentString = bestString;
+    currentDistance = bestDistance;
+    return bestDistance;
+}
+
+int Player::swapCards(Deck &deck, std::string goalString)
+{
+    std::vector<char> bestHand, testHand;
+    int bestDistance = MAX_INT, testDistance;
+    std::string bestString, testString;
+    int swap1, swap2;
+
+    copy(currentHand.begin(), currentHand.end(), std::back_inserter(testHand));
+    for (swap1 = 0; swap1 < numCards; swap1++)
+    {
+    //     std::cout << "---";
+    //     printHand(deck, testHand);
+        for (swap2 = swap1; swap2 < numCards; swap2++)
+        {
+            if (swap1 != swap2)
+            {
+                std::cout << swap1 << " <-> " << swap2 << std::endl;
+                std::swap(*(testHand.begin() + swap1), *(testHand.begin() + swap2));
+                printHand(deck, testHand);
+
+                testString = generateString(deck, testHand);
+                testDistance = stringDistance(testString, goalString);
+                if (testDistance < bestDistance)
+                {
+                    bestDistance = testDistance;
+                    bestHand.assign(testHand.begin(), testHand.end());
+                    bestString = testString;
+                }
+
+                copy(currentHand.begin(), currentHand.end(), testHand.begin());
+            }
+        }
+    }
+
     return bestDistance;
 }
 
@@ -109,39 +148,6 @@ char Player::takeTurn(Deck &deck, std::string goalString)
     }
     
     // otherwise, try swaps before drawing card
-
-    std::vector<char> testHand;
-    copy(currentHand.begin(), currentHand.end(), std::back_inserter(testHand));
-    int swap1, swap2;
-    std::vector<char>::iterator it = testHand.begin();
-    printHand(deck, testHand);
-
-    for(swap1 = 0; swap1 < numCards; swap1++) {
-        for(swap2 = swap1; swap2 < numCards; swap2++) {
-            if(swap1 != swap2) 
-            {
-                std::swap(*(testHand.begin() + swap1), *(testHand.begin() + swap2));
-                // std::cout << swap1 << " <-> " << swap2 << std::endl;
-                // std::cout << "swap " << deck.getCardName(testHand.at(swap1)) << " with " << deck.getCardName(testHand.at(swap2)) << std::endl;
-                printHand(deck, testHand);
-                copy(currentHand.begin(), currentHand.end(), testHand.begin());
-            }
-        }
-    }
-
-    // int numSwaps = testHand.size() - 1;
-    // std::vector<char>::iterator card2swap;
-    // for (card2swap = testHand.begin(); card2swap < testHand.end(); card2swap++)
-    // {
-    //     std::cout << "Card 2 swap: " << deck.getCardName(*card2swap)<< std::endl;
-    //     printHand(deck, testHand);
-    //     for(int i = 0; i <= numSwaps; i++) {
-    //         std::swap(*card2swap, *(testHand.begin() + i));
-    //         printHand(deck, testHand);
-    //     }
-    // }
-
-    
 
     return 'y';
 }

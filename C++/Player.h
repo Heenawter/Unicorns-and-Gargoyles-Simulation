@@ -27,6 +27,7 @@ private:
     std::string currentString;
     std::vector<char> currentHand;
     int numCards;
+    int currentDistance;
 
     std::string generateString(Deck &deck, std::vector<char> hand);
 
@@ -38,6 +39,7 @@ public:
     Player();
 
     int drawCard(Deck &deck, std::string goalString);
+    int swapCards(Deck &deck, std::string goalString);
 
     char takeTurn(Deck &deck, std::string goalString);
 };
