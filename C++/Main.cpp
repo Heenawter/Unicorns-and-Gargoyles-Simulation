@@ -44,7 +44,6 @@ void simulateGame(std::ofstream& outputFile)
     int playerNum = 0;
     int cardNum = 0;
     int totalCards = 0;
-    int ranOutOfTime = 0;
     int ranOutOfCards = 0;
 
     // game stuff
@@ -87,8 +86,16 @@ void simulateGame(std::ofstream& outputFile)
                 {
                     player = simulation->getPlayer(playerNum);
                     distance = player->takeTurn(*deck, *it);
-                    if(distance == 0) 
+                    if(distance == 0) {
                         keepLooping = false;
+                        wins[playerNum]++;
+                    }
+                    
+                    // check if still cards to draw
+                    if(!deck->hasCards()) {
+                        keepLooping = false;
+                        ranOutOfCards++;
+                    }
                     
                 }
                 cardNum++;
@@ -114,7 +121,6 @@ void simulateGame(std::ofstream& outputFile)
         outputFile << "(i.e. " << (wins[playerNum] / double(NUM_ROUNDS * 8)) * 100 << "%)." << std::endl;
     }
   
-    outputFile << "Ran out of time " << ranOutOfTime << " times." << std::endl;
     outputFile << "Ran out of cards " << ranOutOfCards << " times." << std::endl;
 }
 

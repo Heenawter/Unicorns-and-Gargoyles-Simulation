@@ -19,7 +19,8 @@ class Deck {
         void addToDeck(std::string line, char cardType);
         char drawCard();
         void shuffleDeck();
-        std::vector<char> getCards(){ return cards; }
+        bool hasCards();
+        std::vector<char> getCards() { return cards; }
 
         std::string getCardName(char cardType); // WARNING: inefficient - avoid use
                                                  // mostly for debugging purposes

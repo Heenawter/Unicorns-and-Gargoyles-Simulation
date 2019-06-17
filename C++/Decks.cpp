@@ -11,6 +11,13 @@ std::string Deck::getCardName(char cardType)
             return it->first;
 }
 
+bool Deck::hasCards() {
+    if(cards.size() > 0) 
+        return true;
+    
+    return false;
+}
+
 void Deck::shuffleDeck()
 {
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
@@ -116,6 +123,9 @@ void Deck::playCard(char type, std::string &current)
         break;
     case REMOVE_3: // remove three string elements [?][?][?], i.e. 9 characters
         removeHelper(current, 9);
+        break;
+    case 'x':
+        std::cout << "Ran out of cards!" << std::endl;
         break;
     default:
         std::cout << "Something went wrong - check yo switch statement, boo." << std::endl;
