@@ -27,7 +27,7 @@ Player::Player() {
 // return the string distance and the hand
 std::pair<int, std::vector<char> > Player::drawCard(Deck &deck, std::string goalString)
 {
-    std::cout << "DRAW CARD" << std::endl;
+    // std::cout << "DRAW CARD" << std::endl;
     char newCard = deck.drawCard(); 
     // choose the best position to place the new card
 
@@ -69,7 +69,7 @@ std::pair<int, std::vector<char> > Player::drawCard(Deck &deck, std::string goal
 
 std::pair<int, std::vector<char> > Player::swapCards(Deck &deck, std::string goalString)
 {
-    std::cout << "SWAP" << std::endl;
+    // std::cout << "SWAP" << std::endl;
     std::vector<char> bestHand, testHand;
     int bestDistance = MAX_INT, testDistance;
     std::string bestString, testString;
@@ -130,7 +130,7 @@ void Player::printHand(Deck &deck, std::vector<char> hand)
 // goalString, draw a new card instead
 int Player::takeTurn(Deck &deck, std::string goalString)
 {
-    std::cout << "CURRENT DISTANCE: " << currentDistance << std::endl;
+    // std::cout << "CURRENT DISTANCE: " << currentDistance << std::endl;
     std::pair<int, std::vector<char> > best;
 
     // if you have 0 or 1 cards, no point swapping - might as well
@@ -152,7 +152,7 @@ int Player::takeTurn(Deck &deck, std::string goalString)
     currentDistance = best.first;
     currentHand = best.second;
     printHand(deck, currentHand);
-    std::string testString = generateString(deck, currentHand);
+    // std::string testString = generateString(deck, currentHand);
     return currentDistance;
 }
 
@@ -160,6 +160,11 @@ int Player::takeTurn(Deck &deck, std::string goalString)
 // https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C++
 int Player::stringDistance(const std::string &string1, const std::string &string2)
 {
+    // string1.erase(std::remove(string1.begin(), string1.end(), '['), string1.end());
+    // string1.erase(std::remove(string1.begin(), string1.end(), ']'), string1.end());
+    // string2.erase(std::remove(string2.begin(), string2.end(), '['), string2.end());
+    // string2.erase(std::remove(string2.begin(), string2.end(), ']'), string2.end());
+
     if(string1.size() > string2.size())
         return stringDistance(string2, string1);
 
