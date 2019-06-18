@@ -182,17 +182,22 @@ int Player::stringDistance(const std::string &string1, const std::string &string
     int substitutionCost;
     int deletionCost;
     int insertionCost;
+    int stringIndex1 = 1;
+    int stringIndex2 = 1;
     for (i = 1; i < rows; i++) {
         for(j = 1; j < cols; j++) {
             substitutionCost = levenshteinDistance[i - 1][j - 1];
             // when checking string, need to account for skipping [ and ]
-            // hence, take the (index * 3) - 2 to get the card value
-            if(string1[(i * 3) - 2] != string2[(j * 3) - 2])
+            // hence, string index is increased by 3 each time rather than 1
+            if (string1[stringIndex1] != string2[stringIndex2])
                 substitutionCost++;
             insertionCost = levenshteinDistance[i][j - 1] + 1;
             deletionCost = levenshteinDistance[i - 1][j] + 1;
             levenshteinDistance[i][j] = std::min(substitutionCost, std::min(insertionCost, deletionCost));
+            stringIndex2 += 3;
         }
+        stringIndex1 += 3;
+        stringIndex2 = 1; // reset back to the start of string2
     }
 
     // for (i = 0; i < rows; i++)

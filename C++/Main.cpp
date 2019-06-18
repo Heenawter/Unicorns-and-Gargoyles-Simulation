@@ -21,13 +21,20 @@ void simulateGame(std::ofstream& outputFile);
 
 int main()
 {
-    std::ofstream file;
-    file.open(OUTPT_FILE);
 
-    if(file.is_open()) 
-        simulateGame(file);
+    Player *player = new Player();
+    std::string test1 = "[*][G]";
+    std::string test2 = "[*][G]";
+    int result = player->stringDistance(test1, test2);
+    std::cout << "The string distance is " << result << std::endl;
     
-    file.close();
+    // std::ofstream file;
+    // file.open(OUTPT_FILE);
+
+    // if(file.is_open()) 
+    //     simulateGame(file);
+    
+    // file.close();
 }
 
 void simulateGame(std::ofstream& outputFile)
