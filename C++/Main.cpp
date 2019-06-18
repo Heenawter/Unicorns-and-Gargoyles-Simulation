@@ -22,8 +22,8 @@ void simulateGame(std::ofstream& outputFile);
 int main()
 {
     Player* player = new Player();
-    std::string test1 = "[ ][ ][ ][ ]";
-    std::string test2 = "[ ][ ][ ]";
+    std::string test1 = "[*][G]";
+    std::string test2 = "[*]";
     int result = player->stringDistance(test1, test2);
     std::cout << "The string distance is " << result << std::endl;
 

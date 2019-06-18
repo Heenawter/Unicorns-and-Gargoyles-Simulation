@@ -160,8 +160,9 @@ int Player::takeTurn(Deck &deck, std::string goalString)
 // https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C++
 int Player::stringDistance(const std::string &string1, const std::string &string2)
 {
-    int rows = string1.size(); // rows
-    int cols = string2.size(); // cols
+    int rows = (string1.size() / 3) + 1; // rows, not including [ and ]
+    int cols = (string2.size() / 3) + 1; // cols, not including [ and ]
+    std::cout << "rows: " << rows << ", cols: " << cols << std::endl;
     std::vector<std::vector<int>> levenshteinDistance(rows + 1, std::vector<int>(cols + 1));
     int i;  // counter for rows
     int j;  // counter for columns
@@ -183,15 +184,14 @@ int Player::stringDistance(const std::string &string1, const std::string &string
     int insertionCost;
     for (i = 1; i < rows; i++) {
         for(j = 1; j < cols; j++) {
-            if(string1[i] == string2[j]) 
-                substitutionCost = 0;
-            else
-                substitutionCost = 1;
-            
-            deletionCost = levenshteinDistance[i - 1][j] + 1;
+            substitutionCost = levenshteinDistance[i - 1][j - 1];
+            // when checking string, need to account for skipping [ and ]
+            // hence, take the (index * 3) - 2 to get the card value
+            if(string1[(i * 3) - 2] != string2[(j * 3) - 2])
+                substitutionCost++;
             insertionCost = levenshteinDistance[i][j - 1] + 1;
-            substitutionCost = levenshteinDistance[i - 1][j - 1] + substitutionCost;
-            levenshteinDistance[i][j] = std::min(deletionCost, std::min(insertionCost, substitutionCost));
+            deletionCost = levenshteinDistance[i - 1][j] + 1;
+            levenshteinDistance[i][j] = std::min(substitutionCost, std::min(insertionCost, deletionCost));
         }
     }
 
