@@ -151,7 +151,7 @@ int Player::takeTurn(Deck &deck, std::string goalString)
     
     currentDistance = best.first;
     currentHand = best.second;
-    printHand(deck, currentHand);
+    // printHand(deck, currentHand);
     // std::string testString = generateString(deck, currentHand);
     return currentDistance;
 }
@@ -160,40 +160,47 @@ int Player::takeTurn(Deck &deck, std::string goalString)
 // https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C++
 int Player::stringDistance(const std::string &string1, const std::string &string2)
 {
-    // string1.erase(std::remove(string1.begin(), string1.end(), '['), string1.end());
-    // string1.erase(std::remove(string1.begin(), string1.end(), ']'), string1.end());
-    // string2.erase(std::remove(string2.begin(), string2.end(), '['), string2.end());
-    // string2.erase(std::remove(string2.begin(), string2.end(), ']'), string2.end());
+    int rows = string1.size(); // rows
+    int cols = string2.size(); // cols
+    std::vector<std::vector<int>> levenshteinDistance(rows + 1, std::vector<int>(cols + 1));
+    int i;  // counter for rows
+    int j;  // counter for columns
 
-    if(string1.size() > string2.size())
-        return stringDistance(string2, string1);
+    // fill with zeros
+    for(i = 0; i < rows; i++)
+        levenshteinDistance[i].clear();
+    // initialize the first column
+    // - fill with number of deletions to get to empty string
+    for (i = 1; i < rows; i++)
+        levenshteinDistance[i][0] = i;
+    // intialize the first row
+    // - fill with number of insertions to get to current string
+    for (j = 1; j < cols; j++)
+        levenshteinDistance[0][j] = j;
 
-    int minSize = string1.size();
-    int maxSize = string2.size();
-    std::vector<int> levenshteinDistance(minSize + 1);
-
-    for(int k = 0; k <= minSize; k++) 
-        levenshteinDistance[k] = k;
-
-    for (int j = 1; j <= maxSize; j++)
-    {
-        int previous_diagonal = levenshteinDistance[0];
-        int previous_diagonal_save;
-        levenshteinDistance[0]++;
-
-        for (int i = 1; i <= minSize; i++)
-        {
-            previous_diagonal_save = levenshteinDistance[i];
-            if (string1[i - 1] == string2[j - 1])
-                levenshteinDistance[i] = previous_diagonal;
+    int substitutionCost;
+    int deletionCost;
+    int insertionCost;
+    for (i = 1; i < rows; i++) {
+        for(j = 1; j < cols; j++) {
+            if(string1[i] == string2[j]) 
+                substitutionCost = 0;
             else
-                levenshteinDistance[i] = std::min(std::min(levenshteinDistance[i - 1], levenshteinDistance[i]), previous_diagonal) + 1;
+                substitutionCost = 1;
             
-            previous_diagonal = previous_diagonal_save;
+            deletionCost = levenshteinDistance[i - 1][j] + 1;
+            insertionCost = levenshteinDistance[i][j - 1] + 1;
+            substitutionCost = levenshteinDistance[i - 1][j - 1] + substitutionCost;
+            levenshteinDistance[i][j] = std::min(deletionCost, std::min(insertionCost, substitutionCost));
         }
     }
 
-    int result = levenshteinDistance[minSize];
+    for (i = 0; i < rows; i++)
+    {
+        for (j = 0; j < cols; j++)
+            std::cout << levenshteinDistance[i][j] << ",";
+        std::cout << std::endl;
+    }
 
-    return result;
+    return levenshteinDistance[rows - 1][cols - 1];
 }
