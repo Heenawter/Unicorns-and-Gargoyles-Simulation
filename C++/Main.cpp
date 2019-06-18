@@ -21,25 +21,13 @@ void simulateGame(std::ofstream& outputFile);
 
 int main()
 {
-    Player* player = new Player();
-    std::string test1 = "[*][G]";
-    std::string test2 = "[*]";
-    int result = player->stringDistance(test1, test2);
-    std::cout << "The string distance is " << result << std::endl;
+    std::ofstream file;
+    file.open(OUTPT_FILE);
 
-    // Game *simulation = new Game(1);
-    // Player* player = new Player();
-    // Deck *deck = simulation->getDeck();
-
-    // std::string goal = "[*][ ][ ][*]";
-
-    // std::ofstream file;
-    // file.open(OUTPT_FILE);
-
-    // if(file.is_open()) 
-    //     simulateGame(file);
+    if(file.is_open()) 
+        simulateGame(file);
     
-    // file.close();
+    file.close();
 }
 
 void simulateGame(std::ofstream& outputFile)

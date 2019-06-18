@@ -156,13 +156,13 @@ int Player::takeTurn(Deck &deck, std::string goalString)
     return currentDistance;
 }
 
-
+// https://dzone.com/articles/the-levenshtein-algorithm-1
 // https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C++
 int Player::stringDistance(const std::string &string1, const std::string &string2)
 {
     int rows = (string1.size() / 3) + 1; // rows, not including [ and ]
     int cols = (string2.size() / 3) + 1; // cols, not including [ and ]
-    std::cout << "rows: " << rows << ", cols: " << cols << std::endl;
+    // std::cout << "rows: " << rows << ", cols: " << cols << std::endl;
     std::vector<std::vector<int>> levenshteinDistance(rows + 1, std::vector<int>(cols + 1));
     int i;  // counter for rows
     int j;  // counter for columns
@@ -195,12 +195,12 @@ int Player::stringDistance(const std::string &string1, const std::string &string
         }
     }
 
-    for (i = 0; i < rows; i++)
-    {
-        for (j = 0; j < cols; j++)
-            std::cout << levenshteinDistance[i][j] << ",";
-        std::cout << std::endl;
-    }
+    // for (i = 0; i < rows; i++)
+    // {
+    //     for (j = 0; j < cols; j++)
+    //         std::cout << levenshteinDistance[i][j] << ",";
+    //     std::cout << std::endl;
+    // }
 
     return levenshteinDistance[rows - 1][cols - 1];
 }
