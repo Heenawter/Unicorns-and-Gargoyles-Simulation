@@ -31,37 +31,16 @@ std::pair<int, std::vector<char> > Player::drawCard(Deck &deck, std::string goal
     char newCard = deck.drawCard(); 
     // choose the best position to place the new card
 
-    int bestDistance = MAX_INT, testDistance;
+    int bestDistance;
     std::string testString;
-    std::vector<char> bestHand, testHand;
+    std::vector<char> bestHand;
 
-    if(numCards == 0)
-    {
-        bestHand.push_back(newCard);
-        testString = generateString(deck, bestHand);
-        bestDistance = stringDistance(testString, goalString);
-    }
-    else
-    {
-        copy(currentHand.begin(), currentHand.end(), std::back_inserter(testHand));
-        // it is more efficient to insert at the back
-        testHand.push_back(newCard); 
-        // so make swaps from back to front to generate all insert positions
-        std::vector<char>::reverse_iterator it = testHand.rbegin();
-        for(int i = 0; i <= numCards; i++)
-        {
-            testString = generateString(deck, testHand);
-            testDistance = stringDistance(testString, goalString);
-            if(testDistance < bestDistance)
-            {
-                bestDistance = testDistance;
-                bestHand.assign(testHand.begin(), testHand.end());
-            }
-        
-            if(i < numCards) // only swap if valid (not at the end)
-                std::swap(*(it + i), *(it + i + 1));
-        }
-    }
+    if(numCards > 0)
+        copy(currentHand.begin(), currentHand.end(), std::back_inserter(bestHand));
+    
+    bestHand.push_back(newCard);
+    testString = generateString(deck, bestHand);
+    bestDistance = stringDistance(testString, goalString);
 
     numCards++;
     return std::make_pair(bestDistance, bestHand);
@@ -124,13 +103,11 @@ void Player::printHand(Deck &deck, std::vector<char> hand)
     std::cout << std::endl;
 }
 
-
-// first try every combination of swapping two cards im the
+// first try every combination of swapping two cards in the
 // current hand; if none of these swaps get you closer to th
 // goalString, draw a new card instead
 int Player::takeTurn(Deck &deck, std::string goalString)
 {
-    // std::cout << "CURRENT DISTANCE: " << currentDistance << std::endl;
     std::pair<int, std::vector<char> > best;
 
     // if you have 0 or 1 cards, no point swapping - might as well
@@ -163,6 +140,7 @@ int Player::stringDistance(const std::string &string1, const std::string &string
     int minSize = (string1.size() / 3) + 1;
     int maxSize = (string2.size() / 3) + 1;
 
+    // relies on string1 being smaller than string2
     if (minSize > maxSize)
         return stringDistance(string2, string1);
 
@@ -172,20 +150,16 @@ int Player::stringDistance(const std::string &string1, const std::string &string
     for (int k = 0; k < minSize; k++)
         levenshteinDistance[k] = k;
 
+    int prevSubstitutionCost;
+    int substitutionCost;
+    int insertionCost;
+    int deletionCost;
     int stringIndex1 = 1;
     int stringIndex2 = 1;
     for (int j = 1; j < maxSize; j++)
     {
-        for (int k = 0; k < minSize; k++)
-            std::cout << levenshteinDistance[k] << ",";
-        std::cout << std::endl;
-
-        int prevSubstitutionCost = levenshteinDistance[0];
-        int substitutionCost;
-        int insertionCost;
-        int deletionCost;
-
-        levenshteinDistance[0]++; // init
+        prevSubstitutionCost = levenshteinDistance[0];
+        levenshteinDistance[0]++; 
         for (int i = 1; i < minSize; i++)
         {
             // save the last diagonal; i.e. the previous substitution cost
@@ -210,10 +184,6 @@ int Player::stringDistance(const std::string &string1, const std::string &string
         stringIndex1 = 1;
         stringIndex2 += 3;
     }
-
-    for (int k = 0; k < minSize; k++)
-        std::cout << levenshteinDistance[k] << ",";
-    std::cout << std::endl;
 
     return levenshteinDistance[minSize - 1];
 }
