@@ -22,14 +22,11 @@ Player::Player() {
 // assume we tried swapping, and it didn't get us any
 // closer to the goal -- this means we should draw
 // a card instead of swapping.
-// However, we need to find the most advantageous
-// position for that card!
-// return the string distance and the hand
+// This card is just appended to the end of our hand.
 std::pair<int, std::vector<char> > Player::drawCard(Deck &deck, std::string goalString)
 {
     // std::cout << "DRAW CARD" << std::endl;
     char newCard = deck.drawCard(); 
-    // choose the best position to place the new card
 
     int bestDistance;
     std::string testString;
@@ -128,7 +125,7 @@ int Player::takeTurn(Deck &deck, std::string goalString)
     
     currentDistance = best.first;
     currentHand = best.second;
-    // printHand(deck, currentHand);
+    printHand(deck, currentHand);
     // std::string testString = generateString(deck, currentHand);
     return currentDistance;
 }

@@ -12,13 +12,6 @@
 std::vector<std::string> readGoals();
 void simulateGame(std::ofstream& outputFile);
 
-// int thread_count = 0;
-// bool time_to_quit = false;
-// std::mutex m;
-// std::condition_variable cv;
-
-// typedef std::chrono::steady_clock Clock;
-
 int main()
 {
 
@@ -83,10 +76,10 @@ void simulateGame(std::ofstream& outputFile)
             while (keepLooping)
             {
                 // std::cout << ".";
-                // std::cout << "-- new turn -- " << std::endl;
+                std::cout << "-- new turn -- " << std::endl;
                 for (playerNum = 0; playerNum < NUM_PLAYERS & keepLooping; playerNum++)
                 {
-                    // std::cout << "player " << playerNum << " --- ";
+                    std::cout << "player " << playerNum << " --- ";
                     player = simulation->getPlayer(playerNum);
                     distance = player->takeTurn(*deck, *it);
                     if(distance == 0) {
