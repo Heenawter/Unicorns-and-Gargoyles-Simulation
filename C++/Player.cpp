@@ -53,7 +53,7 @@ char Player::drawCard(Deck &deck, std::string goalString)
 // other card swaps
 std::pair<int, std::vector<char> > Player::swapCards(Deck &deck, std::string goalString)
 {
-    // std::cout << "SWAP" << std::endl;
+    std::cout << "swap" << std::endl;
     std::vector<char> bestHand, testHand;
     int bestDistance = MAX_INT, testDistance;
     std::string bestString, testString;
@@ -78,6 +78,7 @@ std::pair<int, std::vector<char> > Player::swapCards(Deck &deck, std::string goa
                 std::swap(*(testHand.begin() + swap1), *(testHand.begin() + swap2));
 
                 testString = generateString(deck, testHand);
+                std::cout << "after generate..." << std::endl;
                 testDistance = stringDistance(testString, goalString);
                 if (testDistance < bestDistance)
                 {
@@ -129,7 +130,6 @@ void Player::discardCard(Deck &deck, std::string goalString)
     {
         testCard = testHand[index];
         testHand.erase(testHand.begin() + index);
-        std::cout << "in remove: ";
         testString = generateString(deck, testHand);
         testDistance = stringDistance(testString, goalString);
 
