@@ -141,6 +141,6 @@ void Deck::playCard(char type, std::string &current)
         std::cout << "Ran out of cards!" << std::endl;
         break;
     default:
-        std::cout << "Something went wrong - check yo switch statement, boo." << std::endl;
+        std::cout << "Something went wrong with type " << int(type) << " -- check yo switch statement, boo." << std::endl;
     }
 }

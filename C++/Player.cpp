@@ -29,12 +29,12 @@ char Player::drawCard(Deck &deck, std::string goalString)
 {
     // std::cout << "DRAW CARD" << std::endl;
     char newCard = deck.drawCard();
-    char actionCard = deck.getCardName(newCard)[0];
-
-    std::cout << actionCard << std::endl;
-    if (actionCard == '*') {
+    if (newCard >= ACTION_CARD_START) {
+        std::cout << "remove" << std::endl;
         discardCard(deck, goalString);
+        printHand(deck, currentHand);
     } else {
+        std::cout << "add to hand" << std::endl;
         std::string testString;
 
         currentHand.push_back(newCard);
@@ -129,11 +129,9 @@ void Player::discardCard(Deck &deck, std::string goalString)
     {
         testCard = testHand[index];
         testHand.erase(testHand.begin() + index);
+        std::cout << "in remove: ";
         testString = generateString(deck, testHand);
         testDistance = stringDistance(testString, goalString);
-
-        std::cout << "distance: " << testDistance << "; ";
-        printHand(deck, testHand);
 
         if(testDistance < bestDistance) {
             bestDistance = testDistance;
@@ -141,14 +139,12 @@ void Player::discardCard(Deck &deck, std::string goalString)
             bestCard = testCard; 
         }
 
-        testHand.push_back('x');
         testHand = currentHand; // deep copy -- using copy constructor
     }
 
-    std::cout << "Best:";
-    printHand(deck, bestHand);
     // make best new current and return card to the deck
     currentHand = bestHand;
+    std::cout << "removed " << int(bestCard) << std::endl;
     deck.putCardBack(bestCard);
 }
 
