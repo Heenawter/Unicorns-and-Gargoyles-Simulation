@@ -33,10 +33,9 @@ void Deck::addToDeck(std::string line, char cardType)
     map[cardName] = cardType;
 
     count = int(line[line.length() - 1]) - 48; // -48 to convert from ascii to int
+
     for (int j = 0; j < count; j++)
-    {
         cards.push_back(cardType);
-    }
 }
 
 char Deck::drawCard()

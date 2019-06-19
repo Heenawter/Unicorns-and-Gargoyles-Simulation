@@ -18,11 +18,15 @@ int main()
     Player *player = new Player();
     Deck *deck = simulation->getDeck();
 
+    std::cout << deck->getCards().size() << std::endl;
+
     std::string goal = "[*][ ][ ][*]";
     player->takeTurn(*deck, goal);
     player->takeTurn(*deck, goal);
     player->takeTurn(*deck, goal);
-    player->discardCard(*deck, goal);
+    player->takeTurn(*deck, goal);
+    player->takeTurn(*deck, goal);
+    player->takeTurn(*deck, goal);
 
     // std::string test1 = "[*][ ][ ][*]";
     // std::string test2 = "[*][ ][ ][*]";

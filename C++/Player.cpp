@@ -22,21 +22,29 @@ Player::Player() {
 // assume we tried swapping, and it didn't get us any
 // closer to the goal -- this means we should draw
 // a card instead of swapping.
-// This card is just appended to the end of our hand.
-std::pair<int, std::vector<char> > Player::drawCard(Deck &deck, std::string goalString)
+// This card is just appended to the end of our current hand.
+// returns the new card so we can check if it is an
+// action card or not
+char Player::drawCard(Deck &deck, std::string goalString)
 {
     // std::cout << "DRAW CARD" << std::endl;
-    char newCard = deck.drawCard(); 
+    char newCard = deck.drawCard();
+    char actionCard = deck.getCardName(newCard)[0];
 
-    int bestDistance;
-    std::string testString;
-    std::vector<char> bestHand(currentHand);
-    bestHand.push_back(newCard);
-    testString = generateString(deck, bestHand);
-    bestDistance = stringDistance(testString, goalString);
+    std::cout << actionCard << std::endl;
+    if (actionCard == '*') {
+        discardCard(deck, goalString);
+    } else {
+        std::string testString;
 
-    numCards++;
-    return std::make_pair(bestDistance, bestHand);
+        currentHand.push_back(newCard);
+        testString = generateString(deck, currentHand);
+        currentDistance = stringDistance(testString, goalString);
+
+        numCards++;
+    }
+
+    return newCard;
 }
 
 // find the best possible two cards to swap positions
@@ -106,14 +114,14 @@ void Player::discardCard(Deck &deck, std::string goalString)
     // if you can't IMPROVE your hand by removing a card,
     // simply try your best not to make it worse
 
+    if (numCards <= 0)
+        return; // nothing to do if no cards to remove!
+
     std::vector<char> bestHand(numCards - 1), testHand(numCards);
     int bestDistance = MAX_INT, testDistance;
     std::string bestString, testString;
     char bestCard, testCard;
     int index;
-    
-    if (numCards <= 0)
-        return; // nothing to do if no cards to remove!
 
     // we can safely copy since we know we have at least 1 card
     copy(currentHand.begin(), currentHand.end(), testHand.begin());
@@ -174,25 +182,27 @@ void Player::printHand(Deck &deck, std::vector<char> hand)
 int Player::takeTurn(Deck &deck, std::string goalString)
 {
     std::pair<int, std::vector<char> > best;
+    char newCard;
+    bool actionCard = false;
 
     // if you have 0 or 1 cards, no point swapping - might as well
     // draw another card
     if(numCards <= 1)
-        best = drawCard(deck, goalString);
+        newCard = drawCard(deck, goalString);
     else
     {
         // otherwise, try swaps before drawing card
         best = swapCards(deck, goalString);
-        if(currentDistance <= best.first)
-        {
+        if(currentDistance <= best.first) {
             // swapping cards did not get you any closer
             // to meeting the goal, so instead draw a 
-            best = drawCard(deck, goalString);
+            newCard = drawCard(deck, goalString);
+        } else {
+            currentDistance = best.first;
+            currentHand = best.second;
         }
     }
-    
-    currentDistance = best.first;
-    currentHand = best.second;
+
     printHand(deck, currentHand);
     // std::string testString = generateString(deck, currentHand);
     return currentDistance;

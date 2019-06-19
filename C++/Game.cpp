@@ -36,8 +36,8 @@ void Game::readGameStats()
         std::getline(file, line); // garbage read of first line
         file >> numCards; // the number of cards to read
         std::getline(file, line); // garbage read of new line
-        for(i = 0; i < numCards - 2; i++)
-        { // -2 because I want to ignore comment/uncomment for now
+        for(i = 0; i < numCards; i++)
+        { 
             std::getline(file, line);
             deck.addToDeck(line, cardCounter);
             cardCounter++;

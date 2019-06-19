@@ -18,7 +18,7 @@ static const char UNICORN = 0, GARGOYLE = 1, REVERSE = 2, ROTATE_R = 3, ROTATE_L
 static const int NUM_PLAYERS = 2;
 static const int NUM_ROUNDS = 1;
 
-static const int NUM_LINES_TO_SKIP = 24;
+static const int NUM_LINES_TO_SKIP = 17;
 
 static const std::string DRAFT = "1";
 static const std::string INPUT_FILE = "Simulations/Draft" + DRAFT +"_Stats.txt";

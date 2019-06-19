@@ -33,8 +33,7 @@ private:
 
     void printHand(Deck &deck, std::vector<char> hand);
     int stringDistance(const std::string &string1, const std::string &string2);
-
-    std::pair<int, std::vector<char> > drawCard(Deck &deck, std::string goalString);
+    char drawCard(Deck &deck, std::string goalString);
     std::pair<int, std::vector<char> > swapCards(Deck &deck, std::string goalString);
 public:
     ~Player();
