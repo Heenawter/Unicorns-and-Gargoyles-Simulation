@@ -53,17 +53,31 @@ char Deck::drawCard()
     return newCard;
 }
 
+// insert card back into deck in a random position
+void Deck::putCardBack(char card)
+{
+    int min = 0; 
+    int max = cards.size() - 1;
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::default_random_engine rng(seed);     // random-number engine used (Mersenne-Twister in this case)
+    // create a randomly distributed array with values
+    // from [min, max] (inclusive)
+    std::uniform_int_distribution<int> uni(min, max); // guaranteed unbiased
+    // grab a random integer from this range
+    int randomIndex = uni(rng); // where to insert card
+    cards.insert(cards.begin() + randomIndex, card);
+}
+
+// remove the specified number of cards from a string
+// if the number to remove is greater than the number of
+// characters left, then simply empty the string
 void Deck::removeHelper(std::string &current, int numToRemove)
 {
     int stringLength = current.size();
     if (stringLength >= numToRemove)
-    {
         current.erase(current.end() - numToRemove, current.end());
-    }
     else
-    {
         current.clear();
-    }
 }
 
 void Deck::playCard(char type, std::string &current)

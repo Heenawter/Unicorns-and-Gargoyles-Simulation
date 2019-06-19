@@ -30,10 +30,10 @@ std::pair<int, std::vector<char> > Player::drawCard(Deck &deck, std::string goal
 
     int bestDistance;
     std::string testString;
-    std::vector<char> bestHand;
+    std::vector<char> bestHand(numCards);
 
     if(numCards > 0)
-        copy(currentHand.begin(), currentHand.end(), std::back_inserter(bestHand));
+        copy(currentHand.begin(), currentHand.end(), bestHand.begin());
     
     bestHand.push_back(newCard);
     testString = generateString(deck, bestHand);
@@ -43,6 +43,10 @@ std::pair<int, std::vector<char> > Player::drawCard(Deck &deck, std::string goal
     return std::make_pair(bestDistance, bestHand);
 }
 
+// find the best possible two cards to swap positions
+// that is, swap the two cards that will get you AS CLOSE
+// AS CURRENTLY POSSIBLE to the goal in comparison to all
+// other card swaps
 std::pair<int, std::vector<char> > Player::swapCards(Deck &deck, std::string goalString)
 {
     // std::cout << "SWAP" << std::endl;
@@ -51,11 +55,23 @@ std::pair<int, std::vector<char> > Player::swapCards(Deck &deck, std::string goa
     std::string bestString, testString;
     int swap1, swap2;
 
+    // we know that we have more than 1 card, otherwise we would
+    // be DRAWING a card (as defined in takeTurn); so, we can
+    // go ahead and copy our current hand without any checks
     copy(currentHand.begin(), currentHand.end(), std::back_inserter(testHand));
+    // try all cards as the first card to swap
     for (swap1 = 0; swap1 < numCards; swap1++)
     {
+        // try all cards (minus ones we already tried) as the
+        // second card to swap; notice that the pattern for, say
+        // four cards, would go as follows:
+        // 1 <-> 2 ; 1 <-> 3 ; 1 <-> 4 ; 2 <-> 3 ; 2 <-> 4, 3 <-> 4
+        // We can see that doubles, such as 2 <-> 1, are skipped
+        // because swap2 = swap1
         for (swap2 = swap1; swap2 < numCards; swap2++)
         {
+            // obviously, 1 <-> 1 makes no sense; so, just skip
+            // this if it happens
             if (swap1 != swap2)
             {
                 std::swap(*(testHand.begin() + swap1), *(testHand.begin() + swap2));
@@ -74,6 +90,64 @@ std::pair<int, std::vector<char> > Player::swapCards(Deck &deck, std::string goa
     }
 
     return std::make_pair(bestDistance, bestHand);
+}
+
+void Player::commentCard(std::string goalString)
+{
+    // -- action card -- 
+    // first try commenting out one of your own cards;
+    // if doing so does not get you any closer to the
+    // goal, then comment out a card for the player
+    // who is CLOSEST to winning - in this case, you 
+    // would want to *decrease* their similarity to 
+    // the goal string
+
+        
+}
+ 
+void Player::discardCard(Deck &deck, std::string goalString)
+{
+    // -- action card --
+    // find the most advantageous card to remove and
+    // add it back to the deck
+    // if you can't IMPROVE your hand by removing a card,
+    // simply try your best not to make it worse
+
+    std::vector<char> bestHand(numCards - 1), testHand(numCards);
+    int bestDistance = MAX_INT, testDistance;
+    std::string bestString, testString;
+    char bestCard, testCard;
+    int index;
+    
+    if (numCards <= 0)
+        return; // nothing to do if no cards to remove!
+
+    // we can safely copy since we know we have at least 1 card
+    copy(currentHand.begin(), currentHand.end(), testHand.begin());
+    for (index = 0; index < numCards; index++)
+    {
+        testCard = testHand[index];
+        testHand.erase(testHand.begin() + index);
+        testString = generateString(deck, testHand);
+        testDistance = stringDistance(testString, goalString);
+
+        std::cout << "distance: " << testDistance << "; ";
+        printHand(deck, testHand);
+
+        if(testDistance <= bestDistance) {
+            bestDistance = testDistance;
+            bestHand.assign(testHand.begin(), testHand.end());
+            bestCard = testCard;
+        }
+
+        testHand.push_back('x');
+        copy(currentHand.begin(), currentHand.end(), testHand.begin());
+    }
+
+    std::cout << "Best:";
+    printHand(deck, bestHand);
+    // return card to the deck
+    deck.putCardBack(bestCard);
 }
 
 // using the hand, generate the string from empty

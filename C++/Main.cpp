@@ -14,20 +14,28 @@ void simulateGame(std::ofstream& outputFile);
 
 int main()
 {
+    Game *simulation = new Game(1);
+    Player *player = new Player();
+    Deck *deck = simulation->getDeck();
 
-    // Player *player = new Player();
+    std::string goal = "[*][ ][ ][*]";
+    player->takeTurn(*deck, goal);
+    player->takeTurn(*deck, goal);
+    player->takeTurn(*deck, goal);
+    player->discardCard(*deck, goal);
+
     // std::string test1 = "[*][ ][ ][*]";
     // std::string test2 = "[*][ ][ ][*]";
     // int result = player->stringDistance(test1, test2);
     // std::cout << "The string distance is " << result << std::endl;
-    
-    std::ofstream file;
-    file.open(OUTPT_FILE);
 
-    if(file.is_open()) 
-        simulateGame(file);
+    // std::ofstream file;
+    // file.open(OUTPT_FILE);
+
+    // if(file.is_open()) 
+    //     simulateGame(file);
     
-    file.close();
+    // file.close();
 }
 
 void simulateGame(std::ofstream& outputFile)

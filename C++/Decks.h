@@ -7,6 +7,7 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
+#include <random>
 
 class Deck {
     private:
@@ -18,6 +19,8 @@ class Deck {
     public:
         void addToDeck(std::string line, char cardType);
         char drawCard();
+        void putCardBack(char card);
+
         void shuffleDeck();
         bool hasCards();
         std::vector<char> getCards() { return cards; }
