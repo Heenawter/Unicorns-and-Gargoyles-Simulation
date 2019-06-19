@@ -30,11 +30,7 @@ std::pair<int, std::vector<char> > Player::drawCard(Deck &deck, std::string goal
 
     int bestDistance;
     std::string testString;
-    std::vector<char> bestHand(numCards);
-
-    if(numCards > 0)
-        copy(currentHand.begin(), currentHand.end(), bestHand.begin());
-    
+    std::vector<char> bestHand(currentHand);
     bestHand.push_back(newCard);
     testString = generateString(deck, bestHand);
     bestDistance = stringDistance(testString, goalString);
@@ -55,10 +51,7 @@ std::pair<int, std::vector<char> > Player::swapCards(Deck &deck, std::string goa
     std::string bestString, testString;
     int swap1, swap2;
 
-    // we know that we have more than 1 card, otherwise we would
-    // be DRAWING a card (as defined in takeTurn); so, we can
-    // go ahead and copy our current hand without any checks
-    copy(currentHand.begin(), currentHand.end(), std::back_inserter(testHand));
+    testHand = currentHand; // deep copy -- using copy constructor
     // try all cards as the first card to swap
     for (swap1 = 0; swap1 < numCards; swap1++)
     {
@@ -81,10 +74,10 @@ std::pair<int, std::vector<char> > Player::swapCards(Deck &deck, std::string goa
                 if (testDistance < bestDistance)
                 {
                     bestDistance = testDistance;
-                    bestHand.assign(testHand.begin(), testHand.end());
+                    bestHand = testHand; // deep copy -- using copy constructor
                 }
 
-                copy(currentHand.begin(), currentHand.end(), testHand.begin());
+                testHand = currentHand; // deep copy -- using copy constructor
             }
         }
     }
@@ -134,19 +127,20 @@ void Player::discardCard(Deck &deck, std::string goalString)
         std::cout << "distance: " << testDistance << "; ";
         printHand(deck, testHand);
 
-        if(testDistance <= bestDistance) {
+        if(testDistance < bestDistance) {
             bestDistance = testDistance;
-            bestHand.assign(testHand.begin(), testHand.end());
-            bestCard = testCard;
+            bestHand = testHand; // deep copy -- using copy constructor
+            bestCard = testCard; 
         }
 
         testHand.push_back('x');
-        copy(currentHand.begin(), currentHand.end(), testHand.begin());
+        testHand = currentHand; // deep copy -- using copy constructor
     }
 
     std::cout << "Best:";
     printHand(deck, bestHand);
-    // return card to the deck
+    // make best new current and return card to the deck
+    currentHand = bestHand;
     deck.putCardBack(bestCard);
 }
 
