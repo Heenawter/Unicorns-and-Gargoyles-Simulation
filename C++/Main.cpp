@@ -25,11 +25,10 @@ int main()
     // player->takeTurn(*deck, goal);
     // player->takeTurn(*deck, goal);
     // player->takeTurn(*deck, goal);
-
-    // std::string test1 = "[*][ ][ ][*]";
-    // std::string test2 = "[*][ ][ ][*]";
-    // int result = player->stringDistance(test1, test2);
-    // std::cout << "The string distance is " << result << std::endl;
+    // player->takeTurn(*deck, goal);
+    // player->takeTurn(*deck, goal);
+    // player->takeTurn(*deck, goal);
+    // player->takeTurn(*deck, goal);
 
     std::ofstream file;
     file.open(OUTPT_FILE);
@@ -43,6 +42,9 @@ int main()
 void simulateGame(std::ofstream& outputFile)
 {
     int wins[NUM_PLAYERS]; // keep track of the number of wins per player
+    // WANT: average number of NON-REMOVE cards
+    // in the final solutions per player
+    int handCounts[NUM_PLAYERS];
 
     // counters
     int playerNum = 0;
@@ -58,7 +60,7 @@ void simulateGame(std::ofstream& outputFile)
     std::vector<std::string>::iterator it; // used to loop through goal list
 
     // initialize the wins with 0 for each player
-    for (playerNum = 0; playerNum < NUM_PLAYERS; playerNum++)
+    for (playerNum = 0; playerNum < NUM_PLAYERS; playerNum++) 
         wins[playerNum] = 0;
 
     std::vector<std::string> goals = readGoals(); // list of all goals
@@ -67,6 +69,9 @@ void simulateGame(std::ofstream& outputFile)
     bool keepLooping;
     for (it = goals.begin(); it < goals.end(); it++)
     {
+        for (playerNum = 0; playerNum < NUM_PLAYERS; playerNum++)
+            handCounts[playerNum] = 0;
+
         std::cout << "\n----" << " GOAL " << std::left << std::setw(15) << *it << " ----" << std::endl;
         outputFile << "----" << " GOAL " << std::left << std::setw(15) << *it << " ----" << std::endl;
         totalCards = 0;
@@ -106,6 +111,11 @@ void simulateGame(std::ofstream& outputFile)
                 }
                 cardNum++;
             }
+
+            for(playerNum = 0; playerNum < NUM_PLAYERS; playerNum++) {
+                player = simulation->getPlayer(playerNum);
+                handCounts[playerNum] += player->getHandSize();
+            }
             // std::cout << std::endl;
             totalCards += cardNum;
             delete simulation;
@@ -116,6 +126,13 @@ void simulateGame(std::ofstream& outputFile)
         auto difference = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
         outputFile << "\t~" << difference / NUM_ROUNDS << " milliseconds to complete." << std::endl;
         outputFile << "\t~" << totalCards / NUM_ROUNDS << " cards to win." << std::endl;
+
+        for(playerNum = 0; playerNum < NUM_PLAYERS; playerNum++) {
+            
+            // also output wins for each player FOR EACH GOAL?
+            // PERCENTAGE of times ran out of cards rather than number
+            outputFile << "\tPlayer " << playerNum << " had ~" << handCounts[playerNum] / NUM_ROUNDS << " cards." << std::endl;
+        }
     }
 
     outputFile << "\n-------------------------------------\n" << std::endl;

@@ -41,6 +41,10 @@ public:
     int takeTurn(Deck &deck, std::string goalString);
     void commentCard(std::string goalString);
     void discardCard(Deck &deck, std::string goalString); 
+
+    int getHandSize() { return numCards; }
+
+    std::pair<int, std::vector<char> > moveCard(Deck &deck, std::string goalString);
 };
 
 #endif

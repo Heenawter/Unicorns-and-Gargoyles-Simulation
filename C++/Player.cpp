@@ -43,6 +43,39 @@ char Player::drawCard(Deck &deck, std::string goalString)
     return newCard;
 }
 
+std::pair<int, std::vector<char> > Player::moveCard(Deck &deck, std::string goalString)
+{
+    std::vector<char> bestHand, testHand, testHandRemoved;
+    int bestDistance = MAX_INT, testDistance;
+    std::string bestString, testString;
+    int cardToMove, whereToMove;
+    char currentCard;
+
+    for(cardToMove = 0; cardToMove < numCards; cardToMove++) {
+        testHandRemoved = currentHand;
+        currentCard = testHandRemoved[cardToMove]; // save card to insert later
+        // remove the card so we can insert it somewhere else
+        testHandRemoved.erase(testHandRemoved.begin() + cardToMove);
+        for(whereToMove = 0; whereToMove < numCards; whereToMove++) {
+            testHand = testHandRemoved;
+            // obviously, inserting a card in the exact position it already is
+            // is pointless; so just skip the entire thing when this happens
+            if(whereToMove != cardToMove) {
+                testHand.insert(testHand.begin() + whereToMove, currentCard);
+                testString = generateString(deck, testHand);
+                testDistance = stringDistance(testString, goalString);
+                if (testDistance < bestDistance)
+                {
+                    bestDistance = testDistance;
+                    bestHand = testHand; // deep copy -- using copy constructor
+                }
+            }
+        }
+    }
+
+    return std::make_pair(bestDistance, bestHand);
+}
+
 // find the best possible two cards to swap positions
 // that is, swap the two cards that will get you AS CLOSE
 // AS CURRENTLY POSSIBLE to the goal in comparison to all
@@ -184,12 +217,14 @@ int Player::takeTurn(Deck &deck, std::string goalString)
     else
     {
         // otherwise, try swaps before drawing card
-        best = swapCards(deck, goalString);
+        best = moveCard(deck, goalString);
         if(currentDistance <= best.first) {
             // swapping cards did not get you any closer
-            // to meeting the goal, so instead draw a 
+            // to meeting the goal, so instead draw a card
+            // std::cout << "draw" << std::endl;
             newCard = drawCard(deck, goalString);
         } else {
+            // std::cout << "move" << std::endl;
             currentDistance = best.first;
             currentHand = best.second;
         }

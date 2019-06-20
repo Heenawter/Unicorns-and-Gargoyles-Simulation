@@ -12,14 +12,15 @@ static const char UNICORN = 0, GARGOYLE = 1, REVERSE = 2, ROTATE_R = 3, ROTATE_L
 static const char ACTION_CARD_START = 12;
 
 static const int NUM_PLAYERS = 6;
-static const int NUM_ROUNDS = 5000;
+static const int NUM_ROUNDS = 10000;
 
 static const int NUM_LINES_TO_SKIP = 17;
 
 static const std::string DRAFT = "1";
 static const std::string INPUT_FILE = "Simulations/Draft" + DRAFT +"_Stats.txt";
-static const std::string OUTPT_FILE = "Simulations/Draft" + DRAFT + "_remove_Results_v2 ("
-    + std::to_string(NUM_ROUNDS) + " Rounds, "
-    + std::to_string(NUM_PLAYERS) + " Players).txt";
+static const std::string OUTPT_FILE = "Simulations/Draft" + DRAFT + "_Results ("
+    + std::to_string(NUM_PLAYERS) + " Players, "
+    + std::to_string(NUM_ROUNDS) + " Rounds)"
+    + "_v2.txt";
 
 #endif  
