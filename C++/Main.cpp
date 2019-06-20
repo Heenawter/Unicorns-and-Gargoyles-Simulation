@@ -14,32 +14,30 @@ void simulateGame(std::ofstream& outputFile);
 
 int main()
 {
-    Game *simulation = new Game(1);
-    Player *player = new Player();
-    Deck *deck = simulation->getDeck();
+    // Game *simulation = new Game(1);
+    // Player *player = new Player();
+    // Deck *deck = simulation->getDeck();
 
-    std::cout << deck->getCards().size() << std::endl;
-
-    std::string goal = "[*][ ][ ][*]";
-    player->takeTurn(*deck, goal);
-    player->takeTurn(*deck, goal);
-    player->takeTurn(*deck, goal);
-    player->takeTurn(*deck, goal);
-    player->takeTurn(*deck, goal);
-    player->takeTurn(*deck, goal);
+    // std::string goal = "[*][ ][ ][*]";
+    // player->takeTurn(*deck, goal);
+    // player->takeTurn(*deck, goal);
+    // player->takeTurn(*deck, goal);
+    // player->takeTurn(*deck, goal);
+    // player->takeTurn(*deck, goal);
+    // player->takeTurn(*deck, goal);
 
     // std::string test1 = "[*][ ][ ][*]";
     // std::string test2 = "[*][ ][ ][*]";
     // int result = player->stringDistance(test1, test2);
     // std::cout << "The string distance is " << result << std::endl;
 
-    // std::ofstream file;
-    // file.open(OUTPT_FILE);
+    std::ofstream file;
+    file.open(OUTPT_FILE);
 
-    // if(file.is_open()) 
-    //     simulateGame(file);
+    if(file.is_open()) 
+        simulateGame(file);
     
-    // file.close();
+    file.close();
 }
 
 void simulateGame(std::ofstream& outputFile)
@@ -88,10 +86,10 @@ void simulateGame(std::ofstream& outputFile)
             while (keepLooping)
             {
                 // std::cout << ".";
-                std::cout << "-- new turn -- " << std::endl;
+                // std::cout << "-- new turn -- " << std::endl;
                 for (playerNum = 0; playerNum < NUM_PLAYERS & keepLooping; playerNum++)
                 {
-                    std::cout << "player " << playerNum << " --- ";
+                    // std::cout << "player " << playerNum << " --- ";
                     player = simulation->getPlayer(playerNum);
                     distance = player->takeTurn(*deck, *it);
                     if(distance == 0) {
@@ -121,7 +119,6 @@ void simulateGame(std::ofstream& outputFile)
     }
 
     outputFile << "\n-------------------------------------\n" << std::endl;
-
 
     for (playerNum = 0; playerNum < NUM_PLAYERS; playerNum++)
     {

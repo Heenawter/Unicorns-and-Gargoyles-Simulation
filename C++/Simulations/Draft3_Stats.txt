@@ -1,7 +1,7 @@
 --- String Cards ---
 13
 unicorn,	8
-gargoyle, 	4
+gargoyle, 	0
 reverse order,	4
 rotate right,	4
 rotate left,	4
@@ -12,7 +12,7 @@ append 3, 	4
 remove 1, 	4
 remove 2,	4
 remove 3,	4
-*discard 1 card,	8
+*discard 1 card,	4
 
 --- Goal Cards ---
 8

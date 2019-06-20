@@ -1,0 +1,30 @@
+---- GOAL [ ][*][ ]       ----
+	~2 milliseconds to complete.
+	~13 cards to win.
+---- GOAL [ ][ ][ ][ ]    ----
+	~0 milliseconds to complete.
+	~5 cards to win.
+---- GOAL [*][ ][ ][*]    ----
+	~2 milliseconds to complete.
+	~11 cards to win.
+---- GOAL [ ][ ][ ][*]    ----
+	~1 milliseconds to complete.
+	~8 cards to win.
+---- GOAL [ ][ ][*][*]    ----
+	~3 milliseconds to complete.
+	~12 cards to win.
+---- GOAL [ ][*][ ][ ][ ] ----
+	~1 milliseconds to complete.
+	~12 cards to win.
+---- GOAL [ ][ ][*][ ][ ] ----
+	~2 milliseconds to complete.
+	~12 cards to win.
+---- GOAL [ ][ ][ ][ ][ ] ----
+	~0 milliseconds to complete.
+	~8 cards to win.
+
+-------------------------------------
+
+Player 1 won 406 times (i.e. 50.75%).
+Player 2 won 391 times (i.e. 48.875%).
+Ran out of cards 3 times.

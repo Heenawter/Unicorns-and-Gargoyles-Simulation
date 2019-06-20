@@ -30,10 +30,8 @@ char Player::drawCard(Deck &deck, std::string goalString)
     // std::cout << "DRAW CARD" << std::endl;
     char newCard = deck.drawCard();
     if (newCard >= ACTION_CARD_START) {
-        std::cout << "remove" << std::endl;
         discardCard(deck, goalString);
     } else {
-        std::cout << "add to hand" << std::endl;
         std::string testString;
 
         currentHand.push_back(newCard);
@@ -42,7 +40,6 @@ char Player::drawCard(Deck &deck, std::string goalString)
 
         numCards++;
     }
-
     return newCard;
 }
 
@@ -52,7 +49,6 @@ char Player::drawCard(Deck &deck, std::string goalString)
 // other card swaps
 std::pair<int, std::vector<char> > Player::swapCards(Deck &deck, std::string goalString)
 {
-    std::cout << "swap" << std::endl;
     std::vector<char> bestHand, testHand;
     int bestDistance = MAX_INT, testDistance;
     std::string bestString, testString;
@@ -199,7 +195,8 @@ int Player::takeTurn(Deck &deck, std::string goalString)
         }
     }
 
-    printHand(deck, currentHand);
+    
+    // printHand(deck, currentHand);
     // std::string testString = generateString(deck, currentHand);
     return currentDistance;
 }

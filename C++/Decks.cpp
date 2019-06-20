@@ -55,8 +55,13 @@ char Deck::drawCard()
 // insert card back into deck in a random position
 void Deck::putCardBack(char card)
 {
+    if(cards.size() == 0) {
+        cards.push_back(card);
+        return;
+    }
     int min = 0; 
     int max = cards.size() - 1;
+
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     std::default_random_engine rng(seed);     // random-number engine used (Mersenne-Twister in this case)
     // create a randomly distributed array with values
