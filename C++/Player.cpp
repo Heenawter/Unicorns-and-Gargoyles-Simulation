@@ -32,7 +32,6 @@ char Player::drawCard(Deck &deck, std::string goalString)
     if (newCard >= ACTION_CARD_START) {
         std::cout << "remove" << std::endl;
         discardCard(deck, goalString);
-        printHand(deck, currentHand);
     } else {
         std::cout << "add to hand" << std::endl;
         std::string testString;
@@ -78,7 +77,6 @@ std::pair<int, std::vector<char> > Player::swapCards(Deck &deck, std::string goa
                 std::swap(*(testHand.begin() + swap1), *(testHand.begin() + swap2));
 
                 testString = generateString(deck, testHand);
-                std::cout << "after generate..." << std::endl;
                 testDistance = stringDistance(testString, goalString);
                 if (testDistance < bestDistance)
                 {
@@ -86,6 +84,7 @@ std::pair<int, std::vector<char> > Player::swapCards(Deck &deck, std::string goa
                     bestHand = testHand; // deep copy -- using copy constructor
                 }
 
+                // std::copy(currentHand.begin(), currentHand.end(), testHand.begin());
                 testHand = currentHand; // deep copy -- using copy constructor
             }
         }
@@ -125,7 +124,8 @@ void Player::discardCard(Deck &deck, std::string goalString)
     int index;
 
     // we can safely copy since we know we have at least 1 card
-    copy(currentHand.begin(), currentHand.end(), testHand.begin());
+    testHand = currentHand;
+    // copy(currentHand.begin(), currentHand.end(), testHand.begin());
     for (index = 0; index < numCards; index++)
     {
         testCard = testHand[index];
@@ -144,8 +144,8 @@ void Player::discardCard(Deck &deck, std::string goalString)
 
     // make best new current and return card to the deck
     currentHand = bestHand;
-    std::cout << "removed " << int(bestCard) << std::endl;
     deck.putCardBack(bestCard);
+    numCards--;
 }
 
 // using the hand, generate the string from empty
