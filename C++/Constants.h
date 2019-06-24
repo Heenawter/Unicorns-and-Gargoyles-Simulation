@@ -21,6 +21,6 @@ static const std::string INPUT_FILE = "Simulations/Draft" + DRAFT +"_Stats.txt";
 static const std::string OUTPT_FILE = "Simulations/Draft" + DRAFT + "_Results ("
     + std::to_string(NUM_PLAYERS) + " Players, "
     + std::to_string(NUM_ROUNDS) + " Rounds)"
-    + "_v2.txt";
+    + "_v3.txt";
 
 #endif  

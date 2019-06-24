@@ -41,16 +41,17 @@ int main()
 
 void simulateGame(std::ofstream& outputFile)
 {
-    int wins[NUM_PLAYERS]; // keep track of the number of wins per player
-    // WANT: average number of NON-REMOVE cards
-    // in the final solutions per player
-    int handCounts[NUM_PLAYERS];
+    // keep track of the number of wins per player
+    int wins[NUM_PLAYERS];
+    // keep track of the size of each player's hand at the end of each round
+    int handCounts[NUM_PLAYERS]; 
 
     // counters
     int playerNum = 0;
     int cardNum = 0;
     int totalCards = 0;
     int ranOutOfCards = 0;
+    int ranOutOfCards_sum = 0;
 
     // game stuff
     Player *player;
@@ -75,6 +76,7 @@ void simulateGame(std::ofstream& outputFile)
         std::cout << "\n----" << " GOAL " << std::left << std::setw(15) << *it << " ----" << std::endl;
         outputFile << "----" << " GOAL " << std::left << std::setw(15) << *it << " ----" << std::endl;
         totalCards = 0;
+        ranOutOfCards = 0;
 
         auto t1 = std::chrono::high_resolution_clock::now();
         int distance;
@@ -131,8 +133,12 @@ void simulateGame(std::ofstream& outputFile)
             
             // also output wins for each player FOR EACH GOAL?
             // PERCENTAGE of times ran out of cards rather than number
-            outputFile << "\tPlayer " << playerNum << " had ~" << handCounts[playerNum] / NUM_ROUNDS << " cards." << std::endl;
+            outputFile << "\t   - Player " << playerNum + 1 << " had ~" << handCounts[playerNum] / NUM_ROUNDS << " cards." << std::endl;
         }
+        outputFile << "\tRan out of cards " << ranOutOfCards << " times (i.e. "
+                   << (ranOutOfCards / double(NUM_ROUNDS)) * 100 << "%)." << std::endl << std::endl;
+
+        ranOutOfCards_sum += ranOutOfCards;
     }
 
     outputFile << "\n-------------------------------------\n" << std::endl;
@@ -142,8 +148,9 @@ void simulateGame(std::ofstream& outputFile)
         outputFile << "Player " << playerNum + 1 << " won " << wins[playerNum] << " times ";
         outputFile << "(i.e. " << (wins[playerNum] / double(NUM_ROUNDS * 8)) * 100 << "%)." << std::endl;
     }
-  
-    outputFile << "Ran out of cards " << ranOutOfCards << " times." << std::endl;
+
+    outputFile << "Ran out of cards " << ranOutOfCards_sum << " times (i.e. "
+               << (ranOutOfCards_sum / double(NUM_ROUNDS * 8)) * 100 << "%)." << std::endl;
 }
 
 std::vector<std::string> readGoals()

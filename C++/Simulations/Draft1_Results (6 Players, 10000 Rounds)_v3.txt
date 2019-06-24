@@ -1,0 +1,23 @@
+---- GOAL [ ][*][ ]       ----
+	~1 milliseconds to complete.
+	~7 cards to win.
+	   - Player 1 had ~4 cards.
+	   - Player 2 had ~4 cards.
+	   - Player 3 had ~4 cards.
+	   - Player 4 had ~4 cards.
+	   - Player 5 had ~4 cards.
+	   - Player 6 had ~4 cards.
+	Ran out of cards 355 times (i.e. 3.55%).
+
+---- GOAL [ ][ ][ ][ ]    ----
+	~0 milliseconds to complete.
+	~4 cards to win.
+	   - Player 1 had ~3 cards.
+	   - Player 2 had ~2 cards.
+	   - Player 3 had ~2 cards.
+	   - Player 4 had ~2 cards.
+	   - Player 5 had ~2 cards.
+	   - Player 6 had ~2 cards.
+	Ran out of cards 7 times (i.e. 0.07%).
+
+---- GOAL [*][ ][ ][*]    ----
