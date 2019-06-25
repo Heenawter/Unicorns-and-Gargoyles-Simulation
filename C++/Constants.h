@@ -11,7 +11,7 @@ static const char UNICORN = 0, GARGOYLE = 1, REVERSE = 2, ROTATE_R = 3, ROTATE_L
 static const char ACTION_CARD_DISCARD = 12;
 
 static const int NUM_PLAYERS = 6;
-static const int NUM_ROUNDS = 1000;
+static const int NUM_ROUNDS = 10000;
 
 static const int NUM_LINES_TO_SKIP = 17;
 

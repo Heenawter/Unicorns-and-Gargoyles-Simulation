@@ -32,6 +32,7 @@ char Game::gameRound(std::string goalString)
     bool keepLooping = true;
     
     int playerNum;
+    int playerNum2;
     char gameStatus = 'X';
     for (playerNum = 0; playerNum < NUM_PLAYERS & keepLooping; playerNum++)
     {
@@ -51,7 +52,10 @@ char Game::gameRound(std::string goalString)
         else
         {
             if(newCard == ACTION_CARD_DISCARD) {
-                currentPlayer->discardCard(deck, goalString);
+                for (playerNum2 = 0; playerNum2 < NUM_PLAYERS; playerNum2++)
+                {
+                    getPlayer(playerNum2)->discardCard(deck, goalString);
+                }
             }
         }    
 
