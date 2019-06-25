@@ -5,13 +5,16 @@
 
 // #include <iostream>
 
-Game::Game(int numPlayers)
+Game::Game(int numPlayers, std::string goal)
 {
     readGameStats();
     deck.shuffleDeck();
 
     for (int i = 0; i < numPlayers; i++)
         players.push_back(new Player());
+
+    goalString = goal;
+    winningPlayer = MAX_INT;
 }
 
 Game::~Game() {
@@ -19,6 +22,41 @@ Game::~Game() {
     for(it = players.begin(); it != players.end(); it++) {
         delete *it;
     }
+}
+
+// returns game status
+char Game::gameRound(std::string goalString) 
+{
+    Player* currentPlayer;
+    char newCard;
+    bool keepLooping = true;
+    
+    int playerNum;
+    char gameStatus = 'X';
+    for (playerNum = 0; playerNum < NUM_PLAYERS & keepLooping; playerNum++)
+    {
+        // std::cout << "player " << playerNum << " --- ";
+        currentPlayer = getPlayer(playerNum);
+        newCard = currentPlayer->takeTurn(deck, goalString);
+
+        if(currentPlayer->winningCondition()) {
+            gameStatus = WIN;
+            winningPlayer = playerNum;
+            keepLooping = false;
+        }
+        else if (!deck.hasCards()) {
+            gameStatus = RAN_OUT_OF_CARDS;
+            keepLooping = false;
+        }
+        else
+        {
+            if(newCard == ACTION_CARD_DISCARD) {
+                currentPlayer->discardCard(deck, goalString);
+            }
+        }    
+
+    }
+    return gameStatus;
 }
 
 void Game::readGameStats()

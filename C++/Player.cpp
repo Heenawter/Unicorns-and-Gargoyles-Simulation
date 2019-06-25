@@ -21,22 +21,57 @@ Player::Player()
     currentDistance = MAX_INT;
 }
 
+// first try every combination of swapping two cards in the
+// current hand; if none of these swaps get you closer to th
+// goalString, draw a new card instead
+// return the new card OR NO_NEW_CARD if none drawn
+char Player::takeTurn(Deck &deck, std::string goalString)
+{
+    std::pair<int, std::vector<char>> best;
+    char newCard = NO_NEW_CARD;
+
+    // if you have 0 or 1 cards, no point swapping - might as well
+    // draw another card
+    if (numCards <= 1) {
+        newCard = drawCard(deck, goalString);
+    }
+    else
+    {
+        // otherwise, try swaps before drawing card
+        best = moveCard(deck, goalString);
+        if (currentDistance <= best.first)
+        {
+            // swapping cards did not get you any closer
+            // to meeting the goal, so instead draw a card
+            // std::cout << "draw" << std::endl;
+            newCard = drawCard(deck, goalString);
+        }
+        else
+        {
+            // std::cout << "move" << std::endl;
+            currentDistance = best.first;
+            currentHand = best.second;
+        }
+    }
+
+    // printHand(deck, currentHand);
+    // std::string testString = generateString(deck, currentHand);
+    return newCard;
+}
+
 // assume we tried swapping, and it didn't get us any
 // closer to the goal -- this means we should draw
 // a card instead of swapping.
 // This card is just appended to the end of our current hand.
-// returns the new card so we can check if it is an
-// action card or not
+// returns the new card
 char Player::drawCard(Deck &deck, std::string goalString)
 {
     // std::cout << "DRAW CARD" << std::endl;
     char newCard = deck.drawCard();
-    if (newCard >= ACTION_CARD_START)
+
+    if (newCard < ACTION_CARD_DISCARD) 
     {
-        discardCard(deck, goalString);
-    }
-    else
-    {
+        // not an action card, so just add it to your hand
         std::string testString;
 
         currentHand.push_back(newCard);
@@ -44,7 +79,8 @@ char Player::drawCard(Deck &deck, std::string goalString)
         currentDistance = stringDistance(testString, goalString);
 
         numCards++;
-    }
+    } 
+    
     return newCard;
 }
 
@@ -139,6 +175,10 @@ void Player::discardCard(Deck &deck, std::string goalString)
     numCards--;
 }
 
+bool Player::winningCondition() {
+    return currentDistance == 0;
+}
+
 // using the hand, generate the string from empty
 std::string Player::generateString(Deck &deck, std::vector<char> hand)
 {
@@ -162,43 +202,6 @@ void Player::printHand(Deck &deck, std::vector<char> hand)
         std::cout << "[" << deck.getCardName(*it) << "]";
     }
     std::cout << std::endl;
-}
-
-// first try every combination of swapping two cards in the
-// current hand; if none of these swaps get you closer to th
-// goalString, draw a new card instead
-int Player::takeTurn(Deck &deck, std::string goalString)
-{
-    std::pair<int, std::vector<char>> best;
-    char newCard;
-    bool actionCard = false;
-
-    // if you have 0 or 1 cards, no point swapping - might as well
-    // draw another card
-    if (numCards <= 1)
-        newCard = drawCard(deck, goalString);
-    else
-    {
-        // otherwise, try swaps before drawing card
-        best = moveCard(deck, goalString);
-        if (currentDistance <= best.first)
-        {
-            // swapping cards did not get you any closer
-            // to meeting the goal, so instead draw a card
-            // std::cout << "draw" << std::endl;
-            newCard = drawCard(deck, goalString);
-        }
-        else
-        {
-            // std::cout << "move" << std::endl;
-            currentDistance = best.first;
-            currentHand = best.second;
-        }
-    }
-
-    // printHand(deck, currentHand);
-    // std::string testString = generateString(deck, currentHand);
-    return currentDistance;
 }
 
 // https://dzone.com/articles/the-levenshtein-algorithm-1

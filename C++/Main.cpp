@@ -57,7 +57,6 @@ void simulateGame(std::ofstream& outputFile)
     Player *player;
     Game *simulation;
     Deck *deck;
-    char playerStatus;                     // used to determine win, lose, ran out of cards
     std::vector<std::string>::iterator it; // used to loop through goal list
 
     // initialize the wins with 0 for each player
@@ -79,39 +78,30 @@ void simulateGame(std::ofstream& outputFile)
         ranOutOfCards = 0;
 
         auto t1 = std::chrono::high_resolution_clock::now();
-        int distance;
+        char gameStatus;
         // run k simulations of that goal...
         for (int k = 0; k < NUM_ROUNDS; k++)
         {
             // std::cout << "Round " << k + 1;
-            simulation = new Game(NUM_PLAYERS);
-            deck = simulation->getDeck();
+            simulation = new Game(NUM_PLAYERS, *it);
 
-            playerStatus = ' ';
             cardNum = 1;
             keepLooping = true;
+            gameStatus = 'X';
             while (keepLooping)
             {
                 // std::cout << ".";
                 // std::cout << "-- new turn -- " << std::endl;
-                for (playerNum = 0; playerNum < NUM_PLAYERS & keepLooping; playerNum++)
-                {
-                    // std::cout << "player " << playerNum << " --- ";
-                    player = simulation->getPlayer(playerNum);
-                    distance = player->takeTurn(*deck, *it);
-                    if(distance == 0) {
-                        keepLooping = false;
-                        wins[playerNum]++;
-                    }
-                    
-                    // check if still cards to draw
-                    if(!deck->hasCards()) {
-                        keepLooping = false;
-                        ranOutOfCards++;
-                    }
-                    
-                }
+                gameStatus = simulation->gameRound(*it);
                 cardNum++;
+
+                if(gameStatus == WIN) {
+                    keepLooping = false;
+                    wins[simulation->getWinningPlayer()]++;
+                } else if (gameStatus == RAN_OUT_OF_CARDS) {
+                    keepLooping = false;
+                    ranOutOfCards++;
+                }
             }
 
             for(playerNum = 0; playerNum < NUM_PLAYERS; playerNum++) {

@@ -37,12 +37,13 @@ private:
 public:
     ~Player();
     Player();
-    int takeTurn(Deck &deck, std::string goalString);
+    char takeTurn(Deck &deck, std::string goalString);
     void commentCard(std::string goalString);
     void discardCard(Deck &deck, std::string goalString); 
 
     int getHandSize() { return numCards; }
 
+    bool winningCondition();
     std::pair<int, std::vector<char> > moveCard(Deck &deck, std::string goalString);
 };
 
