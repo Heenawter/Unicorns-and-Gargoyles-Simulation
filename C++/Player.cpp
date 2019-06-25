@@ -71,7 +71,8 @@ char Player::drawCard(Deck &deck, std::string goalString)
 
     if (newCard < ACTION_CARD_DISCARD) 
     {
-        // not an action card, so just add it to your hand
+        // not an action card, so add it to your hand
+        // and adjust the distance from the goal
         std::string testString;
 
         currentHand.push_back(newCard);

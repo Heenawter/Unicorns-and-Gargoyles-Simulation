@@ -52,10 +52,14 @@ char Game::gameRound(std::string goalString)
         else
         {
             if(newCard == ACTION_CARD_DISCARD) {
+                // EACH PLAYER discards a card from their hand regardless of 
+                // who pulled the action card
                 for (playerNum2 = 0; playerNum2 < NUM_PLAYERS; playerNum2++)
-                {
                     getPlayer(playerNum2)->discardCard(deck, goalString);
-                }
+            } else if (newCard == ACTION_CARD_DRAW) {
+
+            } else if (newCard == ACTION_CARD_SPRING_CLEANING) {
+                
             }
         }    
 

@@ -48,7 +48,7 @@ void simulateGame(std::ofstream& outputFile)
 
     // counters
     int playerNum = 0;
-    int cardNum = 0;
+    int turnNum = 0;
     int totalCards = 0;
     int ranOutOfCards = 0;
     int ranOutOfCards_sum = 0;
@@ -85,7 +85,7 @@ void simulateGame(std::ofstream& outputFile)
             // std::cout << "Round " << k + 1;
             simulation = new Game(NUM_PLAYERS, *it);
 
-            cardNum = 1;
+            turnNum = 1;
             keepLooping = true;
             gameStatus = 'X';
             while (keepLooping)
@@ -93,7 +93,7 @@ void simulateGame(std::ofstream& outputFile)
                 // std::cout << ".";
                 // std::cout << "-- new turn -- " << std::endl;
                 gameStatus = simulation->gameRound(*it);
-                cardNum++;
+                turnNum++;
 
                 if(gameStatus == WIN) {
                     keepLooping = false;
@@ -109,7 +109,7 @@ void simulateGame(std::ofstream& outputFile)
                 handCounts[playerNum] += player->getHandSize();
             }
             // std::cout << std::endl;
-            totalCards += cardNum;
+            totalCards += turnNum;
             delete simulation;
         }
 
@@ -117,7 +117,7 @@ void simulateGame(std::ofstream& outputFile)
 
         auto difference = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
         outputFile << "\t~" << difference / NUM_ROUNDS << " milliseconds to complete." << std::endl;
-        outputFile << "\t~" << totalCards / NUM_ROUNDS << " cards to win." << std::endl;
+        outputFile << "\t~" << totalCards / NUM_ROUNDS << " turns/rounds to win." << std::endl;
 
         for(playerNum = 0; playerNum < NUM_PLAYERS; playerNum++) {
             

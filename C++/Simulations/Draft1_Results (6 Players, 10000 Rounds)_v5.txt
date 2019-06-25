@@ -7,7 +7,7 @@
 	   - Player 4 had ~4 cards.
 	   - Player 5 had ~4 cards.
 	   - Player 6 had ~4 cards.
-	Ran out of cards 223 times (i.e. 2.23%).
+	Ran out of cards 224 times (i.e. 2.24%).
 
 ---- GOAL [ ][ ][ ][ ]    ----
 	~0 milliseconds to complete.
@@ -24,23 +24,23 @@
 	~2 milliseconds to complete.
 	~10 turns/rounds to win.
 	   - Player 1 had ~5 cards.
-	   - Player 2 had ~5 cards.
-	   - Player 3 had ~5 cards.
-	   - Player 4 had ~5 cards.
+	   - Player 2 had ~4 cards.
+	   - Player 3 had ~4 cards.
+	   - Player 4 had ~4 cards.
 	   - Player 5 had ~4 cards.
 	   - Player 6 had ~4 cards.
-	Ran out of cards 785 times (i.e. 7.85%).
+	Ran out of cards 701 times (i.e. 7.01%).
 
 ---- GOAL [ ][ ][ ][*]    ----
 	~0 milliseconds to complete.
-	~5 turns/rounds to win.
+	~6 turns/rounds to win.
 	   - Player 1 had ~2 cards.
 	   - Player 2 had ~2 cards.
 	   - Player 3 had ~2 cards.
 	   - Player 4 had ~2 cards.
 	   - Player 5 had ~2 cards.
 	   - Player 6 had ~2 cards.
-	Ran out of cards 10 times (i.e. 0.1%).
+	Ran out of cards 7 times (i.e. 0.07%).
 
 ---- GOAL [ ][ ][*][*]    ----
 	~2 milliseconds to complete.
@@ -51,7 +51,7 @@
 	   - Player 4 had ~4 cards.
 	   - Player 5 had ~4 cards.
 	   - Player 6 had ~4 cards.
-	Ran out of cards 720 times (i.e. 7.2%).
+	Ran out of cards 707 times (i.e. 7.07%).
 
 ---- GOAL [ ][*][ ][ ][ ] ----
 	~2 milliseconds to complete.
@@ -59,10 +59,10 @@
 	   - Player 1 had ~5 cards.
 	   - Player 2 had ~5 cards.
 	   - Player 3 had ~5 cards.
-	   - Player 4 had ~4 cards.
+	   - Player 4 had ~5 cards.
 	   - Player 5 had ~4 cards.
 	   - Player 6 had ~4 cards.
-	Ran out of cards 664 times (i.e. 6.64%).
+	Ran out of cards 703 times (i.e. 7.03%).
 
 ---- GOAL [ ][ ][*][ ][ ] ----
 	~2 milliseconds to complete.
@@ -73,7 +73,7 @@
 	   - Player 4 had ~5 cards.
 	   - Player 5 had ~5 cards.
 	   - Player 6 had ~5 cards.
-	Ran out of cards 722 times (i.e. 7.22%).
+	Ran out of cards 760 times (i.e. 7.6%).
 
 ---- GOAL [ ][ ][ ][ ][ ] ----
 	~0 milliseconds to complete.
@@ -84,15 +84,15 @@
 	   - Player 4 had ~2 cards.
 	   - Player 5 had ~2 cards.
 	   - Player 6 had ~2 cards.
-	Ran out of cards 23 times (i.e. 0.23%).
+	Ran out of cards 21 times (i.e. 0.21%).
 
 
 -------------------------------------
 
-Player 1 won 14964 times (i.e. 18.705%).
-Player 2 won 14059 times (i.e. 17.5738%).
-Player 3 won 12875 times (i.e. 16.0938%).
-Player 4 won 12644 times (i.e. 15.805%).
-Player 5 won 11927 times (i.e. 14.9087%).
-Player 6 won 10384 times (i.e. 12.98%).
-Ran out of cards 3147 times (i.e. 3.93375%).
+Player 1 won 14764 times (i.e. 18.455%).
+Player 2 won 13916 times (i.e. 17.395%).
+Player 3 won 12912 times (i.e. 16.14%).
+Player 4 won 12868 times (i.e. 16.085%).
+Player 5 won 11832 times (i.e. 14.79%).
+Player 6 won 10585 times (i.e. 13.2312%).
+Ran out of cards 3123 times (i.e. 3.90375%).
