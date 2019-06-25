@@ -7,7 +7,7 @@
 	   - Player 4 had ~4 cards.
 	   - Player 5 had ~4 cards.
 	   - Player 6 had ~4 cards.
-	Ran out of cards 389 times (i.e. 3.89%).
+	Ran out of cards 447 times (i.e. 4.47%).
 
 ---- GOAL [ ][ ][ ][ ]    ----
 	~0 milliseconds to complete.
@@ -18,7 +18,7 @@
 	   - Player 4 had ~2 cards.
 	   - Player 5 had ~2 cards.
 	   - Player 6 had ~2 cards.
-	Ran out of cards 5 times (i.e. 0.05%).
+	Ran out of cards 9 times (i.e. 0.09%).
 
 ---- GOAL [*][ ][ ][*]    ----
 	~2 milliseconds to complete.
@@ -27,20 +27,20 @@
 	   - Player 2 had ~5 cards.
 	   - Player 3 had ~5 cards.
 	   - Player 4 had ~5 cards.
-	   - Player 5 had ~4 cards.
-	   - Player 6 had ~4 cards.
-	Ran out of cards 998 times (i.e. 9.98%).
+	   - Player 5 had ~5 cards.
+	   - Player 6 had ~5 cards.
+	Ran out of cards 1135 times (i.e. 11.35%).
 
 ---- GOAL [ ][ ][ ][*]    ----
 	~0 milliseconds to complete.
 	~5 cards to win.
 	   - Player 1 had ~3 cards.
 	   - Player 2 had ~3 cards.
-	   - Player 3 had ~2 cards.
-	   - Player 4 had ~2 cards.
+	   - Player 3 had ~3 cards.
+	   - Player 4 had ~3 cards.
 	   - Player 5 had ~2 cards.
 	   - Player 6 had ~2 cards.
-	Ran out of cards 50 times (i.e. 0.5%).
+	Ran out of cards 84 times (i.e. 0.84%).
 
 ---- GOAL [ ][ ][*][*]    ----
 	~2 milliseconds to complete.
@@ -50,8 +50,8 @@
 	   - Player 3 had ~5 cards.
 	   - Player 4 had ~5 cards.
 	   - Player 5 had ~5 cards.
-	   - Player 6 had ~4 cards.
-	Ran out of cards 1012 times (i.e. 10.12%).
+	   - Player 6 had ~5 cards.
+	Ran out of cards 1139 times (i.e. 11.39%).
 
 ---- GOAL [ ][*][ ][ ][ ] ----
 	~2 milliseconds to complete.
@@ -60,20 +60,20 @@
 	   - Player 2 had ~5 cards.
 	   - Player 3 had ~5 cards.
 	   - Player 4 had ~5 cards.
-	   - Player 5 had ~5 cards.
-	   - Player 6 had ~5 cards.
-	Ran out of cards 1025 times (i.e. 10.25%).
+	   - Player 5 had ~4 cards.
+	   - Player 6 had ~4 cards.
+	Ran out of cards 950 times (i.e. 9.5%).
 
 ---- GOAL [ ][ ][*][ ][ ] ----
 	~2 milliseconds to complete.
 	~9 cards to win.
-	   - Player 1 had ~6 cards.
-	   - Player 2 had ~6 cards.
+	   - Player 1 had ~5 cards.
+	   - Player 2 had ~5 cards.
 	   - Player 3 had ~5 cards.
 	   - Player 4 had ~5 cards.
 	   - Player 5 had ~5 cards.
 	   - Player 6 had ~5 cards.
-	Ran out of cards 1297 times (i.e. 12.97%).
+	Ran out of cards 1042 times (i.e. 10.42%).
 
 ---- GOAL [ ][ ][ ][ ][ ] ----
 	~0 milliseconds to complete.
@@ -83,16 +83,16 @@
 	   - Player 3 had ~3 cards.
 	   - Player 4 had ~3 cards.
 	   - Player 5 had ~3 cards.
-	   - Player 6 had ~3 cards.
-	Ran out of cards 73 times (i.e. 0.73%).
+	   - Player 6 had ~2 cards.
+	Ran out of cards 71 times (i.e. 0.71%).
 
 
 -------------------------------------
 
-Player 1 won 15359 times (i.e. 19.1988%).
-Player 2 won 13670 times (i.e. 17.0875%).
-Player 3 won 12889 times (i.e. 16.1112%).
-Player 4 won 12032 times (i.e. 15.04%).
-Player 5 won 10649 times (i.e. 13.3112%).
-Player 6 won 10612 times (i.e. 13.265%).
-Ran out of cards 4849 times (i.e. 6.06125%).
+Player 1 won 16284 times (i.e. 20.355%).
+Player 2 won 13875 times (i.e. 17.3438%).
+Player 3 won 11687 times (i.e. 14.6088%).
+Player 4 won 12082 times (i.e. 15.1025%).
+Player 5 won 11414 times (i.e. 14.2675%).
+Player 6 won 9819 times (i.e. 12.2737%).
+Ran out of cards 4877 times (i.e. 6.09625%).

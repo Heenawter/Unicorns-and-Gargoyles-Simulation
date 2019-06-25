@@ -9,11 +9,13 @@
 #include <limits>
 #include <chrono>
 
-Player::~Player() {
+Player::~Player()
+{
     // delete[] allHands;
 }
 
-Player::Player() {
+Player::Player()
+{
     currentString = "";
     numCards = 0;
     currentDistance = MAX_INT;
@@ -29,9 +31,12 @@ char Player::drawCard(Deck &deck, std::string goalString)
 {
     // std::cout << "DRAW CARD" << std::endl;
     char newCard = deck.drawCard();
-    if (newCard >= ACTION_CARD_START) {
+    if (newCard >= ACTION_CARD_START)
+    {
         discardCard(deck, goalString);
-    } else {
+    }
+    else
+    {
         std::string testString;
 
         currentHand.push_back(newCard);
@@ -43,7 +48,7 @@ char Player::drawCard(Deck &deck, std::string goalString)
     return newCard;
 }
 
-std::pair<int, std::vector<char> > Player::moveCard(Deck &deck, std::string goalString)
+std::pair<int, std::vector<char>> Player::moveCard(Deck &deck, std::string goalString)
 {
     std::vector<char> bestHand, testHand, testHandRemoved;
     int bestDistance = MAX_INT, testDistance;
@@ -51,16 +56,19 @@ std::pair<int, std::vector<char> > Player::moveCard(Deck &deck, std::string goal
     int cardToMove, whereToMove;
     char currentCard;
 
-    for(cardToMove = 0; cardToMove < numCards; cardToMove++) {
+    for (cardToMove = 0; cardToMove < numCards; cardToMove++)
+    {
         testHandRemoved = currentHand;
         currentCard = testHandRemoved[cardToMove]; // save card to insert later
         // remove the card so we can insert it somewhere else
         testHandRemoved.erase(testHandRemoved.begin() + cardToMove);
-        for(whereToMove = 0; whereToMove < numCards; whereToMove++) {
+        for (whereToMove = 0; whereToMove < numCards; whereToMove++)
+        {
             testHand = testHandRemoved;
             // obviously, inserting a card in the exact position it already is
             // is pointless; so just skip the entire thing when this happens
-            if(whereToMove != cardToMove) {
+            if (whereToMove != cardToMove)
+            {
                 testHand.insert(testHand.begin() + whereToMove, currentCard);
                 testString = generateString(deck, testHand);
                 testDistance = stringDistance(testString, goalString);
@@ -76,65 +84,18 @@ std::pair<int, std::vector<char> > Player::moveCard(Deck &deck, std::string goal
     return std::make_pair(bestDistance, bestHand);
 }
 
-// find the best possible two cards to swap positions
-// that is, swap the two cards that will get you AS CLOSE
-// AS CURRENTLY POSSIBLE to the goal in comparison to all
-// other card swaps
-std::pair<int, std::vector<char> > Player::swapCards(Deck &deck, std::string goalString)
-{
-    std::vector<char> bestHand, testHand;
-    int bestDistance = MAX_INT, testDistance;
-    std::string bestString, testString;
-    int swap1, swap2;
-
-    testHand = currentHand; // deep copy -- using copy constructor
-    // try all cards as the first card to swap
-    for (swap1 = 0; swap1 < numCards; swap1++)
-    {
-        // try all cards (minus ones we already tried) as the
-        // second card to swap; notice that the pattern for, say
-        // four cards, would go as follows:
-        // 1 <-> 2 ; 1 <-> 3 ; 1 <-> 4 ; 2 <-> 3 ; 2 <-> 4, 3 <-> 4
-        // We can see that doubles, such as 2 <-> 1, are skipped
-        // because swap2 = swap1
-        for (swap2 = swap1; swap2 < numCards; swap2++)
-        {
-            // obviously, 1 <-> 1 makes no sense; so, just skip
-            // this if it happens
-            if (swap1 != swap2)
-            {
-                std::swap(*(testHand.begin() + swap1), *(testHand.begin() + swap2));
-
-                testString = generateString(deck, testHand);
-                testDistance = stringDistance(testString, goalString);
-                if (testDistance < bestDistance)
-                {
-                    bestDistance = testDistance;
-                    bestHand = testHand; // deep copy -- using copy constructor
-                }
-
-                // std::copy(currentHand.begin(), currentHand.end(), testHand.begin());
-                testHand = currentHand; // deep copy -- using copy constructor
-            }
-        }
-    }
-
-    return std::make_pair(bestDistance, bestHand);
-}
 
 void Player::commentCard(std::string goalString)
 {
-    // -- action card -- 
+    // -- action card --
     // first try commenting out one of your own cards;
     // if doing so does not get you any closer to the
     // goal, then comment out a card for the player
-    // who is CLOSEST to winning - in this case, you 
-    // would want to *decrease* their similarity to 
+    // who is CLOSEST to winning - in this case, you
+    // would want to *decrease* their similarity to
     // the goal string
-
-        
 }
- 
+
 void Player::discardCard(Deck &deck, std::string goalString)
 {
     // -- action card --
@@ -162,10 +123,11 @@ void Player::discardCard(Deck &deck, std::string goalString)
         testString = generateString(deck, testHand);
         testDistance = stringDistance(testString, goalString);
 
-        if(testDistance < bestDistance) {
+        if (testDistance < bestDistance)
+        {
             bestDistance = testDistance;
             bestHand = testHand; // deep copy -- using copy constructor
-            bestCard = testCard; 
+            bestCard = testCard;
         }
 
         testHand = currentHand; // deep copy -- using copy constructor
@@ -182,7 +144,8 @@ std::string Player::generateString(Deck &deck, std::vector<char> hand)
 {
     std::string current = "";
     std::vector<char>::iterator it;
-    for (it = hand.begin(); it < hand.end(); it++) {
+    for (it = hand.begin(); it < hand.end(); it++)
+    {
         deck.playCard(*it, current);
     }
 
@@ -206,31 +169,33 @@ void Player::printHand(Deck &deck, std::vector<char> hand)
 // goalString, draw a new card instead
 int Player::takeTurn(Deck &deck, std::string goalString)
 {
-    std::pair<int, std::vector<char> > best;
+    std::pair<int, std::vector<char>> best;
     char newCard;
     bool actionCard = false;
 
     // if you have 0 or 1 cards, no point swapping - might as well
     // draw another card
-    if(numCards <= 1)
+    if (numCards <= 1)
         newCard = drawCard(deck, goalString);
     else
     {
         // otherwise, try swaps before drawing card
         best = moveCard(deck, goalString);
-        if(currentDistance <= best.first) {
+        if (currentDistance <= best.first)
+        {
             // swapping cards did not get you any closer
             // to meeting the goal, so instead draw a card
             // std::cout << "draw" << std::endl;
             newCard = drawCard(deck, goalString);
-        } else {
+        }
+        else
+        {
             // std::cout << "move" << std::endl;
             currentDistance = best.first;
             currentHand = best.second;
         }
     }
 
-    
     // printHand(deck, currentHand);
     // std::string testString = generateString(deck, currentHand);
     return currentDistance;
@@ -262,7 +227,7 @@ int Player::stringDistance(const std::string &string1, const std::string &string
     for (int j = 1; j < maxSize; j++)
     {
         prevSubstitutionCost = levenshteinDistance[0];
-        levenshteinDistance[0]++; 
+        levenshteinDistance[0]++;
         for (int i = 1; i < minSize; i++)
         {
             // save the last diagonal; i.e. the previous substitution cost
