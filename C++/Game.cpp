@@ -40,29 +40,38 @@ char Game::gameRound(std::string goalString)
         currentPlayer = getPlayer(playerNum);
         newCard = currentPlayer->takeTurn(deck, goalString);
 
-        if(currentPlayer->winningCondition()) {
+        if(newCard == ACTION_CARD_DISCARD) {
+            // EACH PLAYER discards a card from their hand regardless of 
+            // who pulled the action card
+            for (playerNum2 = 0; playerNum2 < NUM_PLAYERS; playerNum2++)
+                getPlayer(playerNum2)->discardCard(deck, goalString);
+        } else if (newCard == ACTION_CARD_DRAW) {
+            char testCard;
+            for (playerNum2 = 0; playerNum2 < NUM_PLAYERS; playerNum2++)
+            {
+                testCard = getPlayer(playerNum2)->drawCard(deck, goalString);
+                while(testCard >= ACTION_CARD_DISCARD && deck.hasNonActionCard())
+                {
+                    deck.putCardBack(testCard); // put the action card back
+                    // and draw a new card until it is NOT an action card
+                    testCard = getPlayer(playerNum2)->drawCard(deck, goalString);
+                }
+            }
+        } else if (newCard == ACTION_CARD_SPRING_CLEANING) {
+
+        }
+
+        if (currentPlayer->winningCondition())
+        {
             gameStatus = WIN;
             winningPlayer = playerNum;
             keepLooping = false;
         }
-        else if (!deck.hasCards()) {
+        else if (!deck.hasCards())
+        {
             gameStatus = RAN_OUT_OF_CARDS;
             keepLooping = false;
         }
-        else
-        {
-            if(newCard == ACTION_CARD_DISCARD) {
-                // EACH PLAYER discards a card from their hand regardless of 
-                // who pulled the action card
-                for (playerNum2 = 0; playerNum2 < NUM_PLAYERS; playerNum2++)
-                    getPlayer(playerNum2)->discardCard(deck, goalString);
-            } else if (newCard == ACTION_CARD_DRAW) {
-
-            } else if (newCard == ACTION_CARD_SPRING_CLEANING) {
-                
-            }
-        }    
-
     }
     return gameStatus;
 }

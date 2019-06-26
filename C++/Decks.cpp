@@ -72,6 +72,15 @@ void Deck::putCardBack(char card)
     cards.insert(cards.begin() + randomIndex, card);
 }
 
+bool Deck::hasNonActionCard() {
+    std::vector<char>::iterator it;
+    for(it = cards.begin(); it < cards.end(); it++) {
+        if(*it < ACTION_CARD_DISCARD) 
+            return true; // found a non-action card
+    }
+    return false; // did NOT find a non-action card
+}
+
 // remove the specified number of cards from a string
 // if the number to remove is greater than the number of
 // characters left, then simply empty the string

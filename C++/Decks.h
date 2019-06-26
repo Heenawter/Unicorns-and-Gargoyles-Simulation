@@ -24,10 +24,10 @@ class Deck {
         void shuffleDeck();
         bool hasCards();
         std::vector<char> getCards() { return cards; }
-
+        int numberOfCards() { return cards.size(); }
         std::string getCardName(char cardType); // WARNING: inefficient - avoid use
                                                  // mostly for debugging purposes
-  
+        bool hasNonActionCard();
         void playCard(char type, std::string &current);
 };
 
