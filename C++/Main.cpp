@@ -14,15 +14,20 @@ void simulateGame(std::ofstream& outputFile);
 
 int main()
 {
-    // Game *simulation = new Game(1);
-    // Player *player = new Player();
-    // Deck *deck = simulation->getDeck();
+    std::string goal = "[*][ ][ ][*]";
 
-    // std::string goal = "[*][ ][ ][*]";
-    // player->takeTurn(*deck, goal);
-    // player->takeTurn(*deck, goal);
-    // player->takeTurn(*deck, goal);
-    // player->takeTurn(*deck, goal);
+    Game *simulation = new Game(1, goal);
+    Player *player = new Player();
+    Deck *deck = simulation->getDeck();
+
+    player->takeTurn(*deck, goal);
+    player->takeTurn(*deck, goal);
+    player->takeTurn(*deck, goal);
+    player->takeTurn(*deck, goal);
+    player->takeTurn(*deck, goal);
+    player->takeTurn(*deck, goal);
+    player->takeTurn(*deck, goal);
+    player->springCleaning(*deck, goal);
     // player->takeTurn(*deck, goal);
     // player->takeTurn(*deck, goal);
     // player->takeTurn(*deck, goal);
@@ -30,13 +35,13 @@ int main()
     // player->takeTurn(*deck, goal);
     // player->takeTurn(*deck, goal);
 
-    std::ofstream file;
-    file.open(OUTPT_FILE);
+    // std::ofstream file;
+    // file.open(OUTPT_FILE);
 
-    if(file.is_open()) 
-        simulateGame(file);
+    // if(file.is_open()) 
+    //     simulateGame(file);
     
-    file.close();
+    // file.close();
 }
 
 void simulateGame(std::ofstream& outputFile)
@@ -91,6 +96,7 @@ void simulateGame(std::ofstream& outputFile)
             while (keepLooping)
             {
                 // std::cout << ".";
+                // std::cout << "turn " << turnNum << " --- ";
                 // std::cout << "-- new turn -- " << std::endl;
                 gameStatus = simulation->gameRound(*it);
                 turnNum++;

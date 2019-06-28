@@ -6,21 +6,6 @@
 #include <string>
 #include <unordered_set>
 
-
-struct vectorHash
-{
-    size_t operator()(const std::vector<char> &v) const
-    {
-        std::hash<int> hasher;
-        size_t seed = 0;
-        for (int i : v)
-        {
-            seed ^= hasher(i) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-        }
-        return seed;
-    }
-};
-
 class Player
 {
 private:
@@ -40,11 +25,18 @@ public:
     void commentCard(std::string goalString);
     void discardCard(Deck &deck, std::string goalString);
     char drawCard(Deck &deck, std::string goalString);
+    void springCleaning(Deck &deck, std::string goalString);
 
     int getHandSize() { return numCards; }
+    void printCurrentHand(Deck &deck);
 
     bool winningCondition();
+    
     std::pair<int, std::vector<char> > moveCard(Deck &deck, std::string goalString);
+    void combinationUtil(std::vector<char> arr, std::vector<char> data,
+                         std::vector<std::vector<char> > &allCombinations,
+                         int start, int end,
+                         int index, int r);
 };
 
 #endif

@@ -1,0 +1,13 @@
+---- GOAL [*][ ][ ][*]    ----
+	~4 milliseconds to complete.
+	~11 turns/rounds to win.
+	   - Player 1 had ~7 cards.
+	   - Player 2 had ~6 cards.
+	Ran out of cards 1 times (i.e. 0.1%).
+
+
+-------------------------------------
+
+Player 1 won 621 times (i.e. 7.7625%).
+Player 2 won 378 times (i.e. 4.725%).
+Ran out of cards 1 times (i.e. 0.0125%).

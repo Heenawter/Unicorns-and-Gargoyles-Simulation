@@ -20,6 +20,7 @@ bool Deck::hasCards() {
 
 void Deck::shuffleDeck()
 {
+    // unsigned seed = SEED;
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     std::shuffle(cards.begin(), cards.end(), std::default_random_engine(seed));
 }
@@ -61,7 +62,7 @@ void Deck::putCardBack(char card)
     }
     int min = 0; 
     int max = cards.size() - 1;
-
+    // unsigned seed = SEED;
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     std::default_random_engine rng(seed);     // random-number engine used (Mersenne-Twister in this case)
     // create a randomly distributed array with values

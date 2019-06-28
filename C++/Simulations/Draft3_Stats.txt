@@ -1,0 +1,34 @@
+--- String Cards ---
+15
+unicorn,	8
+gargoyle, 	4
+reverse order,	4
+rotate right,	4
+rotate left,	4
+double row,	4
+append 1,	4
+append 2,	4
+append 3, 	4
+remove 1, 	4
+remove 2,	4
+remove 3,	4
+*discard 1 card,	4
+*draw 1 card,   4
+*spring cleaning,   4
+
+--- Goal Cards ---
+1
+[*][ ][ ][*]
+
+[unicorn][unicorn][unicorn][unicorn][unicorn][unicorn][unicorn]
+[gargoyle][gargoyle][gargoyle][gargoyle]
+[append 1][append 1][append 1][append 1]
+[remove 1][remove 1][remove 1][remove 1]
+[append 2][append 2][append 2]
+[remove 2][remove 2][remove 2]
+[append 3][append 3][append 3][append 3]
+[remove 3][remove 3][remove 3][remove 3]
+
+[remove 2]
+
+[unicorn][append 2][unicorn]

@@ -36,16 +36,21 @@ char Game::gameRound(std::string goalString)
     char gameStatus = 'X';
     for (playerNum = 0; playerNum < NUM_PLAYERS & keepLooping; playerNum++)
     {
-        // std::cout << "player " << playerNum << " --- ";
+        // std::cout << "Player " << playerNum + 1 << " --- ";
         currentPlayer = getPlayer(playerNum);
         newCard = currentPlayer->takeTurn(deck, goalString);
 
         if(newCard == ACTION_CARD_DISCARD) {
+            // std::cout << "- Action card DISCARD -" << std::endl;
             // EACH PLAYER discards a card from their hand regardless of 
             // who pulled the action card
             for (playerNum2 = 0; playerNum2 < NUM_PLAYERS; playerNum2++)
                 getPlayer(playerNum2)->discardCard(deck, goalString);
         } else if (newCard == ACTION_CARD_DRAW) {
+            // EACH PLAYER draws a non-action card and appends it
+            // to their hand, regardless of who pulled the action card
+            // std::cout << "- Action card DRAW -" << std::endl;
+
             char testCard;
             for (playerNum2 = 0; playerNum2 < NUM_PLAYERS; playerNum2++)
             {
@@ -72,6 +77,8 @@ char Game::gameRound(std::string goalString)
             gameStatus = RAN_OUT_OF_CARDS;
             keepLooping = false;
         }
+
+        // currentPlayer->printCurrentHand(deck);
     }
     return gameStatus;
 }

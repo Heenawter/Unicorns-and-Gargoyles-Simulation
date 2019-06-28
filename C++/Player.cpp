@@ -54,7 +54,7 @@ char Player::takeTurn(Deck &deck, std::string goalString)
         }
     }
 
-    // printHand(deck, currentHand);
+    printHand(deck, currentHand);
     // std::string testString = generateString(deck, currentHand);
     return newCard;
 }
@@ -176,7 +176,70 @@ void Player::discardCard(Deck &deck, std::string goalString)
     numCards--;
 }
 
-bool Player::winningCondition() {
+void Player::combinationUtil(std::vector<char> arr, std::vector<char> data,
+                             std::vector<std::vector<char> > &allCombinations,
+                             int start, int end, int index, int r)
+{
+    // std::cout << "start: " << start << ", end: " << end << ", index: " << index << ", r: " << r << std::endl;
+    // base case
+    // Current combination is ready
+    // to be printed, print it
+    if (index == r)
+    {
+        std::vector<char> newCombo;
+        for (int j = 0; j < r; j++) {
+            newCombo.push_back(data[j]);
+            // std::cout << int(data[j]) << " ";
+        }
+        // std::cout << std::endl;
+
+        // std::copy(data.begin(), data.end() - r, newCombo);
+        allCombinations.push_back(newCombo);
+
+        // std::cout << std::endl;
+        return;
+    }
+
+    // replace index with all possible
+    // elements. The condition "end-i+1 >= r-index"
+    // makes sure that including one element
+    // at index will make a combination with
+    // remaining elements at remaining positions
+    for (int i = start; i <= end &&
+                        end - i + 1 >= r - index; i++)
+    {
+        data[index] = arr[i];
+        combinationUtil(arr, data, allCombinations,
+                        i + 1, end, index + 1, r);
+    }
+}
+
+void Player::springCleaning(Deck &deck, std::string goalString)
+{
+    // generate all possiblities for which cards to remove
+    // (remember that the order must stay the same)
+    // then, choose the possibility that gets you closest
+    // to the goal
+
+    if (numCards <= 0)
+        return; // nothing to do if no cards to remove!
+
+    std::vector<char> combinations(numCards);
+    std::vector<std::vector<char> > allCombinations;
+
+    for(int i = 1; i < numCards; i++) {
+        combinationUtil(currentHand, combinations, allCombinations, 0, numCards - 1, 0, i);
+    }
+
+    std::cout << allCombinations.size();
+    for (int k = 0; k < allCombinations.size(); k++)
+    {
+        printHand(deck, allCombinations[k]);
+    }
+}
+
+bool Player::winningCondition()
+{
     return currentDistance == 0;
 }
 
@@ -203,6 +266,13 @@ void Player::printHand(Deck &deck, std::vector<char> hand)
         std::cout << "[" << deck.getCardName(*it) << "]";
     }
     std::cout << std::endl;
+}
+
+// print the current hand using the card types rather than the chars
+// that represent each card (i.e. "unicorn" instead of char(0))
+void Player::printCurrentHand(Deck &deck)
+{
+    printHand(deck, currentHand);
 }
 
 // https://dzone.com/articles/the-levenshtein-algorithm-1
