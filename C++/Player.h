@@ -33,8 +33,9 @@ public:
     bool winningCondition();
     
     std::pair<int, std::vector<char> > moveCard(Deck &deck, std::string goalString);
-    void combinationUtil(std::vector<char> arr, std::vector<char> data,
-                         std::vector<std::vector<char> > &allCombinations,
+    void combinationUtil(std::vector<char> hand, std::vector<char> tempHand,
+                         std::vector<char>& bestHand, int& bestDistance,
+                         Deck &deck, std::string goalString,
                          int start, int end,
                          int index, int r);
 };

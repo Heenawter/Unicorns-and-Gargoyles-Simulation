@@ -176,27 +176,36 @@ void Player::discardCard(Deck &deck, std::string goalString)
     numCards--;
 }
 
-void Player::combinationUtil(std::vector<char> arr, std::vector<char> data,
-                             std::vector<std::vector<char> > &allCombinations,
+// https://www.geeksforgeeks.org/print-all-possible-combinations-of-r-elements-in-a-given-array-of-size-n/
+void Player::combinationUtil(std::vector<char> hand, std::vector<char> tempHand,
+                             std::vector<char>& bestHand, int& bestDistance,
+                             Deck &deck, std::string goalString,
                              int start, int end, int index, int r)
 {
-    // std::cout << "start: " << start << ", end: " << end << ", index: " << index << ", r: " << r << std::endl;
     // base case
-    // Current combination is ready
-    // to be printed, print it
     if (index == r)
     {
         std::vector<char> newCombo;
         for (int j = 0; j < r; j++) {
-            newCombo.push_back(data[j]);
+            newCombo.push_back(tempHand[j]);
             // std::cout << int(data[j]) << " ";
         }
-        // std::cout << std::endl;
+        
+        std::string testString = generateString(deck, newCombo);
+        int testDistance = stringDistance(testString, goalString);
 
-        // std::copy(data.begin(), data.end() - r, newCombo);
-        allCombinations.push_back(newCombo);
+        if(testDistance <= bestDistance)
+        {
+            // because <= and not <, this implies we are being CONSERVATIVE
+            // i.e. the player is choosing to remove AS FEW CARDS
+            // AS POSSIBLE while still maintaining the best distance
 
-        // std::cout << std::endl;
+            std::cout << "current best with distance " << testDistance << ": ";
+            printHand(deck, newCombo);
+            bestDistance = testDistance;
+            bestHand = newCombo;
+        }
+
         return;
     }
 
@@ -208,8 +217,9 @@ void Player::combinationUtil(std::vector<char> arr, std::vector<char> data,
     for (int i = start; i <= end &&
                         end - i + 1 >= r - index; i++)
     {
-        data[index] = arr[i];
-        combinationUtil(arr, data, allCombinations,
+        tempHand[index] = hand[i];
+        combinationUtil(hand, tempHand, bestHand, bestDistance, 
+                        deck, goalString,
                         i + 1, end, index + 1, r);
     }
 }
@@ -225,17 +235,20 @@ void Player::springCleaning(Deck &deck, std::string goalString)
         return; // nothing to do if no cards to remove!
 
     std::vector<char> combinations(numCards);
-    std::vector<std::vector<char> > allCombinations;
+    // std::vector<std::vector<char> > allCombinations;
+    int bestDistance = currentDistance;
+    std::vector<char> bestHand;
 
-    for(int i = 1; i < numCards; i++) {
-        combinationUtil(currentHand, combinations, allCombinations, 0, numCards - 1, 0, i);
+    for(int i = 1; i <= numCards; i++) {
+        combinationUtil(currentHand, combinations, bestHand, bestDistance,
+                        deck, goalString, 0, numCards - 1, 0, i);
     }
 
-    std::cout << allCombinations.size();
-    for (int k = 0; k < allCombinations.size(); k++)
-    {
-        printHand(deck, allCombinations[k]);
-    }
+    numCards = bestHand.size();
+    currentHand = bestHand;
+    currentDistance = bestDistance;
+
+    printHand(deck, currentHand);
 }
 
 bool Player::winningCondition()

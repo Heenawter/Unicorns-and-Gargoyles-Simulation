@@ -27,7 +27,10 @@ int main()
     player->takeTurn(*deck, goal);
     player->takeTurn(*deck, goal);
     player->takeTurn(*deck, goal);
+    std::cout << "spring cleaning: ";
     player->springCleaning(*deck, goal);
+    // std::cout << "spring cleaning: ";
+    // player->springCleaning(*deck, goal);
     // player->takeTurn(*deck, goal);
     // player->takeTurn(*deck, goal);
     // player->takeTurn(*deck, goal);
