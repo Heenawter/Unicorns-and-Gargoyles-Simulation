@@ -14,6 +14,7 @@ remove 2,	4
 remove 3,	4
 *discard 1 card,	4
 *draw 1 card,   4
+*spring cleaning,   0
 
 --- Goal Cards ---
 1

@@ -33,6 +33,7 @@ char Player::takeTurn(Deck &deck, std::string goalString)
     // if you have 0 or 1 cards, no point swapping - might as well
     // draw another card
     if (numCards <= 1) {
+        std::cout << "draw --- ";
         newCard = drawCard(deck, goalString);
     }
     else
@@ -43,18 +44,17 @@ char Player::takeTurn(Deck &deck, std::string goalString)
         {
             // swapping cards did not get you any closer
             // to meeting the goal, so instead draw a card
-            // std::cout << "draw" << std::endl;
+            std::cout << "draw --- ";
             newCard = drawCard(deck, goalString);
         }
         else
         {
-            // std::cout << "move" << std::endl;
+            std::cout << "move --- ";
             currentDistance = best.first;
             currentHand = best.second;
         }
     }
 
-    printHand(deck, currentHand);
     // std::string testString = generateString(deck, currentHand);
     return newCard;
 }
@@ -200,8 +200,8 @@ void Player::combinationUtil(std::vector<char> hand, std::vector<char> tempHand,
             // i.e. the player is choosing to remove AS FEW CARDS
             // AS POSSIBLE while still maintaining the best distance
 
-            std::cout << "current best with distance " << testDistance << ": ";
-            printHand(deck, newCombo);
+            // std::cout << "current best with distance " << testDistance << ": ";
+            // printHand(deck, newCombo);
             bestDistance = testDistance;
             bestHand = newCombo;
         }

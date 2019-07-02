@@ -16,35 +16,31 @@ int main()
 {
     std::string goal = "[*][ ][ ][*]";
 
-    Game *simulation = new Game(1, goal);
-    Player *player = new Player();
-    Deck *deck = simulation->getDeck();
+    // Game *simulation = new Game(1, goal);
+    // Player *player = new Player();
+    // Deck *deck = simulation->getDeck();
 
-    player->takeTurn(*deck, goal);
-    player->takeTurn(*deck, goal);
-    player->takeTurn(*deck, goal);
-    player->takeTurn(*deck, goal);
-    player->takeTurn(*deck, goal);
-    player->takeTurn(*deck, goal);
-    player->takeTurn(*deck, goal);
-    std::cout << "spring cleaning: ";
-    player->springCleaning(*deck, goal);
+    // // player->takeTurn(*deck, goal);
+    // player->takeTurn(*deck, goal);
+    // player->takeTurn(*deck, goal);
+    // player->takeTurn(*deck, goal);
+    // player->takeTurn(*deck, goal);
+    // player->takeTurn(*deck, goal);
+    // player->takeTurn(*deck, goal);
     // std::cout << "spring cleaning: ";
     // player->springCleaning(*deck, goal);
-    // player->takeTurn(*deck, goal);
-    // player->takeTurn(*deck, goal);
-    // player->takeTurn(*deck, goal);
-    // player->takeTurn(*deck, goal);
-    // player->takeTurn(*deck, goal);
-    // player->takeTurn(*deck, goal);
+    // std::cout << "spring cleaning: ";
+    // player->springCleaning(*deck, goal);
+    // std::cout << "spring cleaning: ";
+    // player->springCleaning(*deck, goal);
 
-    // std::ofstream file;
-    // file.open(OUTPT_FILE);
+    std::ofstream file;
+    file.open(OUTPT_FILE);
 
-    // if(file.is_open()) 
-    //     simulateGame(file);
+    if(file.is_open()) 
+        simulateGame(file);
     
-    // file.close();
+    file.close();
 }
 
 void simulateGame(std::ofstream& outputFile)
@@ -99,7 +95,7 @@ void simulateGame(std::ofstream& outputFile)
             while (keepLooping)
             {
                 // std::cout << ".";
-                // std::cout << "turn " << turnNum << " --- ";
+                std::cout << "turn " << turnNum << " --- \n";
                 // std::cout << "-- new turn -- " << std::endl;
                 gameStatus = simulation->gameRound(*it);
                 turnNum++;
