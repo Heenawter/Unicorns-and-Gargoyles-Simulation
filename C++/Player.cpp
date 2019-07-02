@@ -199,9 +199,6 @@ void Player::combinationUtil(std::vector<char> hand, std::vector<char> tempHand,
             // because <= and not <, this implies we are being CONSERVATIVE
             // i.e. the player is choosing to remove AS FEW CARDS
             // AS POSSIBLE while still maintaining the best distance
-
-            // std::cout << "current best with distance " << testDistance << ": ";
-            // printHand(deck, newCombo);
             bestDistance = testDistance;
             bestHand = newCombo;
         }
@@ -244,11 +241,22 @@ void Player::springCleaning(Deck &deck, std::string goalString)
                         deck, goalString, 0, numCards - 1, 0, i);
     }
 
+    
+    std::vector<char> cardsRemoved;
+    std::set_difference(currentHand.begin(), currentHand.end(), bestHand.begin(), bestHand.end(),
+                        std::back_inserter(cardsRemoved));
+    std::cout << "\nremoved: "; printHand(deck, cardsRemoved);
+    std::cout << "current: "; printHand(deck, currentHand);
+    std::cout << "best: "; printHand(deck, bestHand);
+
+    std::vector<char>::iterator it;
+    for(it = cardsRemoved.begin(); it < cardsRemoved.end(); it++) {
+        deck.putCardBack(*it);
+    }
+
     numCards = bestHand.size();
     currentHand = bestHand;
     currentDistance = bestDistance;
-
-    printHand(deck, currentHand);
 }
 
 bool Player::winningCondition()

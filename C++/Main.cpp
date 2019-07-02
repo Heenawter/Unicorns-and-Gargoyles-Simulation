@@ -16,31 +16,35 @@ int main()
 {
     std::string goal = "[*][ ][ ][*]";
 
-    // Game *simulation = new Game(1, goal);
-    // Player *player = new Player();
-    // Deck *deck = simulation->getDeck();
+    Game *simulation = new Game(1, goal);
+    Player *player = new Player();
+    Deck *deck = simulation->getDeck();
 
-    // // player->takeTurn(*deck, goal);
-    // player->takeTurn(*deck, goal);
-    // player->takeTurn(*deck, goal);
-    // player->takeTurn(*deck, goal);
-    // player->takeTurn(*deck, goal);
-    // player->takeTurn(*deck, goal);
-    // player->takeTurn(*deck, goal);
-    // std::cout << "spring cleaning: ";
-    // player->springCleaning(*deck, goal);
-    // std::cout << "spring cleaning: ";
-    // player->springCleaning(*deck, goal);
-    // std::cout << "spring cleaning: ";
-    // player->springCleaning(*deck, goal);
+    player->takeTurn(*deck, goal);
+    player->takeTurn(*deck, goal);
+    player->takeTurn(*deck, goal);
+    player->takeTurn(*deck, goal);
+    player->takeTurn(*deck, goal);
+    player->takeTurn(*deck, goal);
+    player->takeTurn(*deck, goal);
+    player->takeTurn(*deck, goal);
+    player->takeTurn(*deck, goal);
+    player->takeTurn(*deck, goal);
+    player->takeTurn(*deck, goal);
+    player->takeTurn(*deck, goal);
+    player->takeTurn(*deck, goal);
+    std::cout << "\ndeck size before: " << deck->numberOfCards() << std::endl;
+    std::cout << "spring cleaning: ";
+    player->springCleaning(*deck, goal);
+    std::cout << "\ndeck size after: " << deck->numberOfCards() << std::endl;
 
-    std::ofstream file;
-    file.open(OUTPT_FILE);
+    // std::ofstream file;
+    // file.open(OUTPT_FILE);
 
-    if(file.is_open()) 
-        simulateGame(file);
+    // if(file.is_open()) 
+    //     simulateGame(file);
     
-    file.close();
+    // file.close();
 }
 
 void simulateGame(std::ofstream& outputFile)
