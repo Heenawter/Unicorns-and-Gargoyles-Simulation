@@ -1,9 +1,9 @@
 ---- GOAL [*][ ][ ][*]    ----
-	~55 milliseconds to complete.
+	~111 milliseconds to complete.
 	~11 turns/rounds to win.
-	   - Player 1 had ~5 cards.
+	   - Player 1 had ~3 cards.
 	   - Player 2 had ~5 cards.
-	   - Player 3 had ~6 cards.
+	   - Player 3 had ~3 cards.
 	Ran out of cards 0 times (i.e. 0%).
 
 

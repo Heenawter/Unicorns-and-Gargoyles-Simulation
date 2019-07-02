@@ -241,19 +241,17 @@ void Player::springCleaning(Deck &deck, std::string goalString)
                         deck, goalString, 0, numCards - 1, 0, i);
     }
 
-    
+    // now that we found the best possible hand, let's make sure to
+    // add the removed cards back to our deck    
     std::vector<char> cardsRemoved;
     std::set_difference(currentHand.begin(), currentHand.end(), bestHand.begin(), bestHand.end(),
                         std::back_inserter(cardsRemoved));
-    std::cout << "\nremoved: "; printHand(deck, cardsRemoved);
-    std::cout << "current: "; printHand(deck, currentHand);
-    std::cout << "best: "; printHand(deck, bestHand);
-
     std::vector<char>::iterator it;
     for(it = cardsRemoved.begin(); it < cardsRemoved.end(); it++) {
         deck.putCardBack(*it);
     }
 
+    // now, set the best to the current
     numCards = bestHand.size();
     currentHand = bestHand;
     currentDistance = bestDistance;

@@ -70,7 +70,13 @@ char Game::gameRound(std::string goalString)
                 getPlayer(playerNum2)->printCurrentHand(deck);
             }
         } else if (newCard == ACTION_CARD_SPRING_CLEANING) {
-            std::cout << " Action card SPRING CLEANING --- ";
+            std::cout << "\n --- Action card SPRING CLEANING --- \n";
+            for (playerNum2 = 0; playerNum2 < NUM_PLAYERS; playerNum2++)
+            {
+                getPlayer(playerNum2)->springCleaning(deck, goalString);
+                std::cout << " --- Player " << playerNum2 + 1 << " --- ";
+                getPlayer(playerNum2)->printCurrentHand(deck);
+            }
         }
 
         
