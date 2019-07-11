@@ -99,7 +99,7 @@ void simulateGame(std::ofstream& outputFile)
             while (keepLooping)
             {
                 // std::cout << ".";
-                std::cout << "turn " << turnNum << " --- \n";
+                // std::cout << "turn " << turnNum << " --- \n";
                 // std::cout << "-- new turn -- " << std::endl;
                 gameStatus = simulation->gameRound(*it);
                 turnNum++;
@@ -149,7 +149,7 @@ void simulateGame(std::ofstream& outputFile)
     }
 
     outputFile << "Ran out of cards " << ranOutOfCards_sum << " times (i.e. "
-               << (ranOutOfCards_sum / double(NUM_ROUNDS * 8)) * 100 << "%)." << std::endl;
+               << (ranOutOfCards_sum / double(NUM_ROUNDS * NUM_GOALS)) * 100 << "%)." << std::endl;
 }
 
 std::vector<std::string> readGoals()

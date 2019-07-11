@@ -21,6 +21,10 @@ Player::Player()
     currentDistance = MAX_INT;
 }
 
+/******************************************************/
+/*                  GAME FUNCTIONS                    */
+/******************************************************/
+
 // first try every combination of swapping two cards in the
 // current hand; if none of these swaps get you closer to th
 // goalString, draw a new card instead
@@ -33,7 +37,7 @@ char Player::takeTurn(Deck &deck, std::string goalString)
     // if you have 0 or 1 cards, no point swapping - might as well
     // draw another card
     if (numCards <= 1) {
-        std::cout << "draw --- ";
+        // std::cout << "draw --- ";
         newCard = drawCard(deck, goalString);
     }
     else
@@ -44,12 +48,12 @@ char Player::takeTurn(Deck &deck, std::string goalString)
         {
             // swapping cards did not get you any closer
             // to meeting the goal, so instead draw a card
-            std::cout << "draw --- ";
+            // std::cout << "draw --- ";
             newCard = drawCard(deck, goalString);
         }
         else
         {
-            std::cout << "move --- ";
+            // std::cout << "move --- ";
             currentDistance = best.first;
             currentHand = best.second;
         }
@@ -121,17 +125,14 @@ std::pair<int, std::vector<char>> Player::moveCard(Deck &deck, std::string goalS
     return std::make_pair(bestDistance, bestHand);
 }
 
-
-void Player::commentCard(std::string goalString)
+bool Player::winningCondition()
 {
-    // -- action card --
-    // first try commenting out one of your own cards;
-    // if doing so does not get you any closer to the
-    // goal, then comment out a card for the player
-    // who is CLOSEST to winning - in this case, you
-    // would want to *decrease* their similarity to
-    // the goal string
+    return currentDistance == 0;
 }
+
+/******************************************************/
+/*                   ACTION CARDS                     */
+/******************************************************/
 
 void Player::discardCard(Deck &deck, std::string goalString)
 {
@@ -176,6 +177,59 @@ void Player::discardCard(Deck &deck, std::string goalString)
     numCards--;
 }
 
+void Player::springCleaning(Deck &deck, std::string goalString)
+{
+    // -- action card --
+    // generate all possiblities for which cards to remove
+    // (remember that the order must stay the same)
+    // then, choose the possibility that gets you closest
+    // to the goal
+
+    if (numCards <= 0)
+        return; // nothing to do if no cards to remove!
+
+    std::vector<char> combinations(numCards);
+    // std::vector<std::vector<char> > allCombinations;
+    int bestDistance = currentDistance;
+    std::vector<char> bestHand;
+
+    for (int i = 1; i <= numCards; i++)
+    {
+        combinationUtil(currentHand, combinations, bestHand, bestDistance,
+                        deck, goalString, 0, numCards - 1, 0, i);
+    }
+
+    // now that we found the best possible hand, let's make sure to
+    // add the removed cards back to our deck
+    std::vector<char> cardsRemoved;
+    std::set_difference(currentHand.begin(), currentHand.end(), bestHand.begin(), bestHand.end(),
+                        std::back_inserter(cardsRemoved));
+    std::vector<char>::iterator it;
+    for (it = cardsRemoved.begin(); it < cardsRemoved.end(); it++)
+    {
+        deck.putCardBack(*it);
+    }
+
+    // now, set the best to the current
+    numCards = bestHand.size();
+    currentHand = bestHand;
+    currentDistance = bestDistance;
+}
+
+void poisonCard(Deck &deck, std::string goalString, std::vector<Player> &otherPlayers)
+{
+    return;
+}
+
+void stealCard(Deck &deck, std::string goalString, std::vector<Player> &otherPlayers) 
+{
+    return;
+}
+
+/******************************************************/
+/*                  HELPER FUNCTIONS                  */
+/******************************************************/
+
 // https://www.geeksforgeeks.org/print-all-possible-combinations-of-r-elements-in-a-given-array-of-size-n/
 void Player::combinationUtil(std::vector<char> hand, std::vector<char> tempHand,
                              std::vector<char>& bestHand, int& bestDistance,
@@ -219,47 +273,6 @@ void Player::combinationUtil(std::vector<char> hand, std::vector<char> tempHand,
                         deck, goalString,
                         i + 1, end, index + 1, r);
     }
-}
-
-void Player::springCleaning(Deck &deck, std::string goalString)
-{
-    // generate all possiblities for which cards to remove
-    // (remember that the order must stay the same)
-    // then, choose the possibility that gets you closest
-    // to the goal
-
-    if (numCards <= 0)
-        return; // nothing to do if no cards to remove!
-
-    std::vector<char> combinations(numCards);
-    // std::vector<std::vector<char> > allCombinations;
-    int bestDistance = currentDistance;
-    std::vector<char> bestHand;
-
-    for(int i = 1; i <= numCards; i++) {
-        combinationUtil(currentHand, combinations, bestHand, bestDistance,
-                        deck, goalString, 0, numCards - 1, 0, i);
-    }
-
-    // now that we found the best possible hand, let's make sure to
-    // add the removed cards back to our deck    
-    std::vector<char> cardsRemoved;
-    std::set_difference(currentHand.begin(), currentHand.end(), bestHand.begin(), bestHand.end(),
-                        std::back_inserter(cardsRemoved));
-    std::vector<char>::iterator it;
-    for(it = cardsRemoved.begin(); it < cardsRemoved.end(); it++) {
-        deck.putCardBack(*it);
-    }
-
-    // now, set the best to the current
-    numCards = bestHand.size();
-    currentHand = bestHand;
-    currentDistance = bestDistance;
-}
-
-bool Player::winningCondition()
-{
-    return currentDistance == 0;
 }
 
 // using the hand, generate the string from empty
