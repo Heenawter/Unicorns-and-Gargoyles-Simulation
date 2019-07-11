@@ -11,7 +11,10 @@ class Game {
         std::string goalString;
         int winningPlayer;
 
+        bool reversePlayOrder = false;
+
         void readGameStats();
+        char playerTurn(std::string goalString, int playerNum);
 
     public:   
         Game(int numPlayers, std::string goal);
@@ -22,7 +25,7 @@ class Game {
         Player* getPlayer(int index);
 
         char gameRound(std::string goalString);
-        
+
         int getWinningPlayer() { return winningPlayer; }
 };
 

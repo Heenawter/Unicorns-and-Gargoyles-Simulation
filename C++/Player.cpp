@@ -1,4 +1,3 @@
-
 #include "Constants.h"
 #include "Decks.h"
 #include "Player.h"
@@ -36,7 +35,8 @@ char Player::takeTurn(Deck &deck, std::string goalString)
 
     // if you have 0 or 1 cards, no point swapping - might as well
     // draw another card
-    if (numCards <= 1) {
+    if (numCards <= 1)
+    {
         // std::cout << "draw --- ";
         newCard = drawCard(deck, goalString);
     }
@@ -73,7 +73,7 @@ char Player::drawCard(Deck &deck, std::string goalString)
     // std::cout << "DRAW CARD" << std::endl;
     char newCard = deck.drawCard();
 
-    if (newCard < ACTION_CARD_DISCARD) 
+    if (newCard < ACTION_CARD_DISCARD)
     {
         // not an action card, so add it to your hand
         // and adjust the distance from the goal
@@ -84,8 +84,8 @@ char Player::drawCard(Deck &deck, std::string goalString)
         currentDistance = stringDistance(testString, goalString);
 
         numCards++;
-    } 
-    
+    }
+
     return newCard;
 }
 
@@ -221,7 +221,7 @@ void poisonCard(Deck &deck, std::string goalString, std::vector<Player> &otherPl
     return;
 }
 
-void stealCard(Deck &deck, std::string goalString, std::vector<Player> &otherPlayers) 
+void stealCard(Deck &deck, std::string goalString, std::vector<Player> &otherPlayers)
 {
     return;
 }
@@ -232,7 +232,7 @@ void stealCard(Deck &deck, std::string goalString, std::vector<Player> &otherPla
 
 // https://www.geeksforgeeks.org/print-all-possible-combinations-of-r-elements-in-a-given-array-of-size-n/
 void Player::combinationUtil(std::vector<char> hand, std::vector<char> tempHand,
-                             std::vector<char>& bestHand, int& bestDistance,
+                             std::vector<char> &bestHand, int &bestDistance,
                              Deck &deck, std::string goalString,
                              int start, int end, int index, int r)
 {
@@ -240,15 +240,16 @@ void Player::combinationUtil(std::vector<char> hand, std::vector<char> tempHand,
     if (index == r)
     {
         std::vector<char> newCombo;
-        for (int j = 0; j < r; j++) {
+        for (int j = 0; j < r; j++)
+        {
             newCombo.push_back(tempHand[j]);
             // std::cout << int(data[j]) << " ";
         }
-        
+
         std::string testString = generateString(deck, newCombo);
         int testDistance = stringDistance(testString, goalString);
 
-        if(testDistance <= bestDistance)
+        if (testDistance <= bestDistance)
         {
             // because <= and not <, this implies we are being CONSERVATIVE
             // i.e. the player is choosing to remove AS FEW CARDS
@@ -266,10 +267,11 @@ void Player::combinationUtil(std::vector<char> hand, std::vector<char> tempHand,
     // at index will make a combination with
     // remaining elements at remaining positions
     for (int i = start; i <= end &&
-                        end - i + 1 >= r - index; i++)
+                        end - i + 1 >= r - index;
+         i++)
     {
         tempHand[index] = hand[i];
-        combinationUtil(hand, tempHand, bestHand, bestDistance, 
+        combinationUtil(hand, tempHand, bestHand, bestDistance,
                         deck, goalString,
                         i + 1, end, index + 1, r);
     }

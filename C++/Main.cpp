@@ -10,7 +10,7 @@
 #include <chrono>
 
 std::vector<std::string> readGoals();
-void simulateGame(std::ofstream& outputFile);
+void simulateGame(std::ofstream &outputFile);
 
 int main()
 {
@@ -41,18 +41,18 @@ int main()
     std::ofstream file;
     file.open(OUTPT_FILE);
 
-    if(file.is_open()) 
+    if (file.is_open())
         simulateGame(file);
-    
+
     file.close();
 }
 
-void simulateGame(std::ofstream& outputFile)
+void simulateGame(std::ofstream &outputFile)
 {
     // keep track of the number of wins per player
     int wins[NUM_PLAYERS];
     // keep track of the size of each player's hand at the end of each round
-    int handCounts[NUM_PLAYERS]; 
+    int handCounts[NUM_PLAYERS];
 
     // counters
     int playerNum = 0;
@@ -68,7 +68,7 @@ void simulateGame(std::ofstream& outputFile)
     std::vector<std::string>::iterator it; // used to loop through goal list
 
     // initialize the wins with 0 for each player
-    for (playerNum = 0; playerNum < NUM_PLAYERS; playerNum++) 
+    for (playerNum = 0; playerNum < NUM_PLAYERS; playerNum++)
         wins[playerNum] = 0;
 
     std::vector<std::string> goals = readGoals(); // list of all goals
@@ -80,8 +80,10 @@ void simulateGame(std::ofstream& outputFile)
         for (playerNum = 0; playerNum < NUM_PLAYERS; playerNum++)
             handCounts[playerNum] = 0;
 
-        std::cout << "\n----" << " GOAL " << std::left << std::setw(15) << *it << " ----" << std::endl;
-        outputFile << "----" << " GOAL " << std::left << std::setw(15) << *it << " ----" << std::endl;
+        std::cout << "\n----"
+                  << " GOAL " << std::left << std::setw(15) << *it << " ----" << std::endl;
+        outputFile << "----"
+                   << " GOAL " << std::left << std::setw(15) << *it << " ----" << std::endl;
         totalCards = 0;
         ranOutOfCards = 0;
 
@@ -104,16 +106,20 @@ void simulateGame(std::ofstream& outputFile)
                 gameStatus = simulation->gameRound(*it);
                 turnNum++;
 
-                if(gameStatus == WIN) {
+                if (gameStatus == WIN)
+                {
                     keepLooping = false;
                     wins[simulation->getWinningPlayer()]++;
-                } else if (gameStatus == RAN_OUT_OF_CARDS) {
+                }
+                else if (gameStatus == RAN_OUT_OF_CARDS)
+                {
                     keepLooping = false;
                     ranOutOfCards++;
                 }
             }
 
-            for(playerNum = 0; playerNum < NUM_PLAYERS; playerNum++) {
+            for (playerNum = 0; playerNum < NUM_PLAYERS; playerNum++)
+            {
                 player = simulation->getPlayer(playerNum);
                 handCounts[playerNum] += player->getHandSize();
             }
@@ -128,19 +134,22 @@ void simulateGame(std::ofstream& outputFile)
         outputFile << "\t~" << difference / NUM_ROUNDS << " milliseconds to complete." << std::endl;
         outputFile << "\t~" << totalCards / NUM_ROUNDS << " turns/rounds to win." << std::endl;
 
-        for(playerNum = 0; playerNum < NUM_PLAYERS; playerNum++) {
-            
+        for (playerNum = 0; playerNum < NUM_PLAYERS; playerNum++)
+        {
+
             // also output wins for each player FOR EACH GOAL?
             // PERCENTAGE of times ran out of cards rather than number
             outputFile << "\t   - Player " << playerNum + 1 << " had ~" << handCounts[playerNum] / NUM_ROUNDS << " cards." << std::endl;
         }
         outputFile << "\tRan out of cards " << ranOutOfCards << " times (i.e. "
-                   << (ranOutOfCards / double(NUM_ROUNDS)) * 100 << "%)." << std::endl << std::endl;
+                   << (ranOutOfCards / double(NUM_ROUNDS)) * 100 << "%)." << std::endl
+                   << std::endl;
 
         ranOutOfCards_sum += ranOutOfCards;
     }
 
-    outputFile << "\n-------------------------------------\n" << std::endl;
+    outputFile << "\n-------------------------------------\n"
+               << std::endl;
 
     for (playerNum = 0; playerNum < NUM_PLAYERS; playerNum++)
     {
