@@ -15,6 +15,8 @@ Game::Game(int numPlayers, std::string goal)
 
     goalString = goal;
     winningPlayer = MAX_INT;
+    reversePlayOrder = false;
+    gameDirection = 1;
 }
 
 Game::~Game()
@@ -33,11 +35,20 @@ char Game::playerTurn(std::string goalString, int playerNum)
     char newCard;
     char gameStatus = 'X';
 
-    // std::cout << "Player " << playerNum + 1 << " --- ";
+    std::cout << "Player " << playerNum + 1 << " --- ";
     currentPlayer = getPlayer(playerNum);
     newCard = currentPlayer->takeTurn(deck, goalString);
 
-    if (newCard == ACTION_CARD_DISCARD)
+    if (newCard == ACTION_CARD_REVERSE)
+    {
+        std::cout << "\n --- Action card REVERSE --- \n";
+
+        // reverse the player order
+        reversePlayOrder = !reversePlayOrder;
+        gameDirection *= -1;
+        gameStatus = '-';
+    }
+    else if (newCard == ACTION_CARD_DISCARD)
     {
         // std::cout << "\n --- Action card DISCARD --- \n";
         // EACH PLAYER discards a card from their hand regardless of
@@ -103,18 +114,23 @@ char Game::gameRound(std::string goalString)
 {
     bool keepLooping = true;
 
-    int playerNum;
+    int playerNum = startP;
     char gameStatus = 'X';
 
-    if (!reversePlayOrder)
+    bool roundEnd = false;
+    std::cout << "\nNEW ROUND ---- ";
+    int count = 0;
+    while(gameStatus == 'X' && count < NUM_PLAYERS)
     {
-        for (playerNum = 0; playerNum < NUM_PLAYERS & gameStatus == 'X'; playerNum++)
-            gameStatus = playerTurn(goalString, playerNum);
-    }
-    else
-    {
-        for (playerNum = NUM_PLAYERS - 1; playerNum >= 0 & gameStatus == 'X'; playerNum--)
-            gameStatus = playerTurn(goalString, playerNum);
+        gameStatus = playerTurn(goalString, playerNum);
+        playerNum = (playerNum + gameDirection) % NUM_PLAYERS;
+        if (playerNum < 0)
+            playerNum = NUM_PLAYERS - 1;
+
+        if(gameStatus == '-')
+            startP = playerNum;
+        else 
+            count++;
     }
 
     return gameStatus;
@@ -156,3 +172,4 @@ Player *Game::getPlayer(int index)
 {
     return players.at(index);
 }
+

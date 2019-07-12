@@ -10,8 +10,10 @@ class Game {
         std::vector<Player*> players;
         std::string goalString;
         int winningPlayer;
+        bool reversePlayOrder;
+        int gameDirection;
 
-        bool reversePlayOrder = false;
+        int startP = 0;
 
         void readGameStats();
         char playerTurn(std::string goalString, int playerNum);

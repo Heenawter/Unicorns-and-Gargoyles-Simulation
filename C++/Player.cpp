@@ -218,6 +218,7 @@ void Player::springCleaning(Deck &deck, std::string goalString)
 
 void poisonCard(Deck &deck, std::string goalString, std::vector<Player> &otherPlayers)
 {
+    
     return;
 }
 
