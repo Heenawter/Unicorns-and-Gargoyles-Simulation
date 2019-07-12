@@ -33,5 +33,6 @@ static const std::string OUTPT_FILE = "Simulations/Draft" + DRAFT + "_Results ("
 static const char NO_NEW_CARD = 'X';
 static const char WIN = 'W';
 static const char RAN_OUT_OF_CARDS = 'R';
+static const char REVERSE_ORDER = 'O';
 
 #endif  

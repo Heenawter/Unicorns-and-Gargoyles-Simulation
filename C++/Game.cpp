@@ -15,8 +15,8 @@ Game::Game(int numPlayers, std::string goal)
 
     goalString = goal;
     winningPlayer = MAX_INT;
-    reversePlayOrder = false;
     gameDirection = 1;
+    startingPlayer = 0;
 }
 
 Game::~Game()
@@ -42,69 +42,70 @@ char Game::playerTurn(std::string goalString, int playerNum)
     if (newCard == ACTION_CARD_REVERSE)
     {
         std::cout << "\n --- Action card REVERSE --- \n";
-
         // reverse the player order
-        reversePlayOrder = !reversePlayOrder;
         gameDirection *= -1;
-        gameStatus = '-';
+        gameStatus = REVERSE_ORDER;
     }
-    else if (newCard == ACTION_CARD_DISCARD)
+    else    
     {
-        // std::cout << "\n --- Action card DISCARD --- \n";
-        // EACH PLAYER discards a card from their hand regardless of
-        // who pulled the action card
-
-        for (playerNum2 = 0; playerNum2 < NUM_PLAYERS; playerNum2++)
+        if (newCard == ACTION_CARD_DISCARD)
         {
-            getPlayer(playerNum2)->discardCard(deck, goalString);
-            // std::cout << " --- Player " << playerNum2 + 1 << " --- ";
-            // getPlayer(playerNum2)->printCurrentHand(deck);
-        }
-    }
-    else if (newCard == ACTION_CARD_DRAW)
-    {
-        // EACH PLAYER draws a non-action card and appends it
-        // to their hand, regardless of who pulled the action card
-        // std::cout << "\n --- Action card DRAW --- \n";
+            // std::cout << "\n --- Action card DISCARD --- \n";
+            // EACH PLAYER discards a card from their hand regardless of
+            // who pulled the action card
 
-        char testCard;
-        for (playerNum2 = 0; playerNum2 < NUM_PLAYERS; playerNum2++)
-        {
-            testCard = getPlayer(playerNum2)->drawCard(deck, goalString);
-            while (testCard >= ACTION_CARD_DISCARD && deck.hasNonActionCard())
+            for (playerNum2 = 0; playerNum2 < NUM_PLAYERS; playerNum2++)
             {
-                deck.putCardBack(testCard); // put the action card back
-                // and draw a new card until it is NOT an action card
-                testCard = getPlayer(playerNum2)->drawCard(deck, goalString);
+                getPlayer(playerNum2)->discardCard(deck, goalString);
+                // std::cout << " --- Player " << playerNum2 + 1 << " --- ";
+                // getPlayer(playerNum2)->printCurrentHand(deck);
             }
-            // std::cout << " --- Player " << playerNum2 + 1 << " --- ";
-            // getPlayer(playerNum2)->printCurrentHand(deck);
         }
-    }
-    else if (newCard == ACTION_CARD_SPRING_CLEANING)
-    {
-        // std::cout << "\n --- Action card SPRING CLEANING --- \n";
-        for (playerNum2 = 0; playerNum2 < NUM_PLAYERS; playerNum2++)
+        else if (newCard == ACTION_CARD_DRAW)
         {
-            getPlayer(playerNum2)->springCleaning(deck, goalString);
-            // std::cout << " --- Player " << playerNum2 + 1 << " --- ";
-            // getPlayer(playerNum2)->printCurrentHand(deck);
+            // EACH PLAYER draws a non-action card and appends it
+            // to their hand, regardless of who pulled the action card
+            // std::cout << "\n --- Action card DRAW --- \n";
+
+            char testCard;
+            for (playerNum2 = 0; playerNum2 < NUM_PLAYERS; playerNum2++)
+            {
+                testCard = getPlayer(playerNum2)->drawCard(deck, goalString);
+                while (testCard >= ACTION_CARD_DISCARD && deck.hasNonActionCard())
+                {
+                    deck.putCardBack(testCard); // put the action card back
+                    // and draw a new card until it is NOT an action card
+                    testCard = getPlayer(playerNum2)->drawCard(deck, goalString);
+                }
+                // std::cout << " --- Player " << playerNum2 + 1 << " --- ";
+                // getPlayer(playerNum2)->printCurrentHand(deck);
+            }
+        }
+        else if (newCard == ACTION_CARD_SPRING_CLEANING)
+        {
+            // std::cout << "\n --- Action card SPRING CLEANING --- \n";
+            for (playerNum2 = 0; playerNum2 < NUM_PLAYERS; playerNum2++)
+            {
+                getPlayer(playerNum2)->springCleaning(deck, goalString);
+                // std::cout << " --- Player " << playerNum2 + 1 << " --- ";
+                // getPlayer(playerNum2)->printCurrentHand(deck);
+            }
+        }
+
+        // currentPlayer->printCurrentHand(deck);
+
+        if (currentPlayer->winningCondition())
+        {
+            gameStatus = WIN;
+            winningPlayer = playerNum;
+        }
+        else if (!deck.hasCards())
+        {
+            gameStatus = RAN_OUT_OF_CARDS;
         }
     }
 
-    // currentPlayer->printCurrentHand(deck);
-
-    if (currentPlayer->winningCondition())
-    {
-        gameStatus = WIN;
-        winningPlayer = playerNum;
-    }
-    else if (!deck.hasCards())
-    {
-        gameStatus = RAN_OUT_OF_CARDS;
-    }
-
-    // currentPlayer->printCurrentHand(deck);
+    //currentPlayer->printCurrentHand(deck);
 
     return gameStatus;
 }
@@ -112,23 +113,19 @@ char Game::playerTurn(std::string goalString, int playerNum)
 // returns game status
 char Game::gameRound(std::string goalString)
 {
-    bool keepLooping = true;
-
-    int playerNum = startP;
-    char gameStatus = 'X';
-
-    bool roundEnd = false;
     std::cout << "\nNEW ROUND ---- ";
+    int playerNum = startingPlayer;
+    char gameStatus = 'X';
     int count = 0;
     while(gameStatus == 'X' && count < NUM_PLAYERS)
     {
         gameStatus = playerTurn(goalString, playerNum);
         playerNum = (playerNum + gameDirection) % NUM_PLAYERS;
-        if (playerNum < 0)
+        if (playerNum < 0)  // wrap around for negative (mod doesn't work)
             playerNum = NUM_PLAYERS - 1;
 
-        if(gameStatus == '-')
-            startP = playerNum;
+        if (gameStatus == REVERSE_ORDER)
+            startingPlayer = playerNum;
         else 
             count++;
     }
