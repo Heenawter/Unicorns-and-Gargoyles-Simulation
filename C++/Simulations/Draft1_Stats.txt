@@ -1,5 +1,5 @@
 --- String Cards ---
-16
+18
 unicorn,	8
 gargoyle, 	4
 reverse order,	4
@@ -14,8 +14,10 @@ remove 2,	4
 remove 3,	4
 *discard 1 card,	4
 *draw 1 card,   4
-*spring cleaning,   4
+*spring cleaning,   2
 *reverse order,   4
+*poison,    0
+*steal,     0
 
 --- Goal Cards ---
 8

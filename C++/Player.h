@@ -44,6 +44,7 @@ public:
 
     /* HELPER FUNCTIONS */
     int getHandSize() { return numCards; }
+    int getDistance() { return currentDistance; }
     void printCurrentHand(Deck &deck);
     
 };

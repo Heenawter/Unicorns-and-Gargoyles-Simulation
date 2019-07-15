@@ -218,7 +218,28 @@ void Player::springCleaning(Deck &deck, std::string goalString)
 
 void poisonCard(Deck &deck, std::string goalString, std::vector<Player> &otherPlayers)
 {
+    // pick a unicorn to poison and permanantly remove from play
+    // target the player that is closest to winning (besides yourself)
+
+    Player* currentWinner; 
+    int testDistance = MAX_INT;
+
+    // find the current winner (i.e. the player closest to winning)
+    // that also has a unicorn
+
+    // ACTUALLY - this would depend on whether the goal
+    // has a unicorn or not
+    // that is, try to do the most damage
+    // rather than targetting the winner
+    vector<Player>::iterator it;
+    for(it = otherPlayers.begin(); it < otherPlayers.end; it++)
+    {
+        if(it->getDistance() < testDistance)
+            currentWinner = it;
+    }
+
     
+
     return;
 }
 

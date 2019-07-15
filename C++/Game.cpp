@@ -35,13 +35,13 @@ char Game::playerTurn(std::string goalString, int playerNum)
     char newCard;
     char gameStatus = 'X';
 
-    std::cout << "Player " << playerNum + 1 << " --- ";
+    // std::cout << "Player " << playerNum + 1 << " --- ";
     currentPlayer = getPlayer(playerNum);
     newCard = currentPlayer->takeTurn(deck, goalString);
 
     if (newCard == ACTION_CARD_REVERSE)
     {
-        std::cout << "\n --- Action card REVERSE --- \n";
+        // std::cout << "\n --- Action card REVERSE --- \n";
         // reverse the player order
         gameDirection *= -1;
         gameStatus = REVERSE_ORDER;
@@ -113,7 +113,7 @@ char Game::playerTurn(std::string goalString, int playerNum)
 // returns game status
 char Game::gameRound(std::string goalString)
 {
-    std::cout << "\nNEW ROUND ---- ";
+    // std::cout << "\nNEW ROUND ---- ";
     int playerNum = startingPlayer;
     char gameStatus = 'X';
     int count = 0;
