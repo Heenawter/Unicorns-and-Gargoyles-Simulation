@@ -159,14 +159,3 @@ void Game::readGameStats()
         file.close();
     }
 }
-
-Deck *Game::getDeck()
-{
-    return &deck;
-}
-
-Player *Game::getPlayer(int index)
-{
-    return players.at(index);
-}
-

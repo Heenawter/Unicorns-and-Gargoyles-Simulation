@@ -216,26 +216,46 @@ void Player::springCleaning(Deck &deck, std::string goalString)
     currentDistance = bestDistance;
 }
 
-void poisonCard(Deck &deck, std::string goalString, std::vector<Player> &otherPlayers)
+void Player::poisonCard(Deck &deck, std::string goalString, std::vector<Player*> &otherPlayers)
 {
+    std::cout << "---- POISON ----" << std::endl;
+
     // pick a unicorn to poison and permanantly remove from play
-    // target the player that is closest to winning (besides yourself)
-
-    Player* currentWinner; 
-    int testDistance = MAX_INT;
-
     // find the current winner (i.e. the player closest to winning)
     // that also has a unicorn
-
     // ACTUALLY - this would depend on whether the goal
     // has a unicorn or not
     // that is, try to do the most damage
     // rather than targetting the winner
-    vector<Player>::iterator it;
-    for(it = otherPlayers.begin(); it < otherPlayers.end; it++)
+
+    // for each player, 
+    //      for each unicorn in their hand
+    //          remove that unicorn
+    //          if (new distance - old distance) > previous best
+    //              new best = (new distance - old distance)
+    //              player to target = current player
+    //              unicorn to remove = current unicorn
+
+    int testDamage;
+    int bestDamage = MAX_INT;
+    int unicornToRemove;
+    Player *playerToTarget;
+
+    int previousDistance;
+    int newDistance;
+
+    std::vector<Player*>::iterator pit; // player iterator
+    std::vector<char>::iterator   hit;  // hand iterator
+    std::vector<char> currentHand;
+    for(pit = otherPlayers.begin(); pit < otherPlayers.end(); pit++)
     {
-        if(it->getDistance() < testDistance)
-            currentWinner = it;
+        previousDistance = (*pit)->getDistance();
+        std::cout << previousDistance << std::endl;
+        currentHand = (*pit)->getHand();
+        for(hit = currentHand.begin(); hit < currentHand.end(); hit++)
+        {
+            std::cout << deck.getCardName(*hit) << std::endl;
+        }
     }
 
     
@@ -243,7 +263,7 @@ void poisonCard(Deck &deck, std::string goalString, std::vector<Player> &otherPl
     return;
 }
 
-void stealCard(Deck &deck, std::string goalString, std::vector<Player> &otherPlayers)
+void Player::stealCard(Deck &deck, std::string goalString, std::vector<Player *> &otherPlayers)
 {
     return;
 }

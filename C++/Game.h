@@ -19,13 +19,12 @@ class Game {
     public:   
         Game(int numPlayers, std::string goal);
         ~Game();
-
-        void generatePlayers(int numPlayers);
-        Deck* getDeck();
-        Player* getPlayer(int index);
-
+        
         char gameRound(std::string goalString);
 
+        Deck* getDeck() { return &deck; }
+        Player* getPlayer(int index) { return players.at(index); }
+        std::vector<Player*> getPlayers() { return players; }
         int getWinningPlayer() { return winningPlayer; }
 };
 

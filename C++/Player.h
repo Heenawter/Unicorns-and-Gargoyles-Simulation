@@ -42,9 +42,10 @@ public:
     void poisonCard(Deck &deck, std::string goalString, std::vector<Player*> &otherPlayers);
     void stealCard(Deck &deck, std::string goalString, std::vector<Player*> &otherPlayers);
 
-    /* HELPER FUNCTIONS */
+    /* HELPER FUNCTIONS */ 
     int getHandSize() { return numCards; }
     int getDistance() { return currentDistance; }
+    std::vector<char> getHand() { return currentHand; }
     void printCurrentHand(Deck &deck);
     
 };
