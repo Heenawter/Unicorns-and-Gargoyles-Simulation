@@ -134,14 +134,13 @@ bool Player::winningCondition()
 /*                   ACTION CARDS                     */
 /******************************************************/
 
+// -- action card --
+// find the most advantageous card to remove and
+// add it back to the deck
+// if you can't IMPROVE your hand by removing a card,
+// simply try your best not to make it worse
 void Player::discardCard(Deck &deck, std::string goalString)
 {
-    // -- action card --
-    // find the most advantageous card to remove and
-    // add it back to the deck
-    // if you can't IMPROVE your hand by removing a card,
-    // simply try your best not to make it worse
-
     if (numCards <= 0)
         return; // nothing to do if no cards to remove!
 
@@ -177,14 +176,13 @@ void Player::discardCard(Deck &deck, std::string goalString)
     numCards--;
 }
 
+// -- action card --
+// generate all possiblities for which cards to remove
+// (remember that the order must stay the same)
+// then, choose the possibility that gets you closest
+// to the goal
 void Player::springCleaning(Deck &deck, std::string goalString)
 {
-    // -- action card --
-    // generate all possiblities for which cards to remove
-    // (remember that the order must stay the same)
-    // then, choose the possibility that gets you closest
-    // to the goal
-
     if (numCards <= 0)
         return; // nothing to do if no cards to remove!
 
@@ -216,17 +214,13 @@ void Player::springCleaning(Deck &deck, std::string goalString)
     currentDistance = bestDistance;
 }
 
+// -- action card --
+// pick a unicorn to poison and permanantly remove from play
+// try to do the most damage - i.e. target the player
+// whose unicorn removal moves them furthest from the goal
 void Player::poisonCard(Deck &deck, std::string goalString, std::vector<Player*> &otherPlayers)
 {
     std::cout << "---- POISON ----" << std::endl;
-
-    // pick a unicorn to poison and permanantly remove from play
-    // find the current winner (i.e. the player closest to winning)
-    // that also has a unicorn
-    // ACTUALLY - this would depend on whether the goal
-    // has a unicorn or not
-    // that is, try to do the most damage
-    // rather than targetting the winner
 
     // for each player, 
     //      for each unicorn in their hand
@@ -237,7 +231,7 @@ void Player::poisonCard(Deck &deck, std::string goalString, std::vector<Player*>
     //              unicorn to remove = current unicorn
 
     int testDamage;
-    int bestDamage = 0;
+    int bestDamage = -1;
     int unicornToRemove = 0;
     Player *playerToTarget;
 
@@ -247,47 +241,55 @@ void Player::poisonCard(Deck &deck, std::string goalString, std::vector<Player*>
     int handIndex = 0;
     std::vector<char> currentHand, testHand;
     std::string testString;
+
+    // for each OTHER player (not including yourself)
     for(pit = otherPlayers.begin(); pit < otherPlayers.end(); pit++)
     {
         previousDistance = (*pit)->getDistance();
-        std::cout << previousDistance << std::endl;
         currentHand = (*pit)->getHand();
+        // std::cout << "before: ";
+        // (*pit)->printCurrentHand(deck);
 
-        std::cout << "before: ";
-        (*pit)->printCurrentHand(deck);
-
+        // loop through their hand looking for potential
+        // unicorns to remove
         for(handIndex = 0; handIndex < currentHand.size(); handIndex++)
         {
             testHand = currentHand;
             if(currentHand[handIndex] == UNICORN)
             {
+                // found a unicorn! so remove it
                 testHand.erase(testHand.begin() + handIndex);
-                std::cout << "after:  ";
-                (*pit)->printHand(deck, testHand);
+                // std::cout << "after:  ";
+                // (*pit)->printHand(deck, testHand);
 
+                // and check if removing it caused damage
                 testString = generateString(deck, testHand);
                 testDistance = stringDistance(goalString, testString);
                 if((testDistance - previousDistance) > bestDamage)
                 {
+                    // it caused more damage than previous
+                    // removal(s), so make this the new best
                     bestDamage = (testDistance - previousDistance);
                     playerToTarget = *pit;
                     unicornToRemove = handIndex;
-                    std::cout << "did damage!"
+                    std::cout << "did " << bestDamage << " damage!"
                               << " - before: " << previousDistance << " - after: " << testDistance << std::endl;
                 }
             }
         }
     }
 
-    if(bestDamage != 0)
+    if(bestDamage >= 0)
     {
+        // there was a unicorn to remove, so remove
+        // the unicorn that does the most damage
+        // possibly this unicorn does not do any damage
+        // but MUST remove a unicorn if one to remove
+        // otherwise, no unicorns to remove
         std::cout << "----- after poison: ";
         playerToTarget->getPoisoned(unicornToRemove);
         playerToTarget->printCurrentHand(deck);
     }
-    std::cout << "done!" << std::endl;
-
-    return;
 }
 
 void Player::getPoisoned(int unicornToPoison)
