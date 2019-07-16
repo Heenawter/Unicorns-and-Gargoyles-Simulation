@@ -21,10 +21,6 @@ private:
                          Deck &deck, std::string goalString,
                          int start, int end,
                          int index, int r);
-    std::string generateString(Deck &deck, std::vector<char> hand);
-    void printHand(Deck &deck, std::vector<char> hand);
-    int stringDistance(const std::string &string1, const std::string &string2);
-
 public:
 
     ~Player();
@@ -42,12 +38,19 @@ public:
     void poisonCard(Deck &deck, std::string goalString, std::vector<Player*> &otherPlayers);
     void stealCard(Deck &deck, std::string goalString, std::vector<Player*> &otherPlayers);
 
+    void getPoisoned(int unicornToPoison);
+
     /* HELPER FUNCTIONS */ 
     int getHandSize() { return numCards; }
     int getDistance() { return currentDistance; }
     std::vector<char> getHand() { return currentHand; }
     void printCurrentHand(Deck &deck);
-    
+    void printHand(Deck &deck, std::vector<char> hand);
+
+
+    ////// MOVE THIS SHIT TO DECK DUDE
+    std::string generateString(Deck &deck, std::vector<char> hand);
+    int stringDistance(const std::string &string1, const std::string &string2);
 };
 
 #endif

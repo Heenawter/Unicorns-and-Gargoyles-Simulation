@@ -237,30 +237,62 @@ void Player::poisonCard(Deck &deck, std::string goalString, std::vector<Player*>
     //              unicorn to remove = current unicorn
 
     int testDamage;
-    int bestDamage = MAX_INT;
-    int unicornToRemove;
+    int bestDamage = 0;
+    int unicornToRemove = 0;
     Player *playerToTarget;
 
-    int previousDistance;
-    int newDistance;
+    int previousDistance, newDistance, testDistance;
 
     std::vector<Player*>::iterator pit; // player iterator
-    std::vector<char>::iterator   hit;  // hand iterator
-    std::vector<char> currentHand;
+    int handIndex = 0;
+    std::vector<char> currentHand, testHand;
+    std::string testString;
     for(pit = otherPlayers.begin(); pit < otherPlayers.end(); pit++)
     {
         previousDistance = (*pit)->getDistance();
         std::cout << previousDistance << std::endl;
         currentHand = (*pit)->getHand();
-        for(hit = currentHand.begin(); hit < currentHand.end(); hit++)
+
+        std::cout << "before: ";
+        (*pit)->printCurrentHand(deck);
+
+        for(handIndex = 0; handIndex < currentHand.size(); handIndex++)
         {
-            std::cout << deck.getCardName(*hit) << std::endl;
+            testHand = currentHand;
+            if(currentHand[handIndex] == UNICORN)
+            {
+                testHand.erase(testHand.begin() + handIndex);
+                std::cout << "after:  ";
+                (*pit)->printHand(deck, testHand);
+
+                testString = generateString(deck, testHand);
+                testDistance = stringDistance(goalString, testString);
+                if((testDistance - previousDistance) > bestDamage)
+                {
+                    bestDamage = (testDistance - previousDistance);
+                    playerToTarget = *pit;
+                    unicornToRemove = handIndex;
+                    std::cout << "did damage!"
+                              << " - before: " << previousDistance << " - after: " << testDistance << std::endl;
+                }
+            }
         }
     }
 
-    
+    if(bestDamage != 0)
+    {
+        std::cout << "----- after poison: ";
+        playerToTarget->getPoisoned(unicornToRemove);
+        playerToTarget->printCurrentHand(deck);
+    }
+    std::cout << "done!" << std::endl;
 
     return;
+}
+
+void Player::getPoisoned(int unicornToPoison)
+{
+    currentHand.erase(currentHand.begin() + unicornToPoison);
 }
 
 void Player::stealCard(Deck &deck, std::string goalString, std::vector<Player *> &otherPlayers)
