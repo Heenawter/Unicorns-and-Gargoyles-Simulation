@@ -97,9 +97,9 @@ char Game::playerTurn(std::string goalString, int playerNum)
             getPlayer(playerNum)->poisonCard(deck, goalString, otherPlayers);
         }
 
-        #ifdef _DEBUG
-            currentPlayer->printCurrentHand(deck);
-        #endif
+#ifdef _LOGSTATEMENTS
+        currentPlayer->printCurrentHand(deck);
+#endif
 
         if (currentPlayer->winningCondition())
         {
@@ -111,8 +111,6 @@ char Game::playerTurn(std::string goalString, int playerNum)
             gameStatus = RAN_OUT_OF_CARDS;
         }
     }
-
-    //currentPlayer->printCurrentHand(deck);
 
     return gameStatus;
 }

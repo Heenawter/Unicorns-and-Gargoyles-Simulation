@@ -37,7 +37,6 @@ char Player::takeTurn(Deck &deck, std::string goalString)
     // draw another card
     if (numCards <= 1)
     {
-        // std::cout << "draw --- ";
         newCard = drawCard(deck, goalString);
     }
     else
@@ -48,18 +47,15 @@ char Player::takeTurn(Deck &deck, std::string goalString)
         {
             // swapping cards did not get you any closer
             // to meeting the goal, so instead draw a card
-            // std::cout << "draw --- ";
             newCard = drawCard(deck, goalString);
         }
         else
         {
-            // std::cout << "move --- ";
             currentDistance = best.first;
             currentHand = best.second;
         }
     }
 
-    // std::string testString = generateString(deck, currentHand);
     return newCard;
 }
 
@@ -70,7 +66,6 @@ char Player::takeTurn(Deck &deck, std::string goalString)
 // returns the new card
 char Player::drawCard(Deck &deck, std::string goalString)
 {
-    // std::cout << "DRAW CARD" << std::endl;
     char newCard = deck.drawCard();
 
     // if not an action card....
@@ -153,7 +148,6 @@ void Player::discardCard(Deck &deck, std::string goalString)
 
     // we can safely copy since we know we have at least 1 card
     testHand = currentHand;
-    // copy(currentHand.begin(), currentHand.end(), testHand.begin());
     for (index = 0; index < numCards; index++)
     {
         testCard = testHand[index];
@@ -246,8 +240,6 @@ void Player::poisonCard(Deck &deck, std::string goalString, std::vector<Player*>
     {
         previousDistance = (*pit)->getDistance();
         currentHand = (*pit)->getHand();
-        // std::cout << "before: ";
-        // (*pit)->printCurrentHand(deck);
 
         // loop through their hand looking for potential
         // unicorns to remove
@@ -258,8 +250,6 @@ void Player::poisonCard(Deck &deck, std::string goalString, std::vector<Player*>
             {
                 // found a unicorn! so remove it
                 testHand.erase(testHand.begin() + handIndex);
-                // std::cout << "after:  ";
-                // (*pit)->printHand(deck, testHand);
 
                 // and check if removing it caused damage
                 testString = generateString(deck, testHand);
@@ -271,8 +261,6 @@ void Player::poisonCard(Deck &deck, std::string goalString, std::vector<Player*>
                     bestDamage = (testDistance - previousDistance);
                     playerToTarget = *pit;
                     unicornToRemove = handIndex;
-                    // std::cout << "did " << bestDamage << " damage!"
-                    //           << " - before: " << previousDistance << " - after: " << testDistance << std::endl;
                 }
             }
         }
@@ -285,9 +273,7 @@ void Player::poisonCard(Deck &deck, std::string goalString, std::vector<Player*>
         // possibly this unicorn does not do any damage
         // but MUST remove a unicorn if one to remove
         // otherwise, no unicorns to remove
-        // std::cout << "----- after poison: ";
         playerToTarget->getPoisoned(unicornToRemove);
-        // playerToTarget->printCurrentHand(deck);
     }
 }
 
@@ -319,7 +305,6 @@ void Player::combinationUtil(std::vector<char> hand, std::vector<char> tempHand,
         for (int j = 0; j < r; j++)
         {
             newCombo.push_back(tempHand[j]);
-            // std::cout << int(data[j]) << " ";
         }
 
         std::string testString = generateString(deck, newCombo);
