@@ -15,6 +15,8 @@ private:
     int numCards;
     int currentDistance;
 
+    void removeCard(Deck &deck, std::string goalString, int cardToRemove);
+
     /* HELPER FUNCTIONS */
     void combinationUtil(std::vector<char> hand, std::vector<char> tempHand,
                          std::vector<char> &bestHand, int &bestDistance,
@@ -38,10 +40,15 @@ public:
     void poisonCard(Deck &deck, std::string goalString, std::vector<Player*> &otherPlayers);
     void stealCard(Deck &deck, std::string goalString, std::vector<Player*> &otherPlayers);
 
-    void getPoisoned(int unicornToPoison);
+    void getPoisoned(Deck &deck, std::string goalString, int unicornToPoison);
+    void getRobbed(Deck &deck, std::string goalString, int cardToSteal);
 
-    /* HELPER FUNCTIONS */ 
-    int getHandSize() { return numCards; }
+
+    /* HELPER FUNCTIONS */
+    int getHandSize()
+    {
+        return numCards;
+    }
     int getDistance() { return currentDistance; }
     std::vector<char> getHand() { return currentHand; }
     void printCurrentHand(Deck &deck);

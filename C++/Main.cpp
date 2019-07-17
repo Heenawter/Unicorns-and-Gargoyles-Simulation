@@ -14,21 +14,21 @@ void simulateGame(std::ofstream &outputFile);
 
 int main()
 {
-    // std::string goal = "[*][ ][ ][*]";
+    std::string goal = "[*][ ][ ][*]";
 
-    // Game *simulation = new Game(NUM_PLAYERS, goal);
-    // Player *player = simulation->getPlayer(0);
-    // std::vector<Player*> otherPlayers = simulation->getPlayers();
-    // otherPlayers.erase(otherPlayers.begin());
+    Game *simulation = new Game(NUM_PLAYERS, goal);
+    Player *player = simulation->getPlayer(0);
+    std::vector<Player*> otherPlayers = simulation->getPlayers();
+    otherPlayers.erase(otherPlayers.begin());
     
-    // Deck *deck = simulation->getDeck();
+    Deck *deck = simulation->getDeck();
 
-    // simulation->gameRound(goal);
-    // simulation->gameRound(goal);
-    // simulation->gameRound(goal);
-    // simulation->gameRound(goal);
+    simulation->gameRound(goal);
+    simulation->gameRound(goal);
+    simulation->gameRound(goal);
+    simulation->gameRound(goal);
 
-    // player->poisonCard(*deck, goal, otherPlayers);
+    player->stealCard(*deck, goal, otherPlayers);
 
     // player->takeTurn(*deck, goal);
     // player->takeTurn(*deck, goal);
@@ -47,13 +47,13 @@ int main()
     // player->springCleaning(*deck, goal);
     // std::cout << "\ndeck size after: " << deck->numberOfCards() << std::endl;
 
-    std::ofstream file;
-    file.open(OUTPT_FILE);
+    // std::ofstream file;
+    // file.open(OUTPT_FILE);
 
-    if (file.is_open())
-        simulateGame(file);
+    // if (file.is_open())
+    //     simulateGame(file);
 
-    file.close();
+    // file.close();
 }
 
 void simulateGame(std::ofstream &outputFile)

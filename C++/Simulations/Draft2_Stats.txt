@@ -16,7 +16,7 @@ remove 3,	4
 *draw 1 card,   4
 *spring cleaning,   2
 *reverse order,   4
-*poison,    0
+*poison,    4
 *steal,     0
 
 --- Goal Cards ---

@@ -273,19 +273,73 @@ void Player::poisonCard(Deck &deck, std::string goalString, std::vector<Player*>
         // possibly this unicorn does not do any damage
         // but MUST remove a unicorn if one to remove
         // otherwise, no unicorns to remove
-        playerToTarget->getPoisoned(unicornToRemove);
+        playerToTarget->removeCard(deck, goalString, unicornToRemove);
     }
-}
-
-void Player::getPoisoned(int unicornToPoison)
-{    
-    currentHand.erase(currentHand.begin() + unicornToPoison);
-    numCards--;
 }
 
 void Player::stealCard(Deck &deck, std::string goalString, std::vector<Player *> &otherPlayers)
 {
+    // either target the player closest to winning and stop them
+    // (AGGRESSIVE) OR target the player that has a card that will
+    // be advantageous to you (PASSIVE) --- for now, do PASSIVE
+    std::vector<char> targetHand, testHand;
+    std::string testString;
+    int testDistance;
+
+    int currentPlayer, currentCard;
+    int currentBest = MAX_INT;
+    int currentTargetPlayer;
+    int currentTargetCard;
+    for(currentPlayer = 0; currentPlayer < NUM_PLAYERS - 1; currentPlayer++)
+    {
+        // for each other player ...
+        targetHand = otherPlayers[currentPlayer]->getHand();
+        for (currentCard = 0; currentCard < targetHand.size(); currentCard++)
+        {
+            // loop through their hand and look for a card
+            // to mark for potential robbery
+            testHand = currentHand;
+            testHand.push_back(targetHand[currentCard]);
+            testString = generateString(deck, testHand);
+            testDistance = stringDistance(testString, goalString);
+            if (testDistance < currentBest)
+            {
+                // you found a card that helps, more than the
+                // previous card, so save it
+                currentTargetPlayer = currentPlayer;
+                currentTargetCard = currentCard;
+                currentBest = testDistance;
+            }
+        }
+    }
+
+    Player* targetPlayer = otherPlayers[currentTargetPlayer];
+
+    std::cout << "Previous distance: " << currentDistance << std::endl;
+    std::cout << "Card to steal: " << deck.getCardName(targetPlayer->getHand()[currentTargetCard]) << std::endl;
+    std::cout << "Previous hand: ";
+    printCurrentHand(deck);
+
+    currentDistance = currentBest;
+    currentHand.push_back(targetPlayer->getHand()[currentTargetCard]);
+    numCards++;
+    currentString = generateString(deck, currentHand);
+
+    std::cout << "After distance: " << currentDistance << std::endl;
+    std::cout << "After hand: ";
+    printCurrentHand(deck);
+
+    targetPlayer->removeCard(deck, goalString, currentTargetCard);
+
     return;
+}
+
+void Player::removeCard(Deck &deck, std::string goalString, int cardToRemove)
+{
+    currentHand.erase(currentHand.begin() + cardToRemove);
+    currentString = generateString(deck, currentHand);
+    currentDistance = stringDistance(currentString, goalString);
+    numCards--;
 }
 
 /******************************************************/
