@@ -73,6 +73,7 @@ char Player::drawCard(Deck &deck, std::string goalString)
     // std::cout << "DRAW CARD" << std::endl;
     char newCard = deck.drawCard();
 
+    // if not an action card....
     if (newCard < ACTION_CARD_DISCARD)
     {
         // not an action card, so add it to your hand
@@ -220,8 +221,6 @@ void Player::springCleaning(Deck &deck, std::string goalString)
 // whose unicorn removal moves them furthest from the goal
 void Player::poisonCard(Deck &deck, std::string goalString, std::vector<Player*> &otherPlayers)
 {
-    std::cout << "---- POISON ----" << std::endl;
-
     // for each player, 
     //      for each unicorn in their hand
     //          remove that unicorn
@@ -272,8 +271,8 @@ void Player::poisonCard(Deck &deck, std::string goalString, std::vector<Player*>
                     bestDamage = (testDistance - previousDistance);
                     playerToTarget = *pit;
                     unicornToRemove = handIndex;
-                    std::cout << "did " << bestDamage << " damage!"
-                              << " - before: " << previousDistance << " - after: " << testDistance << std::endl;
+                    // std::cout << "did " << bestDamage << " damage!"
+                    //           << " - before: " << previousDistance << " - after: " << testDistance << std::endl;
                 }
             }
         }
@@ -286,15 +285,16 @@ void Player::poisonCard(Deck &deck, std::string goalString, std::vector<Player*>
         // possibly this unicorn does not do any damage
         // but MUST remove a unicorn if one to remove
         // otherwise, no unicorns to remove
-        std::cout << "----- after poison: ";
+        // std::cout << "----- after poison: ";
         playerToTarget->getPoisoned(unicornToRemove);
-        playerToTarget->printCurrentHand(deck);
+        // playerToTarget->printCurrentHand(deck);
     }
 }
 
 void Player::getPoisoned(int unicornToPoison)
-{
+{    
     currentHand.erase(currentHand.begin() + unicornToPoison);
+    numCards--;
 }
 
 void Player::stealCard(Deck &deck, std::string goalString, std::vector<Player *> &otherPlayers)
