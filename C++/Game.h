@@ -7,6 +7,8 @@
 class Game {
     private:
         Deck deck;
+        Deck discardDeck;
+
         std::vector<Player*> players;
         std::string goalString;
         int winningPlayer;

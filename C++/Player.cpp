@@ -282,13 +282,17 @@ void Player::stealCard(Deck &deck, std::string goalString, std::vector<Player *>
     // either target the player closest to winning and stop them
     // (AGGRESSIVE) OR target the player that has a card that will
     // be advantageous to you (PASSIVE) --- for now, do PASSIVE
+
+    // that is, simply steal the card that is the most advantageous
+    // to you RIGHT NOW rather than targeting any one player
+    // in particular
     std::vector<char> targetHand, testHand;
     std::string testString;
     int testDistance;
 
     int currentPlayer, currentCard;
     int currentBest = MAX_INT;
-    int currentTargetPlayer;
+    int currentTargetPlayer = -1;
     int currentTargetCard;
     for(currentPlayer = 0; currentPlayer < NUM_PLAYERS - 1; currentPlayer++)
     {
@@ -304,8 +308,10 @@ void Player::stealCard(Deck &deck, std::string goalString, std::vector<Player *>
             testDistance = stringDistance(testString, goalString);
             if (testDistance < currentBest)
             {
-                // you found a card that helps, more than the
+                // you found a card that helps more than the
                 // previous card, so save it
+                // because of <, always steal from player 1 before
+                // player 2 if their cards are equally advantageous
                 currentTargetPlayer = currentPlayer;
                 currentTargetCard = currentCard;
                 currentBest = testDistance;
@@ -313,25 +319,23 @@ void Player::stealCard(Deck &deck, std::string goalString, std::vector<Player *>
         }
     }
 
+    if(currentTargetPlayer == -1)
+    {
+        // no cards to steal! so stop.
+        return;
+    }
+
+    // you found the card to steal! So do it!
     Player* targetPlayer = otherPlayers[currentTargetPlayer];
 
-    std::cout << "Previous distance: " << currentDistance << std::endl;
-    std::cout << "Card to steal: " << deck.getCardName(targetPlayer->getHand()[currentTargetCard]) << std::endl;
-    std::cout << "Previous hand: ";
-    printCurrentHand(deck);
-
+    // start by adding that card to your own hand
     currentDistance = currentBest;
     currentHand.push_back(targetPlayer->getHand()[currentTargetCard]);
     numCards++;
     currentString = generateString(deck, currentHand);
 
-    std::cout << "After distance: " << currentDistance << std::endl;
-    std::cout << "After hand: ";
-    printCurrentHand(deck);
-
+    // then, remove it from the target's hand
     targetPlayer->removeCard(deck, goalString, currentTargetCard);
-
-    return;
 }
 
 void Player::removeCard(Deck &deck, std::string goalString, int cardToRemove)

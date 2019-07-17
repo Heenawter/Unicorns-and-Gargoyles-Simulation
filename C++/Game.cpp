@@ -108,7 +108,24 @@ char Game::playerTurn(std::string goalString, int playerNum)
                 LOG("---> Player " + std::to_string(playerNum2 + 1) + " --- ");
                 getPlayer(playerNum2)->printCurrentHand(deck);
             }
-        } else {
+        }
+        else if (newCard == ACTION_CARD_STEAL)
+        {
+            LOG("Action card STEAL\n");
+
+            std::vector<Player *> otherPlayers = players;
+            otherPlayers.erase(otherPlayers.begin() + playerNum);
+
+            getPlayer(playerNum)->stealCard(deck, goalString, otherPlayers);
+
+            for (playerNum2 = 0; playerNum2 < NUM_PLAYERS; playerNum2++)
+            {
+                LOG("---> Player " + std::to_string(playerNum2 + 1) + " --- ");
+                getPlayer(playerNum2)->printCurrentHand(deck);
+            }
+        } 
+        else
+        {
             currentPlayer->printCurrentHand(deck); // LOG STATEMENTS
         }
 

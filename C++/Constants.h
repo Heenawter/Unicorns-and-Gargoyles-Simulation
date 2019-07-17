@@ -1,6 +1,6 @@
 #pragma once
 
-#define _LOGSTATEMENTS // uncomment for debug statements
+// #define _LOGSTATEMENTS // uncomment for debug statements
 #ifdef _LOGSTATEMENTS
 #define LOG(stuff) std::cout << (stuff);
 #else
@@ -22,6 +22,7 @@ static const char ACTION_CARD_DRAW = 13;
 static const char ACTION_CARD_SPRING_CLEANING = 14; 
 static const char ACTION_CARD_REVERSE = 15;
 static const char ACTION_CARD_POISON = 16;
+static const char ACTION_CARD_STEAL = 17;
 
 static const int NUM_PLAYERS = 6;
 static const int NUM_ROUNDS = 10000;
@@ -29,12 +30,12 @@ static const int NUM_ROUNDS = 10000;
 static const int NUM_LINES_TO_SKIP = 22;
 static const int NUM_GOALS = 8;
 
-static const std::string DRAFT = "2";
+static const std::string DRAFT = "3";
 static const std::string INPUT_FILE = "Simulations/Draft" + DRAFT +"_Stats.txt";
 static const std::string OUTPT_FILE = "Simulations/Draft" + DRAFT + "_Results ("
     + std::to_string(NUM_PLAYERS) + " Players, "
     + std::to_string(NUM_ROUNDS) + " Rounds)"
-    + "_v2.txt";
+    + "_v1.txt";
 
 
 // GAME STATE CONSTANTS
