@@ -42,7 +42,7 @@ char Game::playerTurn(std::string goalString, int playerNum)
 
     if (newCard == ACTION_CARD_REVERSE)
     {
-        LOG("Action card REVERSE --- ");
+        LOG("Action card REVERSE\n");
         // reverse the player order
         gameDirection *= -1;
         gameStatus = REVERSE_ORDER;
@@ -51,20 +51,22 @@ char Game::playerTurn(std::string goalString, int playerNum)
     {
         if (newCard == ACTION_CARD_DISCARD)
         {
-            LOG("Action card DISCARD --- ");
+            LOG("Action card DISCARD\n");
             // EACH PLAYER discards a card from their hand regardless of
             // who pulled the action card
 
             for (playerNum2 = 0; playerNum2 < NUM_PLAYERS; playerNum2++)
             {
                 getPlayer(playerNum2)->discardCard(deck, goalString);
+                LOG("---> Player " + std::to_string(playerNum2 + 1) + " --- ");
+                getPlayer(playerNum2)->printCurrentHand(deck);
             }
         }
         else if (newCard == ACTION_CARD_DRAW)
         {
             // EACH PLAYER draws a non-action card and appends it
             // to their hand, regardless of who pulled the action card
-            LOG("Action card DRAW --- ");
+            LOG("Action card DRAW\n");
 
             char testCard;
             for (playerNum2 = 0; playerNum2 < NUM_PLAYERS; playerNum2++)
@@ -76,30 +78,40 @@ char Game::playerTurn(std::string goalString, int playerNum)
                     // and draw a new card until it is NOT an action card
                     testCard = getPlayer(playerNum2)->drawCard(deck, goalString);
                 }
+
+                LOG("---> Player " + std::to_string(playerNum2 + 1) + " --- ");
+                getPlayer(playerNum2)->printCurrentHand(deck);
             }
         }
         else if (newCard == ACTION_CARD_SPRING_CLEANING)
         {
-            LOG("Action card SPRING --- ");
+            LOG("Action card SPRING CLEANING\n");
 
             for (playerNum2 = 0; playerNum2 < NUM_PLAYERS; playerNum2++)
             {
                 getPlayer(playerNum2)->springCleaning(deck, goalString);
+                LOG("---> Player " + std::to_string(playerNum2 + 1) + " --- ");
+                getPlayer(playerNum2)->printCurrentHand(deck);
             }
         }
         else if (newCard == ACTION_CARD_POISON)
         {
-            LOG("Action card POISON --- ");
+            LOG("Action card POISON\n");
 
             std::vector<Player*> otherPlayers = players;
             otherPlayers.erase(otherPlayers.begin() + playerNum);
             
             getPlayer(playerNum)->poisonCard(deck, goalString, otherPlayers);
+
+            for (playerNum2 = 0; playerNum2 < NUM_PLAYERS; playerNum2++)
+            {
+                LOG("---> Player " + std::to_string(playerNum2 + 1) + " --- ");
+                getPlayer(playerNum2)->printCurrentHand(deck);
+            }
+        } else {
+            currentPlayer->printCurrentHand(deck); // LOG STATEMENTS
         }
 
-#ifdef _LOGSTATEMENTS
-        currentPlayer->printCurrentHand(deck);
-#endif
 
         if (currentPlayer->winningCondition())
         {

@@ -358,9 +358,10 @@ void Player::printHand(Deck &deck, std::vector<char> hand)
     std::vector<char>::iterator it;
     for (it = hand.begin(); it < hand.end(); it++)
     {
-        std::cout << "[" << deck.getCardName(*it) << "]";
+        LOG("[" + deck.getCardName(*it) + "]");
+        // std::cout << "[" << deck.getCardName(*it) << "]";
     }
-    std::cout << std::endl;
+    LOG("\n");
 }
 
 // print the current hand using the card types rather than the chars

@@ -109,7 +109,7 @@ void simulateGame(std::ofstream &outputFile)
             gameStatus = 'X';
             while (keepLooping)
             {
-                LOG("-- new turn -- \n")
+                // LOG("\n***** new turn *****\n");
                 gameStatus = simulation->gameRound(*it);
                 turnNum++;
 
