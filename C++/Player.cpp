@@ -13,11 +13,14 @@ Player::~Player()
     // delete[] allHands;
 }
 
-Player::Player()
+Player::Player(Deck *deck, Deck *discardDeck)
 {
     currentString = "";
     numCards = 0;
     currentDistance = MAX_INT;
+
+    this->deck = deck;
+    this->discardDeck = discardDeck;
 }
 
 /******************************************************/
@@ -28,7 +31,7 @@ Player::Player()
 // current hand; if none of these swaps get you closer to th
 // goalString, draw a new card instead
 // return the new card OR NO_NEW_CARD if none drawn
-char Player::takeTurn(Deck &deck, std::string goalString)
+char Player::takeTurn(std::string goalString)
 {
     std::pair<int, std::vector<char>> best;
     char newCard = NO_NEW_CARD;
@@ -37,17 +40,17 @@ char Player::takeTurn(Deck &deck, std::string goalString)
     // draw another card
     if (numCards <= 1)
     {
-        newCard = drawCard(deck, goalString);
+        newCard = drawCard(goalString);
     }
     else
     {
         // otherwise, try swaps before drawing card
-        best = moveCard(deck, goalString);
+        best = moveCard(goalString);
         if (currentDistance <= best.first)
         {
             // swapping cards did not get you any closer
             // to meeting the goal, so instead draw a card
-            newCard = drawCard(deck, goalString);
+            newCard = drawCard(goalString);
         }
         else
         {
@@ -64,9 +67,9 @@ char Player::takeTurn(Deck &deck, std::string goalString)
 // a card instead of swapping.
 // This card is just appended to the end of our current hand.
 // returns the new card
-char Player::drawCard(Deck &deck, std::string goalString)
+char Player::drawCard(std::string goalString)
 {
-    char newCard = deck.drawCard();
+    char newCard = deck->drawCard();
 
     // if not an action card....
     if (newCard < ACTION_CARD_DISCARD)
@@ -76,7 +79,7 @@ char Player::drawCard(Deck &deck, std::string goalString)
         std::string testString;
 
         currentHand.push_back(newCard);
-        testString = generateString(deck, currentHand);
+        testString = generateString(currentHand);
         currentDistance = stringDistance(testString, goalString);
 
         numCards++;
@@ -85,7 +88,7 @@ char Player::drawCard(Deck &deck, std::string goalString)
     return newCard;
 }
 
-std::pair<int, std::vector<char>> Player::moveCard(Deck &deck, std::string goalString)
+std::pair<int, std::vector<char>> Player::moveCard(std::string goalString)
 {
     std::vector<char> bestHand, testHand, testHandRemoved;
     int bestDistance = MAX_INT, testDistance;
@@ -107,7 +110,7 @@ std::pair<int, std::vector<char>> Player::moveCard(Deck &deck, std::string goalS
             if (whereToMove != cardToMove)
             {
                 testHand.insert(testHand.begin() + whereToMove, currentCard);
-                testString = generateString(deck, testHand);
+                testString = generateString(testHand);
                 testDistance = stringDistance(testString, goalString);
                 if (testDistance < bestDistance)
                 {
@@ -135,7 +138,7 @@ bool Player::winningCondition()
 // add it back to the deck
 // if you can't IMPROVE your hand by removing a card,
 // simply try your best not to make it worse
-void Player::discardCard(Deck &deck, std::string goalString)
+void Player::discardCard(std::string goalString)
 {
     if (numCards <= 0)
         return; // nothing to do if no cards to remove!
@@ -152,7 +155,7 @@ void Player::discardCard(Deck &deck, std::string goalString)
     {
         testCard = testHand[index];
         testHand.erase(testHand.begin() + index);
-        testString = generateString(deck, testHand);
+        testString = generateString(testHand);
         testDistance = stringDistance(testString, goalString);
 
         if (testDistance < bestDistance)
@@ -167,7 +170,7 @@ void Player::discardCard(Deck &deck, std::string goalString)
 
     // make best new current and return card to the deck
     currentHand = bestHand;
-    deck.putCardBack(bestCard);
+    deck->putCardBack(bestCard);
     numCards--;
 }
 
@@ -176,7 +179,7 @@ void Player::discardCard(Deck &deck, std::string goalString)
 // (remember that the order must stay the same)
 // then, choose the possibility that gets you closest
 // to the goal
-void Player::springCleaning(Deck &deck, std::string goalString)
+void Player::springCleaning(std::string goalString)
 {
     if (numCards <= 0)
         return; // nothing to do if no cards to remove!
@@ -189,7 +192,7 @@ void Player::springCleaning(Deck &deck, std::string goalString)
     for (int i = 1; i <= numCards; i++)
     {
         combinationUtil(currentHand, combinations, bestHand, bestDistance,
-                        deck, goalString, 0, numCards - 1, 0, i);
+                        goalString, 0, numCards - 1, 0, i);
     }
 
     // now that we found the best possible hand, let's make sure to
@@ -200,7 +203,7 @@ void Player::springCleaning(Deck &deck, std::string goalString)
     std::vector<char>::iterator it;
     for (it = cardsRemoved.begin(); it < cardsRemoved.end(); it++)
     {
-        deck.putCardBack(*it);
+        deck->putCardBack(*it);
     }
 
     // now, set the best to the current
@@ -213,7 +216,7 @@ void Player::springCleaning(Deck &deck, std::string goalString)
 // pick a unicorn to poison and permanantly remove from play
 // try to do the most damage - i.e. target the player
 // whose unicorn removal moves them furthest from the goal
-void Player::poisonCard(Deck &deck, std::string goalString, std::vector<Player*> &otherPlayers)
+void Player::poisonCard(std::string goalString, std::vector<Player*> &otherPlayers)
 {
     // for each player, 
     //      for each unicorn in their hand
@@ -252,7 +255,7 @@ void Player::poisonCard(Deck &deck, std::string goalString, std::vector<Player*>
                 testHand.erase(testHand.begin() + handIndex);
 
                 // and check if removing it caused damage
-                testString = generateString(deck, testHand);
+                testString = generateString(testHand);
                 testDistance = stringDistance(goalString, testString);
                 if((testDistance - previousDistance) > bestDamage)
                 {
@@ -273,11 +276,11 @@ void Player::poisonCard(Deck &deck, std::string goalString, std::vector<Player*>
         // possibly this unicorn does not do any damage
         // but MUST remove a unicorn if one to remove
         // otherwise, no unicorns to remove
-        playerToTarget->removeCard(deck, goalString, unicornToRemove);
+        playerToTarget->removeCard(goalString, unicornToRemove);
     }
 }
 
-void Player::stealCard(Deck &deck, std::string goalString, std::vector<Player *> &otherPlayers)
+void Player::stealCard(std::string goalString, std::vector<Player *> &otherPlayers)
 {
     // either target the player closest to winning and stop them
     // (AGGRESSIVE) OR target the player that has a card that will
@@ -304,7 +307,7 @@ void Player::stealCard(Deck &deck, std::string goalString, std::vector<Player *>
             // to mark for potential robbery
             testHand = currentHand;
             testHand.push_back(targetHand[currentCard]);
-            testString = generateString(deck, testHand);
+            testString = generateString(testHand);
             testDistance = stringDistance(testString, goalString);
             if (testDistance < currentBest)
             {
@@ -332,16 +335,16 @@ void Player::stealCard(Deck &deck, std::string goalString, std::vector<Player *>
     currentDistance = currentBest;
     currentHand.push_back(targetPlayer->getHand()[currentTargetCard]);
     numCards++;
-    currentString = generateString(deck, currentHand);
+    currentString = generateString(currentHand);
 
     // then, remove it from the target's hand
-    targetPlayer->removeCard(deck, goalString, currentTargetCard);
+    targetPlayer->removeCard(goalString, currentTargetCard);
 }
 
-void Player::removeCard(Deck &deck, std::string goalString, int cardToRemove)
+void Player::removeCard(std::string goalString, int cardToRemove)
 {
     currentHand.erase(currentHand.begin() + cardToRemove);
-    currentString = generateString(deck, currentHand);
+    currentString = generateString(currentHand);
     currentDistance = stringDistance(currentString, goalString);
     numCards--;
 }
@@ -353,7 +356,7 @@ void Player::removeCard(Deck &deck, std::string goalString, int cardToRemove)
 // https://www.geeksforgeeks.org/print-all-possible-combinations-of-r-elements-in-a-given-array-of-size-n/
 void Player::combinationUtil(std::vector<char> hand, std::vector<char> tempHand,
                              std::vector<char> &bestHand, int &bestDistance,
-                             Deck &deck, std::string goalString,
+                             std::string goalString,
                              int start, int end, int index, int r)
 {
     // base case
@@ -365,7 +368,7 @@ void Player::combinationUtil(std::vector<char> hand, std::vector<char> tempHand,
             newCombo.push_back(tempHand[j]);
         }
 
-        std::string testString = generateString(deck, newCombo);
+        std::string testString = generateString(newCombo);
         int testDistance = stringDistance(testString, goalString);
 
         if (testDistance <= bestDistance)
@@ -391,19 +394,19 @@ void Player::combinationUtil(std::vector<char> hand, std::vector<char> tempHand,
     {
         tempHand[index] = hand[i];
         combinationUtil(hand, tempHand, bestHand, bestDistance,
-                        deck, goalString,
+                        goalString,
                         i + 1, end, index + 1, r);
     }
 }
 
 // using the hand, generate the string from empty
-std::string Player::generateString(Deck &deck, std::vector<char> hand)
+std::string Player::generateString(std::vector<char> hand)
 {
     std::string current = "";
     std::vector<char>::iterator it;
     for (it = hand.begin(); it < hand.end(); it++)
     {
-        deck.playCard(*it, current);
+        deck->playCard(*it, current);
     }
 
     return current;
@@ -411,22 +414,22 @@ std::string Player::generateString(Deck &deck, std::vector<char> hand)
 
 // print the given hand using the card types rather than the chars
 // that represent each card (i.e. "unicorn" instead of char(0))
-void Player::printHand(Deck &deck, std::vector<char> hand)
+void Player::printHand(std::vector<char> hand)
 {
     std::vector<char>::iterator it;
     for (it = hand.begin(); it < hand.end(); it++)
     {
-        LOG("[" + deck.getCardName(*it) + "]");
-        // std::cout << "[" << deck.getCardName(*it) << "]";
+        LOG("[" + deck->getCardName(*it) + "]");
+        // std::cout << "[" << deck->getCardName(*it) << "]";
     }
     LOG("\n");
 }
 
 // print the current hand using the card types rather than the chars
 // that represent each card (i.e. "unicorn" instead of char(0))
-void Player::printCurrentHand(Deck &deck)
+void Player::printCurrentHand()
 {
-    printHand(deck, currentHand);
+    printHand(currentHand);
 }
 
 // https://dzone.com/articles/the-levenshtein-algorithm-1
