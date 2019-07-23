@@ -103,8 +103,8 @@ void simulateGame(std::ofstream &outputFile)
                 }
                 else if (gameStatus == RAN_OUT_OF_CARDS)
                 {
-                    keepLooping = false;
                     ranOutOfCards++;
+                    keepLooping = false;
                 }
             }
 

@@ -7,11 +7,14 @@
 
 Game::Game(int numPlayers, std::string goal)
 {
+    deck = new Deck();
+    discardDeck = new Deck();
+
     readGameStats();
-    deck.shuffleDeck();
+    deck->shuffleDeck();
 
     for (int i = 0; i < numPlayers; i++)
-        players.push_back(new Player(&deck, &discardDeck));
+        players.push_back(new Player(deck, discardDeck));
 
     goalString = goal;
     winningPlayer = MAX_INT;
@@ -72,9 +75,9 @@ char Game::playerTurn(std::string goalString, int playerNum)
             for (playerNum2 = 0; playerNum2 < NUM_PLAYERS; playerNum2++)
             {
                 testCard = getPlayer(playerNum2)->drawCard(goalString);
-                while (testCard >= ACTION_CARD_DISCARD && deck.hasNonActionCard())
+                while (testCard >= ACTION_CARD_DISCARD && deck->hasNonActionCard())
                 {
-                    deck.putCardBack(testCard); // put the action card back
+                    discardDeck->putCardBack(testCard); // put the action card back
                     // and draw a new card until it is NOT an action card
                     testCard = getPlayer(playerNum2)->drawCard(goalString);
                 }
@@ -135,9 +138,18 @@ char Game::playerTurn(std::string goalString, int playerNum)
             gameStatus = WIN;
             winningPlayer = playerNum;
         }
-        else if (!deck.hasCards())
+        else if (!deck->hasCards())
         {
-            gameStatus = RAN_OUT_OF_CARDS;
+            if(!discardDeck->hasCards())
+                gameStatus = RAN_OUT_OF_CARDS;
+            else
+            {
+                // std::cout << "main deck has " << deck->numberOfCards() << std::endl;
+                // std::cout << "discard deck has " << discardDeck->numberOfCards() << std::endl;
+                discardDeck->shuffleDeck();
+                deck->replaceCards(discardDeck);
+                discardDeck->emptyDeck();
+            }
         }
     }
 
@@ -186,7 +198,7 @@ void Game::readGameStats()
         for (i = 0; i < numCards; i++)
         {
             std::getline(file, line);
-            deck.addToDeck(line, cardCounter);
+            deck->addToDeck(line, cardCounter);
             cardCounter++;
         }
 

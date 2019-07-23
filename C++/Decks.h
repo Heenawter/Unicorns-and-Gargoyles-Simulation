@@ -19,7 +19,9 @@ class Deck {
     public:
         void addToDeck(std::string line, char cardType);
         char drawCard();
+        void emptyDeck();
         void putCardBack(char card);
+        void replaceCards(Deck* newDeck);
 
         void shuffleDeck();
         bool hasCards();

@@ -24,8 +24,8 @@ static const char ACTION_CARD_REVERSE = 15;
 static const char ACTION_CARD_POISON = 16;
 static const char ACTION_CARD_STEAL = 17;
 
-static const int NUM_PLAYERS = 6;
-static const int NUM_ROUNDS = 1;
+static const int NUM_PLAYERS = 10;
+static const int NUM_ROUNDS = 10000;
 
 static const int NUM_LINES_TO_SKIP = 22;
 static const int NUM_GOALS = 8;
@@ -35,7 +35,7 @@ static const std::string INPUT_FILE = "Simulations/Draft" + DRAFT +"_Stats.txt";
 static const std::string OUTPT_FILE = "Simulations/Draft" + DRAFT + "_Results ("
     + std::to_string(NUM_PLAYERS) + " Players, "
     + std::to_string(NUM_ROUNDS) + " Rounds)"
-    + "_v1.txt";
+    + "_v2.txt";
 
 
 // GAME STATE CONSTANTS

@@ -6,8 +6,8 @@
 
 class Game {
     private:
-        Deck deck;
-        Deck discardDeck;
+        Deck* deck;
+        Deck* discardDeck;
 
         std::vector<Player*> players;
         std::string goalString;
@@ -24,7 +24,7 @@ class Game {
         
         char gameRound(std::string goalString);
 
-        Deck* getDeck() { return &deck; }
+        Deck* getDeck() { return deck; }
         Player* getPlayer(int index) { return players.at(index); }
         std::vector<Player*> getPlayers() { return players; }
         int getWinningPlayer() { return winningPlayer; }

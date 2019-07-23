@@ -1,0 +1,71 @@
+---- GOAL [ ][*][ ]       ----
+	~27 milliseconds to complete.
+	~13 turns/rounds to win.
+	   - Player 1 had ~6 cards.
+	   - Player 2 had ~6 cards.
+	   - Player 3 had ~6 cards.
+	Ran out of cards 12 times (i.e. 0.12%).
+
+---- GOAL [ ][ ][ ][ ]    ----
+	~1 milliseconds to complete.
+	~7 turns/rounds to win.
+	   - Player 1 had ~3 cards.
+	   - Player 2 had ~3 cards.
+	   - Player 3 had ~3 cards.
+	Ran out of cards 0 times (i.e. 0%).
+
+---- GOAL [*][ ][ ][*]    ----
+	~33 milliseconds to complete.
+	~13 turns/rounds to win.
+	   - Player 1 had ~6 cards.
+	   - Player 2 had ~6 cards.
+	   - Player 3 had ~6 cards.
+	Ran out of cards 52 times (i.e. 0.52%).
+
+---- GOAL [ ][ ][ ][*]    ----
+	~1 milliseconds to complete.
+	~7 turns/rounds to win.
+	   - Player 1 had ~3 cards.
+	   - Player 2 had ~3 cards.
+	   - Player 3 had ~3 cards.
+	Ran out of cards 0 times (i.e. 0%).
+
+---- GOAL [ ][ ][*][*]    ----
+	~76 milliseconds to complete.
+	~13 turns/rounds to win.
+	   - Player 1 had ~6 cards.
+	   - Player 2 had ~6 cards.
+	   - Player 3 had ~6 cards.
+	Ran out of cards 52 times (i.e. 0.52%).
+
+---- GOAL [ ][*][ ][ ][ ] ----
+	~29 milliseconds to complete.
+	~12 turns/rounds to win.
+	   - Player 1 had ~6 cards.
+	   - Player 2 had ~6 cards.
+	   - Player 3 had ~6 cards.
+	Ran out of cards 19 times (i.e. 0.19%).
+
+---- GOAL [ ][ ][*][ ][ ] ----
+	~22 milliseconds to complete.
+	~13 turns/rounds to win.
+	   - Player 1 had ~6 cards.
+	   - Player 2 had ~6 cards.
+	   - Player 3 had ~6 cards.
+	Ran out of cards 16 times (i.e. 0.16%).
+
+---- GOAL [ ][ ][ ][ ][ ] ----
+	~0 milliseconds to complete.
+	~7 turns/rounds to win.
+	   - Player 1 had ~3 cards.
+	   - Player 2 had ~3 cards.
+	   - Player 3 had ~3 cards.
+	Ran out of cards 0 times (i.e. 0%).
+
+
+-------------------------------------
+
+Player 1 won 27108 times (i.e. 33.885%).
+Player 2 won 26329 times (i.e. 32.9113%).
+Player 3 won 26412 times (i.e. 33.015%).
+Ran out of cards 151 times (i.e. 0.18875%).

@@ -170,7 +170,7 @@ void Player::discardCard(std::string goalString)
 
     // make best new current and return card to the deck
     currentHand = bestHand;
-    deck->putCardBack(bestCard);
+    discardDeck->putCardBack(bestCard);
     numCards--;
 }
 
@@ -203,7 +203,7 @@ void Player::springCleaning(std::string goalString)
     std::vector<char>::iterator it;
     for (it = cardsRemoved.begin(); it < cardsRemoved.end(); it++)
     {
-        deck->putCardBack(*it);
+        discardDeck->putCardBack(*it);
     }
 
     // now, set the best to the current
@@ -339,10 +339,14 @@ void Player::stealCard(std::string goalString, std::vector<Player *> &otherPlaye
 
     // then, remove it from the target's hand
     targetPlayer->removeCard(goalString, currentTargetCard);
+    discardDeck->putCardBack(ACTION_CARD_STEAL);
 }
 
 void Player::removeCard(std::string goalString, int cardToRemove)
 {
+    char cardType = currentHand[cardToRemove];
+    discardDeck->putCardBack(cardType);
+
     currentHand.erase(currentHand.begin() + cardToRemove);
     currentString = generateString(currentHand);
     currentDistance = stringDistance(currentString, goalString);
