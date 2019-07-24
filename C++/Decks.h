@@ -13,17 +13,17 @@ class Deck {
     private:
         std::map<std::string, char> map;
         std::vector<char> cards;
+        std::vector<char> discard;
 
         void removeHelper(std::string &current, int numToRemove);
 
     public:
+        void shuffleDeck();
+
         void addToDeck(std::string line, char cardType);
         char drawCard();
-        void emptyDeck();
-        void putCardBack(char card);
-        void replaceCards(Deck* newDeck);
+        void discardCard(char card);
 
-        void shuffleDeck();
         bool hasCards();
         std::vector<char> getCards() { return cards; }
         int numberOfCards() { return cards.size(); }

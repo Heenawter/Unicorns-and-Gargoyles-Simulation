@@ -13,14 +13,13 @@ Player::~Player()
     // delete[] allHands;
 }
 
-Player::Player(Deck *deck, Deck *discardDeck)
+Player::Player(Deck *deck)
 {
     currentString = "";
     numCards = 0;
     currentDistance = MAX_INT;
 
     this->deck = deck;
-    this->discardDeck = discardDeck;
 }
 
 /******************************************************/
@@ -168,9 +167,9 @@ void Player::discardCard(std::string goalString)
         testHand = currentHand; // deep copy -- using copy constructor
     }
 
-    // make best new current and return card to the deck
+    // make best new current and discard the chosen card
     currentHand = bestHand;
-    discardDeck->putCardBack(bestCard);
+    deck->discardCard(bestCard);
     numCards--;
 }
 
@@ -203,7 +202,7 @@ void Player::springCleaning(std::string goalString)
     std::vector<char>::iterator it;
     for (it = cardsRemoved.begin(); it < cardsRemoved.end(); it++)
     {
-        discardDeck->putCardBack(*it);
+        deck->discardCard(*it);
     }
 
     // now, set the best to the current
@@ -339,13 +338,12 @@ void Player::stealCard(std::string goalString, std::vector<Player *> &otherPlaye
 
     // then, remove it from the target's hand
     targetPlayer->removeCard(goalString, currentTargetCard);
-    discardDeck->putCardBack(ACTION_CARD_STEAL);
 }
 
 void Player::removeCard(std::string goalString, int cardToRemove)
 {
     char cardType = currentHand[cardToRemove];
-    discardDeck->putCardBack(cardType);
+    deck->discardCard(cardType);
 
     currentHand.erase(currentHand.begin() + cardToRemove);
     currentString = generateString(currentHand);

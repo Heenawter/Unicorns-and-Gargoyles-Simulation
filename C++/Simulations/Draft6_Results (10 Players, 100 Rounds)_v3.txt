@@ -1,0 +1,134 @@
+---- GOAL [ ][*][ ]       ----
+	~0 milliseconds to complete.
+	~2 turns/rounds to win.
+	   - Player 1 had ~0 cards.
+	   - Player 2 had ~0 cards.
+	   - Player 3 had ~0 cards.
+	   - Player 4 had ~0 cards.
+	   - Player 5 had ~0 cards.
+	   - Player 6 had ~0 cards.
+	   - Player 7 had ~0 cards.
+	   - Player 8 had ~0 cards.
+	   - Player 9 had ~0 cards.
+	   - Player 10 had ~0 cards.
+	Ran out of cards 99 times (i.e. 99%).
+
+---- GOAL [ ][ ][ ][ ]    ----
+	~0 milliseconds to complete.
+	~2 turns/rounds to win.
+	   - Player 1 had ~1 cards.
+	   - Player 2 had ~0 cards.
+	   - Player 3 had ~0 cards.
+	   - Player 4 had ~0 cards.
+	   - Player 5 had ~0 cards.
+	   - Player 6 had ~0 cards.
+	   - Player 7 had ~0 cards.
+	   - Player 8 had ~0 cards.
+	   - Player 9 had ~0 cards.
+	   - Player 10 had ~0 cards.
+	Ran out of cards 99 times (i.e. 99%).
+
+---- GOAL [*][ ][ ][*]    ----
+	~0 milliseconds to complete.
+	~2 turns/rounds to win.
+	   - Player 1 had ~1 cards.
+	   - Player 2 had ~0 cards.
+	   - Player 3 had ~0 cards.
+	   - Player 4 had ~0 cards.
+	   - Player 5 had ~0 cards.
+	   - Player 6 had ~0 cards.
+	   - Player 7 had ~0 cards.
+	   - Player 8 had ~0 cards.
+	   - Player 9 had ~0 cards.
+	   - Player 10 had ~0 cards.
+	Ran out of cards 100 times (i.e. 100%).
+
+---- GOAL [ ][ ][ ][*]    ----
+	~0 milliseconds to complete.
+	~3 turns/rounds to win.
+	   - Player 1 had ~1 cards.
+	   - Player 2 had ~0 cards.
+	   - Player 3 had ~0 cards.
+	   - Player 4 had ~0 cards.
+	   - Player 5 had ~0 cards.
+	   - Player 6 had ~1 cards.
+	   - Player 7 had ~1 cards.
+	   - Player 8 had ~0 cards.
+	   - Player 9 had ~1 cards.
+	   - Player 10 had ~0 cards.
+	Ran out of cards 69 times (i.e. 69%).
+
+---- GOAL [ ][ ][*][*]    ----
+	~0 milliseconds to complete.
+	~2 turns/rounds to win.
+	   - Player 1 had ~1 cards.
+	   - Player 2 had ~0 cards.
+	   - Player 3 had ~0 cards.
+	   - Player 4 had ~0 cards.
+	   - Player 5 had ~0 cards.
+	   - Player 6 had ~0 cards.
+	   - Player 7 had ~0 cards.
+	   - Player 8 had ~0 cards.
+	   - Player 9 had ~0 cards.
+	   - Player 10 had ~0 cards.
+	Ran out of cards 100 times (i.e. 100%).
+
+---- GOAL [ ][*][ ][ ][ ] ----
+	~0 milliseconds to complete.
+	~2 turns/rounds to win.
+	   - Player 1 had ~1 cards.
+	   - Player 2 had ~0 cards.
+	   - Player 3 had ~0 cards.
+	   - Player 4 had ~0 cards.
+	   - Player 5 had ~0 cards.
+	   - Player 6 had ~0 cards.
+	   - Player 7 had ~0 cards.
+	   - Player 8 had ~0 cards.
+	   - Player 9 had ~0 cards.
+	   - Player 10 had ~0 cards.
+	Ran out of cards 100 times (i.e. 100%).
+
+---- GOAL [ ][ ][*][ ][ ] ----
+	~0 milliseconds to complete.
+	~2 turns/rounds to win.
+	   - Player 1 had ~1 cards.
+	   - Player 2 had ~0 cards.
+	   - Player 3 had ~0 cards.
+	   - Player 4 had ~0 cards.
+	   - Player 5 had ~0 cards.
+	   - Player 6 had ~0 cards.
+	   - Player 7 had ~0 cards.
+	   - Player 8 had ~0 cards.
+	   - Player 9 had ~0 cards.
+	   - Player 10 had ~0 cards.
+	Ran out of cards 100 times (i.e. 100%).
+
+---- GOAL [ ][ ][ ][ ][ ] ----
+	~0 milliseconds to complete.
+	~2 turns/rounds to win.
+	   - Player 1 had ~1 cards.
+	   - Player 2 had ~0 cards.
+	   - Player 3 had ~0 cards.
+	   - Player 4 had ~0 cards.
+	   - Player 5 had ~0 cards.
+	   - Player 6 had ~0 cards.
+	   - Player 7 had ~0 cards.
+	   - Player 8 had ~0 cards.
+	   - Player 9 had ~0 cards.
+	   - Player 10 had ~0 cards.
+	Ran out of cards 98 times (i.e. 98%).
+
+
+-------------------------------------
+
+Player 1 won 15 times (i.e. 1.875%).
+Player 2 won 1 times (i.e. 0.125%).
+Player 3 won 0 times (i.e. 0%).
+Player 4 won 1 times (i.e. 0.125%).
+Player 5 won 0 times (i.e. 0%).
+Player 6 won 3 times (i.e. 0.375%).
+Player 7 won 15 times (i.e. 1.875%).
+Player 8 won 0 times (i.e. 0%).
+Player 9 won 0 times (i.e. 0%).
+Player 10 won 0 times (i.e. 0%).
+Ran out of cards 765 times (i.e. 95.625%).

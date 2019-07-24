@@ -12,7 +12,7 @@ std::string Deck::getCardName(char cardType)
 }
 
 bool Deck::hasCards() {
-    if(cards.size() > 0) 
+    if(cards.size() > 0 && discard.size() > 0) 
         return true;
     
     return false;
@@ -49,41 +49,20 @@ char Deck::drawCard()
         newCard = 'x';
     }
 
+    if (cards.size() == 0)
+    {
+        cards = discard;
+        shuffleDeck();
+        discard.clear();
+    }
+
     // std::cout << "Draw..." << getCardName(newCard) << std::endl;
     return newCard;
 }
 
-void Deck::emptyDeck() 
+void Deck::discardCard(char card)
 {
-    cards.clear();
-}
-
-void Deck::replaceCards(Deck* newDeck)
-{
-    cards = newDeck->getCards();
-}
-
-// insert card back into deck in a random position
-void Deck::putCardBack(char card)
-{
-    cards.push_back(card);
-    // std::cout << "discard..." << std::endl;
-
-    // if(cards.size() == 0) {
-    //     cards.push_back(card);
-    //     return;
-    // }
-    // int min = 0; 
-    // int max = cards.size() - 1;
-    // // unsigned seed = SEED;
-    // unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-    // std::default_random_engine rng(seed);     // random-number engine used (Mersenne-Twister in this case)
-    // // create a randomly distributed array with values
-    // // from [min, max] (inclusive)
-    // std::uniform_int_distribution<int> uni(min, max); // guaranteed unbiased
-    // // grab a random integer from this range
-    // int randomIndex = uni(rng); // where to insert card
-    // cards.insert(cards.begin() + randomIndex, card);
+    discard.push_back(card);
 }
 
 bool Deck::hasNonActionCard() {

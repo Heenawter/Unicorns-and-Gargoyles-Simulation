@@ -8,13 +8,12 @@
 Game::Game(int numPlayers, std::string goal)
 {
     deck = new Deck();
-    discardDeck = new Deck();
 
     readGameStats();
     deck->shuffleDeck();
 
     for (int i = 0; i < numPlayers; i++)
-        players.push_back(new Player(deck, discardDeck));
+        players.push_back(new Player(deck));
 
     goalString = goal;
     winningPlayer = MAX_INT;
@@ -49,6 +48,7 @@ char Game::playerTurn(std::string goalString, int playerNum)
         // reverse the player order
         gameDirection *= -1;
         gameStatus = REVERSE_ORDER;
+        deck->discardCard(newCard);
     }
     else    
     {
@@ -64,6 +64,7 @@ char Game::playerTurn(std::string goalString, int playerNum)
                 LOG("---> Player " + std::to_string(playerNum2 + 1) + " --- ");
                 getPlayer(playerNum2)->printCurrentHand();
             }
+            deck->discardCard(newCard);
         }
         else if (newCard == ACTION_CARD_DRAW)
         {
@@ -77,7 +78,7 @@ char Game::playerTurn(std::string goalString, int playerNum)
                 testCard = getPlayer(playerNum2)->drawCard(goalString);
                 while (testCard >= ACTION_CARD_DISCARD && deck->hasNonActionCard())
                 {
-                    discardDeck->putCardBack(testCard); // put the action card back
+                    deck->discardCard(testCard); // put the action card back
                     // and draw a new card until it is NOT an action card
                     testCard = getPlayer(playerNum2)->drawCard(goalString);
                 }
@@ -85,6 +86,7 @@ char Game::playerTurn(std::string goalString, int playerNum)
                 LOG("---> Player " + std::to_string(playerNum2 + 1) + " --- ");
                 getPlayer(playerNum2)->printCurrentHand();
             }
+            deck->discardCard(newCard);
         }
         else if (newCard == ACTION_CARD_SPRING_CLEANING)
         {
@@ -96,6 +98,8 @@ char Game::playerTurn(std::string goalString, int playerNum)
                 LOG("---> Player " + std::to_string(playerNum2 + 1) + " --- ");
                 getPlayer(playerNum2)->printCurrentHand();
             }
+
+            deck->discardCard(newCard);
         }
         else if (newCard == ACTION_CARD_POISON)
         {
@@ -126,6 +130,8 @@ char Game::playerTurn(std::string goalString, int playerNum)
                 LOG("---> Player " + std::to_string(playerNum2 + 1) + " --- ");
                 getPlayer(playerNum2)->printCurrentHand();
             }
+
+            deck->discardCard(newCard);
         } 
         else
         {
@@ -140,16 +146,7 @@ char Game::playerTurn(std::string goalString, int playerNum)
         }
         else if (!deck->hasCards())
         {
-            if(!discardDeck->hasCards())
-                gameStatus = RAN_OUT_OF_CARDS;
-            else
-            {
-                // std::cout << "main deck has " << deck->numberOfCards() << std::endl;
-                // std::cout << "discard deck has " << discardDeck->numberOfCards() << std::endl;
-                discardDeck->shuffleDeck();
-                deck->replaceCards(discardDeck);
-                discardDeck->emptyDeck();
-            }
+            gameStatus = RAN_OUT_OF_CARDS;
         }
     }
 

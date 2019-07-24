@@ -16,7 +16,6 @@ private:
     int currentDistance;
 
     Deck* deck;
-    Deck* discardDeck;
 
     void removeCard(std::string goalString, int cardToRemove);
 
@@ -29,7 +28,7 @@ private:
 public:
 
     ~Player();
-    Player(Deck *deck, Deck *discardDeck);
+    Player(Deck *deck);
 
     /* GAME FUNCTIONS */
     char takeTurn(std::string goalString);
