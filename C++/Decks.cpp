@@ -12,6 +12,9 @@ std::string Deck::getCardName(char cardType)
 }
 
 bool Deck::hasCards() {
+    if(cards.size() == 1 && cards[0] == ACTION_CARD_DRAW)
+        return false;
+
     if(cards.size() > 0 || discard.size() > 0) 
         return true;
     
@@ -51,6 +54,7 @@ char Deck::drawCard()
 
     if (cards.size() == 0)
     {
+        LOG("\n**** New deck has " + std::to_string(discard.size()) + " ****\n");
         cards = discard;
         shuffleDeck();
         discard.clear();

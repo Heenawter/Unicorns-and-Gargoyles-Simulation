@@ -87,7 +87,7 @@ char Game::playerTurn(std::string goalString, int playerNum)
                 LOG("---> Player " + std::to_string(playerNum2 + 1) + " --- ");
                 getPlayer(playerNum2)->printCurrentHand();
             }
-            deck->discardCard(newCard);
+            // deck->discardCard(newCard);
         }
         else if (newCard == ACTION_CARD_SPRING_CLEANING)
         {
