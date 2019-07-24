@@ -56,7 +56,6 @@ void simulateGame(std::ofstream &outputFile)
     // game stuff
     Player *player;
     Game *simulation;
-    Deck *deck;
     std::vector<std::string>::iterator it; // used to loop through goal list
 
     // initialize the wins with 0 for each player
@@ -103,8 +102,8 @@ void simulateGame(std::ofstream &outputFile)
                 }
                 else if (gameStatus == RAN_OUT_OF_CARDS)
                 {
-                    ranOutOfCards++;
                     keepLooping = false;
+                    ranOutOfCards++;
                 }
             }
 

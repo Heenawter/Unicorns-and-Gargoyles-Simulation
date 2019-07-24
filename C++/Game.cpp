@@ -28,6 +28,7 @@ Game::~Game()
     {
         delete *it;
     }
+    delete deck;
 }
 
 char Game::playerTurn(std::string goalString, int playerNum)
@@ -141,11 +142,15 @@ char Game::playerTurn(std::string goalString, int playerNum)
 
         if (currentPlayer->winningCondition())
         {
+            LOG("WINNING HAND: ");
+            getPlayer(playerNum)->printCurrentHand();
+
             gameStatus = WIN;
             winningPlayer = playerNum;
         }
         else if (!deck->hasCards())
         {
+            LOG("Ran out of cards");
             gameStatus = RAN_OUT_OF_CARDS;
         }
     }

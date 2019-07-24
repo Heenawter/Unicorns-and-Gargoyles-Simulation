@@ -12,7 +12,7 @@ std::string Deck::getCardName(char cardType)
 }
 
 bool Deck::hasCards() {
-    if(cards.size() > 0 && discard.size() > 0) 
+    if(cards.size() > 0 || discard.size() > 0) 
         return true;
     
     return false;

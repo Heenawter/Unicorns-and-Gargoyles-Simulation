@@ -1,6 +1,6 @@
 #pragma once
 
-// #define _LOGSTATEMENTS // uncomment for debug statements
+#define _LOGSTATEMENTS // uncomment for debug statements
 #ifdef _LOGSTATEMENTS
 #define LOG(stuff) std::cout << (stuff);
 #else
@@ -25,7 +25,7 @@ static const char ACTION_CARD_POISON = 16;
 static const char ACTION_CARD_STEAL = 17;
 
 static const int NUM_PLAYERS = 10;
-static const int NUM_ROUNDS = 10000;
+static const int NUM_ROUNDS = 1;
 
 static const int NUM_LINES_TO_SKIP = 22;
 static const int NUM_GOALS = 8;
