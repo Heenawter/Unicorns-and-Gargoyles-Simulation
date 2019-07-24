@@ -7,27 +7,29 @@
 #include <vector>
 #include <algorithm>
 
-class Cards
+class Card
 {
 private:
-    std::map<std::string, char> map;
-    
-    
+    std::string name;
+    char type;
+    bool isAction;
+
+    void reverse(std::string &current);
+    void append(std::string &current, int number);
+    void remove(std::string &current, int number);
+    void unicorn(std::string &current);
+    void gargoyle(std::string &current);
+
+    void discardCard(std::string goalString);
+    void springCleaning(std::string goalString);
+    void drawNonAction();
+    void poisonCard(std::string goalString, std::vector<Player *> &otherPlayers);
+    void stealCard(std::string goalString, std::vector<Player *> &otherPlayers);
+    void reversePlayOrder();
+
 public:
-    void addToDeck(std::string line, char cardType);
-
-    void shuffleDeck();
-    char drawCard();
-    void discardCard(char card);
-
-    bool hasCards();
-    std::vector<char> getCards() { return cards; }
-    int numberOfCards() { return cards.size(); }
-    std::string getCardName(char cardType); // WARNING: inefficient - avoid use
-                                            // mostly for debugging purposes
-    bool hasNonActionCard();
-
-    void playCard(char type, std::string &current);
+    void playCard(std::string &current);
+    void printCard();
 };
 
 #endif
