@@ -19,7 +19,7 @@ private:
 
     void removeCard(std::string goalString, int cardToRemove);
 
-    /* HELPER FUNCTIONS */
+    /**** HELPER FUNCTIONS ****/
     void combinationUtil(std::vector<char> hand, std::vector<char> tempHand,
                          std::vector<char> &bestHand, int &bestDistance,
                          std::string goalString,
@@ -33,23 +33,25 @@ public:
     ~Player();
     Player(Deck *deck);
 
-    /* GAME FUNCTIONS */
+    /**** GAME FUNCTIONS ****/
     char takeTurn(std::string goalString);
     char drawCard(std::string goalString);
     std::pair<int, std::vector<char>> moveCard(std::string goalString);
     bool winningCondition();
 
-    /* ACTION CARDS */
+    /**** ACTION CARDS ****/
     void discardCard(std::string goalString);
     void springCleaning(std::string goalString);
     void drawNonAction();
 
-        // pair<int, int> == pair<targetCard, damageDone>
+    // pair<int, int> == pair<targetCard, damageDone>
     std::pair<int, int> unicornToPoison(std::string goalString);
-    std::pair<int, int> cardToSteal(std::string goalString, std::vector<Card> otherHand);
+    std::pair<int, int> cardToSteal(std::string goalString);
 
     void getPoisoned(std::string goalString, int unicornToPoison);
     void getRobbed(std::string goalString, int cardToSteal);    
+
+    std::vector<char> getHand() { return currentHand; }
 };
 
 #endif

@@ -8,18 +8,21 @@
 #include <algorithm>
 #include <iostream>
 #include <random>
+#include <chrono> // need std::chrono::system_clock for randomness
 
 class Deck
 {
 private:
-    std::vector<Card> cards;
-    std::vector<Card> discard;
+    std::vector<char> cards;
+    std::vector<char> discard;
 
 public:
-    void addToDeck(std::string line, char cardType);
+    Deck(std::map<char, int> cardCounts);
+    ~Deck();
 
     void shuffleDeck();
-    char drawCard();
+    char drawNextCard();
+    char drawNonActionCard();
     void discardCard(char card);
 };
 
