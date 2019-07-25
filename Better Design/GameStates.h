@@ -1,17 +1,20 @@
+#include <exception>
 
-class RanOutOfCards : public std::exception
+class RanOutOfCardsException : public std::exception
 {
-    const char *what() const throw()
-    {
-        return "Ran out of cards.";
-    }
-}
+    public:
+        virtual const char *what() const throw()
+        {
+            return "Ran out of cards.";
+        }
+};
 
 class GameWon: public std::exception
 {
-    const char *what() const throw()
-    {
-        return "Game complete.";
-    }
-}
+    public:
+        virtual const char *what() const throw()
+        {
+            return "Game complete.";
+        }
+};
 

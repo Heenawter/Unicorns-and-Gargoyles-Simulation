@@ -18,7 +18,6 @@ private:
 
 public:
     Deck(std::map<char, int> cardCounts);
-    ~Deck();
 
     void shuffleDeck();
     char drawNextCard();

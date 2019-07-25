@@ -191,3 +191,8 @@ std::string Cards::getCardName(char type)
         cardName = "*" + cardMap[type] + "*";
     return cardName;
 }
+
+std::map<char, int> Cards::getCardCounts() 
+{
+    return cardCounts;
+}

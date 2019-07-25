@@ -41,6 +41,7 @@ public:
 
     std::string generateString(std::vector<char> cardList);
     std::string getCardName(char type);
+    std::map<char, int> getCardCounts();
 };
 
 #endif
