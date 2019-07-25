@@ -18,12 +18,16 @@ int main()
     {
         for(int i = 0; i < 100; i++)
         {
-            newCard = deck.drawNextCard();
+            newCard = deck.drawNonActionCard();
             std::cout << cardRules.getCardName(newCard) << std::endl;
         }
     }
-    catch (RanOutOfCardsException &r)
+    catch (RanOutOfCardsException &e1)
     {
-        std::cout << r.what() << std::endl;
+        std::cout << e1.what() << std::endl;
+    }
+    catch (OnlyActionCardsException &e2)
+    {
+        std::cout << e2.what() << std::endl;
     }
 }

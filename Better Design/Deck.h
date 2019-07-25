@@ -16,6 +16,8 @@ private:
     std::vector<char> cards;
     std::vector<char> discard;
 
+    bool hasNonActionCard(std::vector<char> deck);
+
 public:
     Deck(std::map<char, int> cardCounts);
 
@@ -23,6 +25,8 @@ public:
     char drawNextCard();
     char drawNonActionCard();
     void discardCard(char card);
+
+    bool hasNonActionCard();
 };
 
 #endif

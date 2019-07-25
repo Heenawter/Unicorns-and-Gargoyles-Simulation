@@ -9,6 +9,15 @@ class RanOutOfCardsException : public std::exception
         }
 };
 
+class OnlyActionCardsException : public std::exception
+{
+    public:
+        virtual const char *what() const throw()
+        {
+            return "There is only action cards left.";
+        }
+};
+
 class GameWon: public std::exception
 {
     public:

@@ -6,7 +6,20 @@
 /*                Private Functions               */
 /**************************************************/
 
-// none yet!
+/*  Function: hasNonActionCard(<given deck>)
+    Goal:     Determine whether the given deck contains
+              a non-action card. */
+bool Deck::hasNonActionCard(std::vector<char> deck)
+{
+    std::vector<char>::iterator it;
+    for (it = deck.begin(); it < deck.end(); it++)
+    {
+        if (*it < ACTION_CARD_DISCARD)
+            return true; // found a non-action card
+    }
+
+    return false; // did NOT find a non-action card
+}
 
 /**************************************************/
 /*                Public Functions                */
@@ -35,6 +48,12 @@ void Deck::shuffleDeck()
     std::shuffle(cards.begin(), cards.end(), std::default_random_engine(seed));
 }
 
+/*  Function: drawNextCard()
+    Goal:     Draw the next available card from the main deck.
+              If there are no cards available, try making the discard deck the
+              new main deck; if this also has no cards, then throw an exception
+              since you ran out of cards completely.
+    Throws:   RanOutOfCardsException */
 char Deck::drawNextCard()
 {
     if(cards.size() == 0)
@@ -57,12 +76,62 @@ char Deck::drawNextCard()
     return nextCard;
 }
 
+/*  Function: drawNonActionCard()
+    Goal:     Draw a non action card from the deck; if you draw an action
+              card, discard it and try again until it is a non action.
+    Throws:   RanOutOfCardsException   -- if you run out of cards
+              OnlyActionCardsException -- if there is no non-action card left */
 char Deck::drawNonActionCard()
 {
+    char nextCard;
+    bool nonActionCardExists = hasNonActionCard();
 
+    // first, this can only be done IF A NON-ACTION CARD exists
+    // in either the main deck or the discard deck; so, check this.
+    if(!nonActionCardExists)
+        throw(OnlyActionCardsException());
+
+    // an action card exists, so now we just have to find it.
+    try
+    {
+        nextCard = drawNextCard();
+        while (nextCard >= ACTION_CARD_DISCARD)
+        {
+            // while the card drawn is an action card...
+            discardCard(nextCard); // discard the action card
+            nextCard = drawNextCard();
+            // std::cout << "next card: " << int(nextCard) << std::endl;
+        }
+    }
+    catch (RanOutOfCardsException &e)
+    {
+        throw(RanOutOfCardsException());
+    }
+
+    return nextCard;
 }
 
+/*  Function: discardCard()
+    Goal:     Put the given card into the discard deck */
 void Deck::discardCard(char card)
 {
+    discard.push_back(card);
+}
 
+/*  Function: hasNonActionCard()
+    Goal:     Determine whether EITHER deck (i.e. either the main deck
+              or the discard deck) contains a non-action card. */
+bool Deck::hasNonActionCard()
+{
+    bool mainDeckCheck = hasNonActionCard(cards);
+    // if the main deck has a non action card, no point checking
+    // the discard deck... so just return
+    if(mainDeckCheck) 
+        return true;
+    
+    // otherwise, the main deck does NOT have an action card,
+    // so check the discard deck and return whether or not
+    // it has a non-action card.
+    bool discardDeckCheck = hasNonActionCard(discard);
+    return discardDeckCheck;
 }
