@@ -25,10 +25,11 @@ bool Deck::hasNonActionCard(std::vector<char> deck)
 /*                Public Functions                */
 /**************************************************/
 
-/*  Function: Deck()
-    Goal:     Build a deck based on the counts */
-Deck::Deck(std::map<char, int> cardCounts)
+    Goal:     Build a deck based on the card counts */
+Deck::Deck()
 {
+    cardInfo.readCards();
+    std::map<char, int> cardCounts = cardInfo.getCardCounts();
     for (auto const &x : cardCounts)
     {
         for(int count = 0; count < x.second; count++)
@@ -36,7 +37,6 @@ Deck::Deck(std::map<char, int> cardCounts)
             cards.push_back(x.first);
         }
     }
-
     shuffleDeck();
 }
 
@@ -134,4 +134,9 @@ bool Deck::hasNonActionCard()
     // it has a non-action card.
     bool discardDeckCheck = hasNonActionCard(discard);
     return discardDeckCheck;
+}
+
+std::string Deck::getCardName(char card)
+{
+    return cardInfo.getCardName(card);
 }

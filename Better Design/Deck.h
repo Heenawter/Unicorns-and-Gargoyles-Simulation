@@ -2,6 +2,8 @@
 
 #ifndef DECK_H // include guard
 
+#include "Cards.h"
+
 #include <string>
 #include <map>
 #include <vector>
@@ -16,10 +18,12 @@ private:
     std::vector<char> cards;
     std::vector<char> discard;
 
+    Cards cardInfo;
+
     bool hasNonActionCard(std::vector<char> deck);
 
 public:
-    Deck(std::map<char, int> cardCounts);
+    Deck();
 
     void shuffleDeck();
     char drawNextCard();
@@ -27,6 +31,7 @@ public:
     void discardCard(char card);
 
     bool hasNonActionCard();
+    std::string getCardName(char card);
 };
 
 #endif

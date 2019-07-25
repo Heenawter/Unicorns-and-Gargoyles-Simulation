@@ -7,11 +7,11 @@ int main()
 {
     std::cout << "main" << std::endl;
 
-    Cards cardRules;
-    cardRules.readCards();
-    std::cout << cardRules.getCardName(14) << std::endl;
+    // Cards cardRules;
+    // cardRules.readCards();
+    // std::cout << cardRules.getCardName(14) << std::endl;
 
-    Deck deck(cardRules.getCardCounts());
+    Deck deck;
     char newCard;
 
     try
@@ -19,7 +19,7 @@ int main()
         for(int i = 0; i < 100; i++)
         {
             newCard = deck.drawNonActionCard();
-            std::cout << cardRules.getCardName(newCard) << std::endl;
+            std::cout << deck.getCardName(newCard) << std::endl;
         }
     }
     catch (RanOutOfCardsException &e1)
