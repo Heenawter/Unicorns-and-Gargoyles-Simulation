@@ -50,46 +50,6 @@ void Hand::combinationUtil(std::vector<char> hand, std::vector<char> tempHand,
     }
 }
 
-/**************************************************/
-/*                Public Functions                */
-/**************************************************/
-
-Hand::Hand(Cards* cardInfo)
-{
-    this->cardInfo = cardInfo;
-    this->numCards = 0;
-    this->currentDistance = MAX_INT;
-    this->currentString = "";
-}
-
-std::string Hand::getCardName(char card)
-{
-    cardInfo->getCardName(card);
-}
-
-std::string Hand::generateString()
-{
-    return cardInfo->generateString(this->cards);
-}
-
-std::string Hand::generateString(std::vector<char> hand)
-{
-    return cardInfo->generateString(hand);
-}
-
-bool Hand::operator<(Hand h2)
-{
-    // int distance1 = stringDistance()
-}
-
-void Hand::addToHand(char card, std::string goalString)
-{
-    this->cards.push_back(card);
-    this->numCards++;
-    this->currentString = generateString();
-    this->currentDistance = stringDistance(this->currentString, goalString);
-}
-
 // https://dzone.com/articles/the-levenshtein-algorithm-1
 // https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C++
 int Hand::stringDistance(const std::string &string1, const std::string &string2)
@@ -143,4 +103,46 @@ int Hand::stringDistance(const std::string &string1, const std::string &string2)
     }
 
     return levenshteinDistance[minSize - 1];
+}
+
+/**************************************************/
+/*                Public Functions                */
+/**************************************************/
+
+Hand::Hand(Cards* cardInfo)
+{
+    this->cardInfo = cardInfo;
+    this->numCards = 0;
+    this->currentDistance = MAX_INT;
+    this->currentString = "";
+}
+
+std::string Hand::getCardName(char card)
+{
+    cardInfo->getCardName(card);
+}
+
+std::string Hand::generateString()
+{
+    return cardInfo->generateString(this->cards);
+}
+
+std::string Hand::generateString(std::vector<char> hand)
+{
+    return cardInfo->generateString(hand);
+}
+
+bool Hand::operator<(Hand* h2)
+{
+    int distance1 = this->currentDistance;
+    int distance2 = h2->currentDistance;
+    return distance1 < distance2;
+}
+
+void Hand::addToHand(char card, std::string goalString)
+{
+    this->cards.push_back(card);
+    this->numCards++;
+    this->currentString = generateString();
+    this->currentDistance = stringDistance(this->currentString, goalString);
 }

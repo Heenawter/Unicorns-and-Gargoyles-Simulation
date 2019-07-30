@@ -24,7 +24,7 @@ private:
                          std::string goalString,
                          int start, int end,
                          int index, int r);
-
+    int stringDistance(const std::string &string1, const std::string &string2);
 
 public:
     Hand(Cards *cardInfo);
@@ -32,10 +32,8 @@ public:
     std::string generateString();
     std::string generateString(std::vector<char> hand);
 
-    bool operator < (Hand h2);
+    bool operator < (Hand* h2);
     void addToHand(char card, std::string goalString);
-
-    int stringDistance(const std::string &string1, const std::string &string2);
 };
 
 #endif
