@@ -1,7 +1,7 @@
 
 #pragma once
 
-#ifndef MAIN
+#ifndef DEBUGGING
 
 #include <iostream>
 

@@ -1,0 +1,41 @@
+#pragma once
+
+#ifndef HAND_H // include guard
+
+#include "Cards.h"
+#include "Constants.h"
+
+#include <string>
+#include <vector>
+#include <iostream>
+
+class Hand
+{
+private:
+    std::vector<char> cards;
+    int numCards;
+    std::string currentString;
+    int currentDistance;
+
+    Cards* cardInfo;
+    
+    void combinationUtil(std::vector<char> hand, std::vector<char> tempHand,
+                         std::vector<char> &bestHand, int &bestDistance,
+                         std::string goalString,
+                         int start, int end,
+                         int index, int r);
+
+
+public:
+    Hand(Cards *cardInfo);
+    std::string getCardName(char type);
+    std::string generateString();
+    std::string generateString(std::vector<char> hand);
+
+    bool operator < (Hand h2);
+    void addToHand(char card, std::string goalString);
+
+    int stringDistance(const std::string &string1, const std::string &string2);
+};
+
+#endif

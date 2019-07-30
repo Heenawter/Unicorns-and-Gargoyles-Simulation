@@ -18,12 +18,12 @@ private:
     std::vector<char> cards;
     std::vector<char> discard;
 
-    Cards cardInfo;
+    Cards* cardInfo;
 
     bool hasNonActionCard(std::vector<char> deck);
 
 public:
-    Deck();
+    Deck(std::map<char, int> cardCounts, Cards *cardInfo);
 
     void shuffleDeck();
     char drawNextCard();

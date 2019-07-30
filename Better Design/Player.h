@@ -6,36 +6,24 @@
 #include <string>
 #include <unordered_set>
 
+#include "Cards.h"
+#include "Hand.h"
+#include "Table.h"
+
 class Player
 {
 private:
     // std::unordered_set<std::vector<char>, vectorHash> allHands;
-    std::string currentString;
-    std::vector<char> currentHand;
-    int numCards;
-    int currentDistance;
-
-    Deck *deck;
-
-    void removeCard(std::string goalString, int cardToRemove);
-
-    /**** HELPER FUNCTIONS ****/
-    void combinationUtil(std::vector<char> hand, std::vector<char> tempHand,
-                         std::vector<char> &bestHand, int &bestDistance,
-                         std::string goalString,
-                         int start, int end,
-                         int index, int r);
-
-    std::string generateString(std::vector<char> hand);
-    int stringDistance(const std::string &string1, const std::string &string2);
+    Hand *hand;
+    Table *table;
 
 public:
+    Player(Table *table, Cards *cardInfo);
     ~Player();
-    Player(Deck *deck);
 
     /**** GAME FUNCTIONS ****/
-    char takeTurn(std::string goalString);
-    char drawCard(std::string goalString);
+    void appendToHand();
+
     std::pair<int, std::vector<char>> moveCard(std::string goalString);
     bool winningCondition();
 
@@ -50,8 +38,6 @@ public:
 
     void getPoisoned(std::string goalString, int unicornToPoison);
     void getRobbed(std::string goalString, int cardToSteal);    
-
-    std::vector<char> getHand() { return currentHand; }
 };
 
 #endif

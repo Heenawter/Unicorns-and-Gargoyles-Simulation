@@ -22,7 +22,6 @@ class Cards
 {
 private:
     std::map<char, std::string> cardMap; // <card type, long name>
-    std::map<char, int> cardCounts;      // <card type, count>
 
     void reverse(std::string &current);
     void rotateRight(std::string &current);
@@ -37,11 +36,10 @@ private:
     void addToMaps(std::string line, char cardType);
 
 public:
-    void readCards();
+    Cards(std::map<char, std::string> cardMap);
 
     std::string generateString(std::vector<char> cardList);
     std::string getCardName(char type);
-    std::map<char, int> getCardCounts();
 };
 
 #endif
