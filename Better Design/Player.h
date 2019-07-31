@@ -9,7 +9,6 @@
 #include "Cards.h"
 #include "Hand.h"
 #include "Deck.h"
-#include "GameStates.h"
 
 class Player
 {
@@ -23,14 +22,11 @@ public:
     Player(Deck *deck, std::string goalString, Cards* cardInfo);
     ~Player();
 
-    /**** GAME FUNCTIONS ****/
-    char drawCard();
-    void appendToHand();
-
-    std::pair<int, std::vector<char>> moveCard(std::string goalString);
-    bool winningCondition();
+    void takeTurn();
+    void handleActionCard(char card);
 
     /**** ACTION CARDS ****/
+    void drawCard();
     void discardCard(std::string goalString);
     void springCleaning(std::string goalString);
     void drawNonAction();

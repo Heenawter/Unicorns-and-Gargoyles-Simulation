@@ -2,10 +2,10 @@
 all: main.exe 
 	.\main.exe
 
-main.exe: Main.o Game.o Deck.o Player.o Cards.o Hand.o
+main.exe: Main.o Game.o Deck.o Player.o Cards.o Hand.o GameStates.h
 	g++ -std=c++11 -o main.exe Main.o Game.o Deck.o Player.o Cards.o Hand.o
 
-Main.o: Main.cpp Debugging.h GameStates.h Game.h Player.h Deck.h Constants.h Cards.h Hand.h
+Main.o: Main.cpp Debugging.h Game.h Player.h Deck.h Hand.h Cards.h Constants.h GameStates.h
 	g++ -std=c++11 -c Main.cpp
 
 Game.o: Game.cpp Game.h Player.h Deck.h Hand.h Cards.h Constants.h GameStates.h

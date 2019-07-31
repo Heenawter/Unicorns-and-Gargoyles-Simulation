@@ -106,7 +106,7 @@ char Deck::drawNonActionCard()
     }
     catch (RanOutOfCardsException &e)
     {
-        throw(RanOutOfCardsException());
+        throw e;
     }
 
     return nextCard;

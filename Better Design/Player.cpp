@@ -1,6 +1,8 @@
 
 #include "Player.h"
 
+#include "GameStates.h"
+
 /**************************************************/
 /*                Private Functions               */
 /**************************************************/
@@ -29,7 +31,12 @@ Player::~Player()
     delete hand;
 }
 
-char Player::drawCard()
+/*  Function: takeTurn()
+    Goal:     Draws a new card from the deck (if possible).
+              If it is an action card, call the action card handler;
+              otherwise, append it to your current hand.  
+    Throws:   RanOutOfCardsException */
+void Player::takeTurn()
 {
     try
     {
@@ -37,14 +44,19 @@ char Player::drawCard()
         if (cardInfo->isActionCard(newCard))
             // this is an action card, so don't add it to your hand;
             // instead, return it so Game.cpp can handle it
-            return newCard;
-        
-        // a non-action card was drawn, so add it to your hand
-        hand->addToHand(newCard);
+            handleActionCard(newCard);
+        else
+            // a non-action card was drawn, so add it to your hand
+            hand->addToHand(newCard);
     }
-    catch (RanOutOfCardsException &e1)
+    catch (RanOutOfCardsException &e)
     {
-        throw e1;
+        throw e;
     }
-    return 'X';
+}
+
+void Player::handleActionCard(char card)
+{
+    if(card == ACTION_CARD_DISCARD)
+        throw ActionCardException_Draw(this);
 }

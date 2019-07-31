@@ -13,7 +13,7 @@ int main()
     {
         for(int i = 0; i < 100; i++)
         {
-            player1->drawCard();
+            player1->takeTurn();
         }
     }
     catch (RanOutOfCardsException &e1)
@@ -23,6 +23,11 @@ int main()
     catch (OnlyActionCardsException &e2)
     {
         std::cout << e2.what() << std::endl;
+    }
+    catch (ActionCardException_Draw &e3)
+    {
+        std::cout << e3.what() << std::endl;
+        std::cout << e3.triggeringPlayer << std::endl;
     }
 
     delete game;
