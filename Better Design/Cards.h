@@ -40,6 +40,7 @@ public:
 
     std::string generateString(std::vector<char> cardList);
     std::string getCardName(char type);
+    bool isActionCard(char card);
 };
 
 #endif

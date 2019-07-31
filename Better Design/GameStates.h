@@ -1,3 +1,7 @@
+#pragma once
+
+#ifndef STATES_H
+
 #include <exception>
 
 class RanOutOfCardsException : public std::exception
@@ -27,3 +31,4 @@ class GameWon: public std::exception
         }
 };
 
+#endif

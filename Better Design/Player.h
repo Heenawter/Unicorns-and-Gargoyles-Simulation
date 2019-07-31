@@ -9,6 +9,7 @@
 #include "Cards.h"
 #include "Hand.h"
 #include "Deck.h"
+#include "GameStates.h"
 
 class Player
 {
@@ -16,6 +17,7 @@ private:
     // std::unordered_set<std::vector<char>, vectorHash> allHands;
     Hand *hand;
     Deck *deck;
+    Cards* cardInfo;
 
 public:
     Player(Deck *deck, std::string goalString, Cards* cardInfo);

@@ -156,3 +156,8 @@ std::string Cards::getCardName(char type)
         cardName = "*" + cardMap[type] + "*";
     return cardName;
 }
+
+bool Cards::isActionCard(char card)
+{
+    return card >= ACTION_CARD_DISCARD;
+}

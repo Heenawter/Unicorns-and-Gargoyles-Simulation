@@ -9,7 +9,21 @@ int main()
     Game* game = new Game(5, "[ ][*][*][ ]");
     Player* player1 = game->getPlayer(0);
 
-    
+    try
+    {
+        for(int i = 0; i < 100; i++)
+        {
+            player1->drawCard();
+        }
+    }
+    catch (RanOutOfCardsException &e1)
+    {
+        std::cout << e1.what() << std::endl;
+    }
+    catch (OnlyActionCardsException &e2)
+    {
+        std::cout << e2.what() << std::endl;
+    }
 
     delete game;
 

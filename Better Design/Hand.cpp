@@ -164,6 +164,7 @@ bool Hand::operator<(Hand* h2)
               the goal string */
 void Hand::addToHand(char card)
 {
+    // std::cout << "CHECK:     " << int(card) << std::endl;
     this->cards.push_back(card);
     this->numCards++;
     this->currentString = generateString();
