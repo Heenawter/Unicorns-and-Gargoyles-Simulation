@@ -37,6 +37,7 @@ public:
 
     void gameRound();
     void actionCard_draw(Player* triggeringPlayer);
+    void actionCard_reverse(Player* triggeringPlayer);
 
     Player *getPlayer(int index) { return players.at(index); }
     std::vector<Player *> getPlayers() { return players; }

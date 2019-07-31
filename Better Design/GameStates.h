@@ -48,4 +48,20 @@ public:
     }
 };
 
+class ActionCardException_Reverse : public std::exception
+{
+public:
+    Player *triggeringPlayer;
+
+    ActionCardException_Reverse(Player *triggeringPlayer)
+    {
+        this->triggeringPlayer = triggeringPlayer;
+    }
+
+    virtual const char *what() const throw()
+    {
+        return "Action Card -- Reverse.";
+    }
+};
+
 #endif

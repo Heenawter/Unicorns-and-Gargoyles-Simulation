@@ -58,8 +58,19 @@ void Player::takeTurn()
 
 void Player::handleActionCard(char card)
 {
-    if(card == ACTION_CARD_DISCARD)
+    if (card == ACTION_CARD_DISCARD)
+        return;
+    else if (card == ACTION_CARD_DRAW)
         throw ActionCardException_Draw(this);
+    else if (card == ACTION_CARD_SPRING_CLEANING)
+        return;
+    else if (card == ACTION_CARD_REVERSE)
+        throw ActionCardException_Reverse(this);
+    else if (card == ACTION_CARD_POISON)
+        return;
+    else if (card == ACTION_CARD_STEAL)
+        return;
+    deck->discardCard(card);
 }
 
 /*  Function: drawNonActionCard()

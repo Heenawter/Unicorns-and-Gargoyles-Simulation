@@ -37,6 +37,11 @@ int main()
                 std::cout << e4.what() << std::endl;
             }
         }
+        catch (ActionCardException_Reverse &e5)
+        {
+            std::cout << e5.what() << std::endl;
+            game->actionCard_reverse(e5.triggeringPlayer);
+        }
     }
 
     delete game;

@@ -135,5 +135,15 @@ void Game::actionCard_draw(Player* triggeringPlayer)
     }
 
     std::cout << "player num: " << playerNum << std::endl;
+}
 
+void Game::actionCard_reverse(Player* triggeringPlayer)
+{
+    // start by finding the index of the triggering player
+    int playerNum = triggeringPlayer->getPlayerNum();
+    this->gameDirection *= -1;
+
+    int nextPlayer = getNextPlayer(playerNum);
+    currentPlayer = players[nextPlayer];
+    startingPlayer = nextPlayer;
 }
