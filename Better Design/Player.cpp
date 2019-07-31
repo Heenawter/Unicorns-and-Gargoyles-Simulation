@@ -16,10 +16,11 @@
               Takes a pointer to the Table instance and
               a pointer to the Cards instance;
               Generates the hand object for the player */
-Player::Player(Deck *deck, std::string goalString, Cards *cardInfo)
+Player::Player(Deck *deck, std::string goalString, Cards *cardInfo, int playerNum)
 {
     this->deck = deck;
     this->cardInfo = cardInfo;
+    this->playerNum = playerNum;
     hand = new Hand(goalString, cardInfo);
 }   
 
@@ -59,4 +60,17 @@ void Player::handleActionCard(char card)
 {
     if(card == ACTION_CARD_DISCARD)
         throw ActionCardException_Draw(this);
+}
+
+void Player::drawNonActionCard()
+{
+    try
+    {
+        char nonActionCard = deck->drawNonActionCard();
+        hand->addToHand(nonActionCard);
+    }
+    catch(std::exception& e)
+    {
+        throw e;
+    }
 }

@@ -18,18 +18,21 @@ private:
     Deck *deck;
     Cards* cardInfo;
 
+    int playerNum;
+
 public:
-    Player(Deck *deck, std::string goalString, Cards* cardInfo);
+    Player(Deck *deck, std::string goalString, Cards* cardInfo, int playerNum);
     ~Player();
 
     void takeTurn();
     void handleActionCard(char card);
 
     /**** ACTION CARDS ****/
+    void drawNonActionCard();
+
     void drawCard();
     void discardCard(std::string goalString);
     void springCleaning(std::string goalString);
-    void drawNonAction();
 
     // pair<int, int> == pair<targetCard, damageDone>
     std::pair<int, int> unicornToPoison(std::string goalString);
@@ -37,6 +40,8 @@ public:
 
     void getPoisoned(std::string goalString, int unicornToPoison);
     void getRobbed(std::string goalString, int cardToSteal);    
+
+    int getPlayerNum() { return playerNum; }
 };
 
 #endif

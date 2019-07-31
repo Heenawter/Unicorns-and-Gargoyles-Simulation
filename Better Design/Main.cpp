@@ -7,7 +7,7 @@ int main()
     std::cout << "main" << std::endl;
 
     Game* game = new Game(5, "[ ][*][*][ ]");
-    Player* player1 = game->getPlayer(0);
+    Player* player1 = game->getPlayer(1);
 
     try
     {
@@ -27,7 +27,9 @@ int main()
     catch (ActionCardException_Draw &e3)
     {
         std::cout << e3.what() << std::endl;
-        std::cout << e3.triggeringPlayer << std::endl;
+        game->actionCard_draw(e3.triggeringPlayer);
+
+
     }
 
     delete game;

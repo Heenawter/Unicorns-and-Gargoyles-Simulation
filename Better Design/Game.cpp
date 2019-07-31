@@ -44,6 +44,15 @@ void Game::addToMaps(std::string line, char cardType)
     cardCounts[cardType] = count;
 }
 
+int Game::getNextPlayer(int currentPlayerIndex)
+{
+    int playerNum = currentPlayerIndex;
+    playerNum = (playerNum + gameDirection) % numPlayers;
+    if (playerNum < 0) // wrap around for negative (mod doesn't work)
+        playerNum = numPlayers - 1;
+    return playerNum;
+}
+
 /**************************************************/
 /*                Public Functions                */
 /**************************************************/
@@ -63,7 +72,7 @@ Game::Game(int numPlayers, std::string goal)
 
     for(int i = 0; i < this->numPlayers; i++)
     {
-        players.push_back(new Player(deck, goal, cardInfo));
+        players.push_back(new Player(deck, goal, cardInfo, i));
     }
 
     winningPlayer = MAX_INT;
@@ -87,18 +96,45 @@ Game::~Game()
 
 void Game::gameRound()
 {
-    int playerNum = startingPlayer;
+    int playerNum = this->startingPlayer;
     int count = 0;
-    while (count < NUM_PLAYERS)
+    while (count < this->numPlayers)
     {
         // playerTurn(goalString, playerNum);
-        playerNum = (playerNum + gameDirection) % NUM_PLAYERS;
+        playerNum = (playerNum + gameDirection) % numPlayers;
         if (playerNum < 0) // wrap around for negative (mod doesn't work)
-            playerNum = NUM_PLAYERS - 1;
+            playerNum = numPlayers - 1;
 
         // if (gameStatus == REVERSE_ORDER)
         //     startingPlayer = playerNum;
         // else
         //     count++;
     }
+}
+
+void Game::actionCard_draw(Player* triggeringPlayer)
+{
+    // start by finding the index of the triggering player
+    int playerNum = triggeringPlayer->getPlayerNum();
+    int playerCount = 0;
+    while(playerCount < this->numPlayers)
+    {
+        playerNum = getNextPlayer(playerNum);
+        try
+        {
+            players[playerNum]->drawNonActionCard();
+            
+        }
+        catch (std::exception &e)
+        {
+            std::cout << "RAN OUT OF CARDS OR ACTION CARDS" << std::endl;
+            throw e;
+        }
+
+        playerCount++;
+        std::cout << "Count: " << playerCount << " --- " << playerNum << std::endl;
+    }
+
+    std::cout << "player num: " << playerNum << std::endl;
+
 }
