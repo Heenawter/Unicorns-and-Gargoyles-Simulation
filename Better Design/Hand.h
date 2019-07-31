@@ -27,6 +27,7 @@ private:
                          int start, int end,
                          int index, int r);
     int stringDistance(const std::string &string1, const std::string &string2);
+    std::string generateString(std::vector<char> cards); // used in combinationUtil
 
 public:
     Hand(std::string goalString, Cards *cardInfo);
@@ -34,7 +35,7 @@ public:
     std::string generateString();
 
     bool operator < (Hand* h2);
-    void addToHand(char card, std::string goalString);
+    void addToHand(char card);
 };
 
 #endif

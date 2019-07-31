@@ -105,6 +105,13 @@ int Hand::stringDistance(const std::string &string1, const std::string &string2)
     return levenshteinDistance[minSize - 1];
 }
 
+/*  Function: generateString(vector<char>)
+    Goal:     Generates the string for the GIVEN vector of cards */
+std::string Hand::generateString(std::vector<char> cards)
+{
+    return cardInfo->generateString(cards);
+}
+
 /**************************************************/
 /*                Public Functions                */
 /**************************************************/
