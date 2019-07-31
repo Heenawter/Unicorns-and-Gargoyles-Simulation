@@ -62,6 +62,10 @@ void Player::handleActionCard(char card)
         throw ActionCardException_Draw(this);
 }
 
+/*  Function: drawNonActionCard()
+    Goal:     Draw a non action card from the deck and add it to your hand
+    Throws:   RanOutOfCardsException   -- if you run out of cards
+              OnlyActionCardsException -- if there is no non-action card left */
 void Player::drawNonActionCard()
 {
     try
@@ -71,6 +75,7 @@ void Player::drawNonActionCard()
     }
     catch(std::exception& e)
     {
+        // catches either RanOutOfCardsException or OnlyActionCardsException
         throw e;
     }
 }

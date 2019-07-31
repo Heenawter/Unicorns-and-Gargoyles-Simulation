@@ -127,7 +127,6 @@ void Game::actionCard_draw(Player* triggeringPlayer)
         }
         catch (std::exception &e)
         {
-            std::cout << "RAN OUT OF CARDS OR ACTION CARDS" << std::endl;
             throw e;
         }
 
