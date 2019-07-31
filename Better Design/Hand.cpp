@@ -109,8 +109,9 @@ int Hand::stringDistance(const std::string &string1, const std::string &string2)
 /*                Public Functions                */
 /**************************************************/
 
-Hand::Hand(Cards* cardInfo)
+Hand::Hand(std::string goalString, Cards *cardInfo)
 {
+    this->goalString = goalString;
     this->cardInfo = cardInfo;
     this->numCards = 0;
     this->currentDistance = MAX_INT;
@@ -139,10 +140,10 @@ bool Hand::operator<(Hand* h2)
     return distance1 < distance2;
 }
 
-void Hand::addToHand(char card, std::string goalString)
+void Hand::addToHand(char card)
 {
     this->cards.push_back(card);
     this->numCards++;
     this->currentString = generateString();
-    this->currentDistance = stringDistance(this->currentString, goalString);
+    this->currentDistance = stringDistance(this->currentString, this->goalString);
 }

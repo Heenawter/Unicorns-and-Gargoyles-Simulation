@@ -1,11 +1,17 @@
 #include "Debugging.h"
-#include "Cards.h"
-#include "Deck.h"
+#include "Game.h"
 #include "GameStates.h"
 
 int main()
 {
     std::cout << "main" << std::endl;
+
+    Game* game = new Game(5, "[ ][*][*][ ]");
+    Player* player1 = game->getPlayer(0);
+
+    
+
+    delete game;
 
     // Cards cardRules;
     // cardRules.readCards();

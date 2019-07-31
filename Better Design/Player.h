@@ -8,20 +8,21 @@
 
 #include "Cards.h"
 #include "Hand.h"
-#include "Table.h"
+#include "Deck.h"
 
 class Player
 {
 private:
     // std::unordered_set<std::vector<char>, vectorHash> allHands;
     Hand *hand;
-    Table *table;
+    Deck *deck;
 
 public:
-    Player(Table *table, Cards *cardInfo);
+    Player(Deck *deck, std::string goalString, Cards* cardInfo);
     ~Player();
 
     /**** GAME FUNCTIONS ****/
+    char drawCard();
     void appendToHand();
 
     std::pair<int, std::vector<char>> moveCard(std::string goalString);

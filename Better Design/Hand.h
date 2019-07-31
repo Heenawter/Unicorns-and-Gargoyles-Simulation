@@ -15,6 +15,8 @@ private:
     std::vector<char> cards;
     int numCards;
     std::string currentString;
+    std::string goalString;
+
     int currentDistance;
 
     Cards* cardInfo;
@@ -27,7 +29,7 @@ private:
     int stringDistance(const std::string &string1, const std::string &string2);
 
 public:
-    Hand(Cards *cardInfo);
+    Hand(std::string goalString, Cards *cardInfo);
     std::string getCardName(char type);
     std::string generateString();
     std::string generateString(std::vector<char> hand);
