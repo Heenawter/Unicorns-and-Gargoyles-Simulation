@@ -32,7 +32,6 @@ public:
     Hand(std::string goalString, Cards *cardInfo);
     std::string getCardName(char type);
     std::string generateString();
-    std::string generateString(std::vector<char> hand);
 
     bool operator < (Hand* h2);
     void addToHand(char card, std::string goalString);

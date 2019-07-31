@@ -109,6 +109,11 @@ int Hand::stringDistance(const std::string &string1, const std::string &string2)
 /*                Public Functions                */
 /**************************************************/
 
+/*  Function: Hand()
+    Goal:     Constructor for the Hand object;
+              Stores information about the cards in the 
+              hand as WELL as the distance from the goal,
+              the current string, etc. */
 Hand::Hand(std::string goalString, Cards *cardInfo)
 {
     this->goalString = goalString;
@@ -118,21 +123,26 @@ Hand::Hand(std::string goalString, Cards *cardInfo)
     this->currentString = "";
 }
 
+/*  Function: getCardName(chard)
+    Goal:     Get the card name for the given card */
 std::string Hand::getCardName(char card)
 {
     cardInfo->getCardName(card);
 }
 
+/*  Function: generateString()
+    Goal:     Generates the string for the current hand */
 std::string Hand::generateString()
 {
     return cardInfo->generateString(this->cards);
 }
 
-std::string Hand::generateString(std::vector<char> hand)
-{
-    return cardInfo->generateString(hand);
-}
-
+/*  Function: operator <
+    Goal:     Compare two hands with the < symbol through overriding;
+              i.e. consider hand1 < hand2;
+              If hand1 is closer to the goal than hand2, return true
+                    -- since hand1 has smaller distance than hand2
+              If hand2 is farther from the goal than hand2, return false */
 bool Hand::operator<(Hand* h2)
 {
     int distance1 = this->currentDistance;
@@ -140,6 +150,11 @@ bool Hand::operator<(Hand* h2)
     return distance1 < distance2;
 }
 
+/*  Function: addToHand()
+    Goal:     Adds the given card to the hand;
+              also increases the number of cards, generates the
+              new string, and calculates the new distance from 
+              the goal string */
 void Hand::addToHand(char card)
 {
     this->cards.push_back(card);
