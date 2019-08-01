@@ -29,14 +29,14 @@ private:
 
     void readCards();
     void addToMaps(std::string line, char cardType);
-    int getNextPlayer(int currentPlayerIndex);
+    Player* getNextPlayer(Player *current);
 
 public:
     Game(int numPlayers, std::string goal);
     ~Game();
 
     void gameRound();
-    
+
     void handleActionCard(Player *triggeringPlayer, char type);
     void actionCard_draw(Player* triggeringPlayer);
     void actionCard_reverse(Player* triggeringPlayer);

@@ -11,9 +11,9 @@ append 3, 	4
 remove 1, 	4
 remove 2,	4
 remove 3,	4
-discard 1 card,	4
+discard 1 card,	0
 draw 1 card,   4
-spring cleaning,   2
+spring cleaning,   0
 reverse order,   4
-poison,    2
-steal,     2
+poison,    0
+steal,     0

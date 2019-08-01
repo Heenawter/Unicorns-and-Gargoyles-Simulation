@@ -45,13 +45,18 @@ void Game::addToMaps(std::string line, char cardType)
     cardCounts[cardType] = count;
 }
 
-int Game::getNextPlayer(int currentPlayerIndex)
+/*  Function: getNextPlayer()
+    Goal:     Gets a pointer to the next player from the given player; 
+              Takes into account play order (i.e. reverse or not) and
+              handles wrapping around (last player -> first player) */
+Player* Game::getNextPlayer(Player* current)
 {
-    int playerNum = currentPlayerIndex;
+    int playerNum = current->getPlayerNum();
     playerNum = (playerNum + gameDirection) % numPlayers;
     if (playerNum < 0) // wrap around for negative (mod doesn't work)
         playerNum = numPlayers - 1;
-    return playerNum;
+
+    return players[playerNum];
 }
 
 /**************************************************/
@@ -97,43 +102,41 @@ Game::~Game()
 
 void Game::gameRound()
 {
-    int playerNum = this->startingPlayer;
     int count = 0;
 
-    try
+    std::cout << "-- NEW ROUND --" << std::endl;
+    while (count < this->numPlayers)
     {
-        while (count < this->numPlayers)
-        {
-            // playerTurn(goalString, playerNum);
-            playerNum = getNextPlayer(playerNum);
-            players[playerNum]->takeTurn();
-            count++;
+        std::cout << "Player " << this->currentPlayer->getPlayerNum() << ": " << std::endl;
+        // playerTurn(goalString, playerNum);
 
-            // if (gameStatus == REVERSE_ORDER)
-            //     startingPlayer = playerNum;
-            // else
-            //     count++;
-        }
-    }
-    catch (RanOutOfCardsException &e1)
-    {
-        throw e1;
-    }
-    catch (ActionCardException &e2)
-    {
         try
         {
-            handleActionCard(e2.triggeringPlayer, e2.type);
+            this->currentPlayer->takeTurn();
         }
-        catch (RanOutOfCardsException &e3)
+        catch (RanOutOfCardsException &e1)
         {
-            throw e3;
+            std::cout << "RAN OUT OF CARDS EXCEPTION" << std::endl;
+            throw e1;
         }
-        catch (OnlyActionCardsException &e4)
+        catch (ActionCardException &e2)
         {
-            std::cout << "throw... ONLY ACTION CARDS" << std::endl;
-            throw e4;
+            try
+            {
+                handleActionCard(e2.triggeringPlayer, e2.type);
+            }
+            catch (RanOutOfCardsException &e3)
+            {
+                throw e3;
+            }
+            catch (OnlyActionCardsException &e4)
+            {
+                throw e4;
+            }
         }
+        
+        currentPlayer = getNextPlayer(currentPlayer);
+        count++;
     }
 }
 
@@ -164,15 +167,16 @@ void Game::handleActionCard(Player *triggeringPlayer, char type)
 
 void Game::actionCard_draw(Player* triggeringPlayer)
 {
+    std::cout << "draw..." << std::endl;
     // start by finding the index of the triggering player
-    int playerNum = triggeringPlayer->getPlayerNum();
+    Player* current = triggeringPlayer;
     int playerCount = 0;
     while(playerCount < this->numPlayers)
     {
-        playerNum = getNextPlayer(playerNum);
+        current = getNextPlayer(current);
         try
         {
-            players[playerNum]->drawNonActionCard();
+            current->drawNonActionCard();
         }
         catch (RanOutOfCardsException &e1)
         {
@@ -184,19 +188,13 @@ void Game::actionCard_draw(Player* triggeringPlayer)
         }
 
         playerCount++;
-        std::cout << "Count: " << playerCount << " --- " << playerNum << std::endl;
     }
-
-    std::cout << "player num: " << playerNum << std::endl;
 }
 
 void Game::actionCard_reverse(Player* triggeringPlayer)
 {
+    std::cout << "reverse..." << std::endl;
     // start by finding the index of the triggering player
     int playerNum = triggeringPlayer->getPlayerNum();
     this->gameDirection *= -1;
-
-    int nextPlayer = getNextPlayer(playerNum);
-    currentPlayer = players[nextPlayer];
-    startingPlayer = nextPlayer;
 }
