@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "GameStates.h"
 
 /**************************************************/
 /*                Private Functions               */
@@ -112,6 +113,31 @@ void Game::gameRound()
     }
 }
 
+void Game::handleActionCard(Player *triggeringPlayer, char type)
+{
+    switch (type)
+    {
+    case ACTION_CARD_DRAW:
+        try
+        {
+            actionCard_draw(triggeringPlayer);
+        }
+        catch (RanOutOfCardsException &e1)
+        {
+            throw e1;
+        }
+        catch (OnlyActionCardsException &e2)
+        {
+            throw e2;
+        }
+        break;
+    case ACTION_CARD_REVERSE:
+        actionCard_reverse(triggeringPlayer);
+    default:
+        break;
+    }
+}
+
 void Game::actionCard_draw(Player* triggeringPlayer)
 {
     // start by finding the index of the triggering player
@@ -123,11 +149,14 @@ void Game::actionCard_draw(Player* triggeringPlayer)
         try
         {
             players[playerNum]->drawNonActionCard();
-            
         }
-        catch (std::exception &e)
+        catch (RanOutOfCardsException &e1)
         {
-            throw e;
+            throw e1;
+        }
+        catch (OnlyActionCardsException &e2)
+        {
+            throw e2;
         }
 
         playerCount++;

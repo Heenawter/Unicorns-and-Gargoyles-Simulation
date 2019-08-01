@@ -32,36 +32,33 @@ class GameWonException: public std::exception
         }
 };
 
-class ActionCardException_Draw : public std::exception
+class ActionCardException : public std::exception
 {
 public:
     Player* triggeringPlayer;
+    char type;
 
-    ActionCardException_Draw(Player *triggeringPlayer)
+    ActionCardException(Player *triggeringPlayer, char type)
     {
         this->triggeringPlayer = triggeringPlayer;
+        this->type = type;
     }
 
     virtual const char *what() const throw()
     {
-        return "Action Card -- Draw.";
-    }
-};
-
-class ActionCardException_Reverse : public std::exception
-{
-public:
-    Player *triggeringPlayer;
-
-    ActionCardException_Reverse(Player *triggeringPlayer)
-    {
-        this->triggeringPlayer = triggeringPlayer;
+        switch (this->type)
+        {
+        case ACTION_CARD_DRAW:
+            return "Action Card -- Draw.";
+        case ACTION_CARD_REVERSE:
+            return "Action Card -- Reverse.";
+        default:
+            return "-- ERROR --";
+        }
     }
 
-    virtual const char *what() const throw()
-    {
-        return "Action Card -- Reverse.";
-    }
+    bool isDraw() { return (this->type == ACTION_CARD_DRAW); }
+    bool isReverse() { return (this->type == ACTION_CARD_REVERSE); }
 };
 
 #endif

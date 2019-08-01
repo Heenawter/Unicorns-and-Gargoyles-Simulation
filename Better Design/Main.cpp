@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "GameStates.h"
 
+
 int main()
 {
     std::cout << "main" << std::endl;
@@ -20,27 +21,22 @@ int main()
             std::cout << e1.what() << std::endl;
             i = 101;
         }
-        catch (OnlyActionCardsException &e2)
-        {
-            std::cout << e2.what() << std::endl;
-            i = 101;
-        }
-        catch (ActionCardException_Draw &e3)
+        catch (ActionCardException &e3)
         {
             try
             {
-
-                game->actionCard_draw(e3.triggeringPlayer);
+                game->handleActionCard(e3.triggeringPlayer, e3.type);
             }
-            catch (std::exception &e4)
+            catch (RanOutOfCardsException &e1)
+            {
+                std::cout << e1.what() << std::endl;
+                i = 101;
+            }
+            catch (OnlyActionCardsException &e4)
             {
                 std::cout << e4.what() << std::endl;
+                i = 101;
             }
-        }
-        catch (ActionCardException_Reverse &e5)
-        {
-            std::cout << e5.what() << std::endl;
-            game->actionCard_reverse(e5.triggeringPlayer);
         }
     }
 

@@ -36,6 +36,8 @@ public:
     ~Game();
 
     void gameRound();
+    
+    void handleActionCard(Player *triggeringPlayer, char type);
     void actionCard_draw(Player* triggeringPlayer);
     void actionCard_reverse(Player* triggeringPlayer);
 
