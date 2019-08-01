@@ -31,15 +31,15 @@ private:
     void addToMaps(std::string line, char cardType);
     Player* getNextPlayer(Player *current);
 
+    void handleActionCard(char type);
+    void actionCard_draw();
+    void actionCard_reverse();
+
 public:
     Game(int numPlayers, std::string goal);
     ~Game();
 
     void gameRound();
-
-    void handleActionCard(char type);
-    void actionCard_draw();
-    void actionCard_reverse();
 
     Player *getPlayer(int index) { return players.at(index); }
     std::vector<Player *> getPlayers() { return players; }

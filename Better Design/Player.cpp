@@ -61,7 +61,7 @@ char Player::takeTurn()
     Goal:     Draw a non action card from the deck and add it to your hand
     Throws:   RanOutOfCardsException   -- if you run out of cards
               OnlyActionCardsException -- if there is no non-action card left 
-              (Both exceptions are passed from drawNonActionCard) */
+              (Both exceptions are passed from deck->drawNonActionCard) */
 void Player::drawNonActionCard()
 {
     try

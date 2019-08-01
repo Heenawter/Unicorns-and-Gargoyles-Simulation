@@ -59,6 +59,78 @@ Player* Game::getNextPlayer(Player* current)
     return players[playerNum];
 }
 
+/*  Function: handleActionCard()
+    Goal:     Call the appropriate function depending on which action card
+              was drawn;
+    Throws:   RanOutOfCardsException   -- if you run out of cards
+              OnlyActionCardsException -- if there is no non-action card left 
+              (Both exceptions are passed from game->actionCardDraw) */
+void Game::handleActionCard(char type)
+{
+    try
+    {
+        switch (type)
+        {
+        case ACTION_CARD_DRAW:
+            actionCard_draw();
+            break;
+        case ACTION_CARD_REVERSE:
+            actionCard_reverse();
+            break;
+        default:
+            break;
+        }
+    }
+    catch (RanOutOfCardsException &e1)
+    {
+        throw e1;
+    }
+    catch (OnlyActionCardsException &e2)
+    {
+        throw e2;
+    }
+}
+
+/*  Function: actionCard_draw()
+    Goal:     Have every player (in order, starting from the current player)
+              draw a non action card from the deck and add it to their hand
+    Throws:   RanOutOfCardsException   -- if you run out of cards
+              OnlyActionCardsException -- if there is no non-action card left 
+              (Both exceptions are passed from player->drawNonActionCard) */
+void Game::actionCard_draw()
+{
+    std::cout << "draw..." << std::endl;
+
+    try
+    {
+        Player *current = currentPlayer;
+        int playerCount = 0;
+        while (playerCount < this->numPlayers)
+        {
+            std::cout << "- " << current->getPlayerNum() << std::endl;
+            current = getNextPlayer(current);
+            current->drawNonActionCard();
+            playerCount++;
+        }
+    }
+    catch (RanOutOfCardsException &e1)
+    {
+        throw e1;
+    }
+    catch (OnlyActionCardsException &e2)
+    {
+        throw e2;
+    }
+}
+
+/*  Function: actionCard_reverse()
+    Goal:     Reverse the current play order */
+void Game::actionCard_reverse()
+{
+    std::cout << "reverse..." << std::endl;
+    this->gameDirection *= -1;
+}
+
 /**************************************************/
 /*                Public Functions                */
 /**************************************************/
@@ -133,66 +205,7 @@ void Game::gameRound()
             throw e4;
         }
         
-        currentPlayer = getNextPlayer(currentPlayer);
-        count++;
+        currentPlayer = getNextPlayer(currentPlayer); // advance to the next player
+        count++; // and increase the counter for the number of turns in this round
     }
-}
-
-void Game::handleActionCard(char type)
-{
-    switch (type)
-    {
-    case ACTION_CARD_DRAW:
-        try
-        {
-            actionCard_draw();
-        }
-        catch (RanOutOfCardsException &e1)
-        {
-            throw e1;
-        }
-        catch (OnlyActionCardsException &e2)
-        {
-            throw e2;
-        }
-        break;
-    case ACTION_CARD_REVERSE:
-        actionCard_reverse();
-    default:
-        break;
-    }
-}
-
-void Game::actionCard_draw()
-{
-    std::cout << "draw..." << std::endl;
-    
-    Player* current = currentPlayer;
-    int playerCount = 0;
-    while(playerCount < this->numPlayers)
-    {
-        std::cout << "- " << current->getPlayerNum() << std::endl;
-        current = getNextPlayer(current);
-        try
-        {
-            current->drawNonActionCard();
-        }
-        catch (RanOutOfCardsException &e1)
-        {
-            throw e1;
-        }
-        catch (OnlyActionCardsException &e2)
-        {
-            throw e2;
-        }
-
-        playerCount++;
-    }
-}
-
-void Game::actionCard_reverse()
-{
-    std::cout << "reverse..." << std::endl;
-    // reverse the game direction 
-    this->gameDirection *= -1;
 }
