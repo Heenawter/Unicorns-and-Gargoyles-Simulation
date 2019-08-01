@@ -45,7 +45,7 @@ void Player::takeTurn()
         char newCard = deck->drawNextCard();
         if (cardInfo->isActionCard(newCard))
             // this is an action card, so don't add it to your hand;
-            // instead, return it so Game.cpp can handle it
+            // instead, throw an exception so Game.cpp can handle it
             throw ActionCardException(this, newCard);
         else
             // a non-action card was drawn, so add it to your hand

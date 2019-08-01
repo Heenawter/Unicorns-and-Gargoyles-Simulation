@@ -99,17 +99,41 @@ void Game::gameRound()
 {
     int playerNum = this->startingPlayer;
     int count = 0;
-    while (count < this->numPlayers)
-    {
-        // playerTurn(goalString, playerNum);
-        playerNum = (playerNum + gameDirection) % numPlayers;
-        if (playerNum < 0) // wrap around for negative (mod doesn't work)
-            playerNum = numPlayers - 1;
 
-        // if (gameStatus == REVERSE_ORDER)
-        //     startingPlayer = playerNum;
-        // else
-        //     count++;
+    try
+    {
+        while (count < this->numPlayers)
+        {
+            // playerTurn(goalString, playerNum);
+            playerNum = getNextPlayer(playerNum);
+            players[playerNum]->takeTurn();
+            count++;
+
+            // if (gameStatus == REVERSE_ORDER)
+            //     startingPlayer = playerNum;
+            // else
+            //     count++;
+        }
+    }
+    catch (RanOutOfCardsException &e1)
+    {
+        throw e1;
+    }
+    catch (ActionCardException &e2)
+    {
+        try
+        {
+            handleActionCard(e2.triggeringPlayer, e2.type);
+        }
+        catch (RanOutOfCardsException &e3)
+        {
+            throw e3;
+        }
+        catch (OnlyActionCardsException &e4)
+        {
+            std::cout << "throw... ONLY ACTION CARDS" << std::endl;
+            throw e4;
+        }
     }
 }
 

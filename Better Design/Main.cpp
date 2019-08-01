@@ -10,35 +10,26 @@ int main()
     Game* game = new Game(5, "[ ][*][*][ ]");
     Player* player1 = game->getPlayer(1);
 
-    for (int i = 0; i < 100; i++)
+    try
     {
-        try
+        for (int i = 0; i < 100; i++)
         {
-            player1->takeTurn();
-        }
-        catch (RanOutOfCardsException &e1)
-        {
-            std::cout << e1.what() << std::endl;
-            i = 101;
-        }
-        catch (ActionCardException &e3)
-        {
-            try
-            {
-                game->handleActionCard(e3.triggeringPlayer, e3.type);
-            }
-            catch (RanOutOfCardsException &e1)
-            {
-                std::cout << e1.what() << std::endl;
-                i = 101;
-            }
-            catch (OnlyActionCardsException &e4)
-            {
-                std::cout << e4.what() << std::endl;
-                i = 101;
-            }
+            game->gameRound();
         }
     }
+    catch (RanOutOfCardsException &e1)
+    {
+        std::cout << e1.what() << std::endl;
+    }
+    catch (OnlyActionCardsException &e2)
+    {
+        std::cout << e2.what() << std::endl;
+    }
+    catch (std::exception &e3)
+    {
+        std::cout << e3.what() << std::endl;
+    }
+
 
     delete game;
 
