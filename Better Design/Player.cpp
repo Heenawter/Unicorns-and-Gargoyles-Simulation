@@ -34,27 +34,28 @@ Player::~Player()
 
 /*  Function: takeTurn()
     Goal:     Draws a new card from the deck (if possible).
-              If it is an action card, call the action card handler;
-              otherwise, append it to your current hand.  
+              Returns the card the player drew in order to handle
+              action cards; notice that action cards are NOT
+              appended to the hand.
     Throws:   RanOutOfCardsException 
               ActionCardException */
-void Player::takeTurn()
+char Player::takeTurn()
 {
+    char newCard = ' ';
     try
     {
-        char newCard = deck->drawNextCard();
-        if (cardInfo->isActionCard(newCard))
-            // this is an action card, so don't add it to your hand;
-            // instead, throw an exception so Game.cpp can handle it
-            throw ActionCardException(this, newCard);
-        else
-            // a non-action card was drawn, so add it to your hand
-            hand->addToHand(newCard);
+        newCard = deck->drawNextCard();
     }
     catch (RanOutOfCardsException &e)
     {
         throw e;
     }
+
+    if (!(cardInfo->isActionCard(newCard)))
+        // a non-action card was drawn, so add it to your hand
+        hand->addToHand(newCard);
+
+    return newCard;
 }
 
 /*  Function: drawNonActionCard()

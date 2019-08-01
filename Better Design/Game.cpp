@@ -103,36 +103,34 @@ Game::~Game()
 void Game::gameRound()
 {
     int count = 0;
+    char newestCard;
 
     std::cout << "-- NEW ROUND --" << std::endl;
     while (count < this->numPlayers)
     {
+        // a round always consists of <numPlayers> turns; 
+        // because of the reverse order card, it is not guaranteed that
+        // every player will go in a round.
+
         std::cout << "Player " << this->currentPlayer->getPlayerNum() << ": " << std::endl;
         // playerTurn(goalString, playerNum);
 
         try
         {
-            this->currentPlayer->takeTurn();
+            newestCard = this->currentPlayer->takeTurn();
+            if (cardInfo->isActionCard(newestCard))
+            {
+                handleActionCard(newestCard);
+            }
         }
         catch (RanOutOfCardsException &e1)
         {
             std::cout << "RAN OUT OF CARDS EXCEPTION" << std::endl;
             throw e1;
         }
-        catch (ActionCardException &e2)
+        catch (OnlyActionCardsException &e4)
         {
-            try
-            {
-                handleActionCard(e2.triggeringPlayer, e2.type);
-            }
-            catch (RanOutOfCardsException &e3)
-            {
-                throw e3;
-            }
-            catch (OnlyActionCardsException &e4)
-            {
-                throw e4;
-            }
+            throw e4;
         }
         
         currentPlayer = getNextPlayer(currentPlayer);
@@ -140,14 +138,14 @@ void Game::gameRound()
     }
 }
 
-void Game::handleActionCard(Player *triggeringPlayer, char type)
+void Game::handleActionCard(char type)
 {
     switch (type)
     {
     case ACTION_CARD_DRAW:
         try
         {
-            actionCard_draw(triggeringPlayer);
+            actionCard_draw();
         }
         catch (RanOutOfCardsException &e1)
         {
@@ -159,20 +157,21 @@ void Game::handleActionCard(Player *triggeringPlayer, char type)
         }
         break;
     case ACTION_CARD_REVERSE:
-        actionCard_reverse(triggeringPlayer);
+        actionCard_reverse();
     default:
         break;
     }
 }
 
-void Game::actionCard_draw(Player* triggeringPlayer)
+void Game::actionCard_draw()
 {
     std::cout << "draw..." << std::endl;
-    // start by finding the index of the triggering player
-    Player* current = triggeringPlayer;
+    
+    Player* current = currentPlayer;
     int playerCount = 0;
     while(playerCount < this->numPlayers)
     {
+        std::cout << "- " << current->getPlayerNum() << std::endl;
         current = getNextPlayer(current);
         try
         {
@@ -191,10 +190,9 @@ void Game::actionCard_draw(Player* triggeringPlayer)
     }
 }
 
-void Game::actionCard_reverse(Player* triggeringPlayer)
+void Game::actionCard_reverse()
 {
     std::cout << "reverse..." << std::endl;
-    // start by finding the index of the triggering player
-    int playerNum = triggeringPlayer->getPlayerNum();
+    // reverse the game direction 
     this->gameDirection *= -1;
 }

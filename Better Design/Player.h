@@ -24,7 +24,7 @@ public:
     Player(Deck *deck, std::string goalString, Cards* cardInfo, int playerNum);
     ~Player();
 
-    void takeTurn();
+    char takeTurn();
     void handleActionCard(char card);
 
     /**** ACTION CARDS ****/
