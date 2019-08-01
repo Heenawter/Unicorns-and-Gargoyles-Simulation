@@ -37,8 +37,7 @@ Player::~Player()
               Returns the card the player drew in order to handle
               action cards; notice that action cards are NOT
               appended to the hand.
-    Throws:   RanOutOfCardsException 
-              ActionCardException */
+    Throws:   RanOutOfCardsException -- passed from drawNextCard */
 char Player::takeTurn()
 {
     char newCard = ' ';
@@ -61,7 +60,8 @@ char Player::takeTurn()
 /*  Function: drawNonActionCard()
     Goal:     Draw a non action card from the deck and add it to your hand
     Throws:   RanOutOfCardsException   -- if you run out of cards
-              OnlyActionCardsException -- if there is no non-action card left */
+              OnlyActionCardsException -- if there is no non-action card left 
+              (Both exceptions are passed from drawNonActionCard) */
 void Player::drawNonActionCard()
 {
     try
@@ -69,9 +69,12 @@ void Player::drawNonActionCard()
         char nonActionCard = deck->drawNonActionCard();
         hand->addToHand(nonActionCard);
     }
-    catch(std::exception& e)
+    catch (RanOutOfCardsException &e1)
     {
-        // catches either RanOutOfCardsException or OnlyActionCardsException
-        throw e;
+        throw e1;
+    }
+    catch (OnlyActionCardsException &e2)
+    {
+        throw e2;
     }
 }
