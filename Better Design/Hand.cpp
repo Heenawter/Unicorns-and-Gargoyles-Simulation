@@ -158,14 +158,14 @@ std::string Hand::generateString()
               i.e. consider hand1 < hand2;
               If hand1 is closer to the goal than hand2, return true
                     -- since hand1 has smaller distance than hand2
-              If hand2 is farther from the goal than hand2, return false */
-bool Hand::operator<(const Hand &h2)
+              If hand2 is farther from the goal than hand2, return false
+    Example:  If hand1, hand2 are of type Hand*
+              call with (*hand1) < (*hand2) */
+bool Hand::operator < (const Hand &h2)
 {
     std::cout << "here!!!" << std::endl;
     int distance1 = this->currentDistance;
     int distance2 = h2.currentDistance;
-    std::cout << "distance 1: " << distance1 << std::endl;
-    std::cout << "distance 2: " << distance2 << std::endl;
     return distance1 < distance2;
 }
 

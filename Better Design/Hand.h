@@ -35,7 +35,7 @@ public:
     std::string getCardName(char type);
     std::string generateString();
 
-    bool operator<(const Hand &h2);
+    bool operator < (const Hand &oldHand);
     void addToHand(char card);
     void removeCard(int i);
 };
