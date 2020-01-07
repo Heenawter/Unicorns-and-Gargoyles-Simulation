@@ -31,11 +31,13 @@ private:
 
 public:
     Hand(std::string goalString, Cards *cardInfo);
+    Hand(const Hand &oldHand); // copy constructor
     std::string getCardName(char type);
     std::string generateString();
 
-    bool operator < (Hand* h2);
+    bool operator<(const Hand &h2);
     void addToHand(char card);
+    void removeCard(int i);
 };
 
 #endif

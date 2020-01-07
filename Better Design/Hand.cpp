@@ -130,6 +130,15 @@ Hand::Hand(std::string goalString, Cards *cardInfo)
     this->currentString = "";
 }
 
+Hand::Hand(const Hand &oldHand)
+{
+    this->goalString = oldHand.goalString;
+    this->cardInfo = oldHand.cardInfo;
+    this->numCards = oldHand.numCards;
+    this->currentDistance = oldHand.currentDistance;
+    this->currentString = oldHand.currentString;
+}
+
 /*  Function: getCardName(chard)
     Goal:     Get the card name for the given card */
 std::string Hand::getCardName(char card)
@@ -150,10 +159,13 @@ std::string Hand::generateString()
               If hand1 is closer to the goal than hand2, return true
                     -- since hand1 has smaller distance than hand2
               If hand2 is farther from the goal than hand2, return false */
-bool Hand::operator<(Hand* h2)
+bool Hand::operator<(const Hand &h2)
 {
+    std::cout << "here!!!" << std::endl;
     int distance1 = this->currentDistance;
-    int distance2 = h2->currentDistance;
+    int distance2 = h2.currentDistance;
+    std::cout << "distance 1: " << distance1 << std::endl;
+    std::cout << "distance 2: " << distance2 << std::endl;
     return distance1 < distance2;
 }
 
@@ -167,6 +179,18 @@ void Hand::addToHand(char card)
     // std::cout << "CHECK:     " << int(card) << std::endl;
     this->cards.push_back(card);
     this->numCards++;
+    this->currentString = generateString();
+    this->currentDistance = stringDistance(this->currentString, this->goalString);
+}
+
+/*  Function: removeCard()
+    Goal:     Removes the card at the given index from the hand;
+              also decreases the number of cards, generates the
+              new string, and calculates the new distance from 
+              the goal string */
+void Hand::removeCard(int i) {
+    this->cards.erase(this->cards.begin() + i);
+    this->numCards--;
     this->currentString = generateString();
     this->currentDistance = stringDistance(this->currentString, this->goalString);
 }

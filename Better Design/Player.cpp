@@ -7,6 +7,52 @@
 /*                Private Functions               */
 /**************************************************/
 
+/*  Function: drawCard()
+    Goal:     Draws a new card from the deck (if possible).
+              Returns the card the player drew in order to handle
+              action cards; notice that action cards are NOT
+              appended to the hand.
+    Throws:   RanOutOfCardsException -- passed from drawNextCard */
+char Player::drawCard()
+{
+    char newCard = ' ';
+    try
+    {
+        newCard = deck->drawNextCard();
+    }
+    catch (RanOutOfCardsException &e)
+    {
+        throw e;
+    }
+
+    if (!(cardInfo->isActionCard(newCard)))
+        // a non-action card was drawn, so add it to your hand
+        hand->addToHand(newCard);
+
+    return newCard;
+}
+
+// char Player::handleActionCard(char actionCard) {
+//     if (actionCard == ACTION_CARD_DISCARD)
+//     {
+//     }
+//     else if (actionCard == ACTION_CARD_DRAW)
+//     {
+//     }
+//     else if (actionCard == ACTION_CARD_SPRING_CLEANING)
+//     {        
+//     }
+//     else if (actionCard == ACTION_CARD_REVERSE)
+//     {
+//     }
+//     else if (actionCard == ACTION_CARD_POISON)
+//     {
+//     }
+//     else if (actionCard == ACTION_CARD_STEAL)
+//     {
+//     }
+// }
+
 /**************************************************/
 /*                Public Functions                */
 /**************************************************/
@@ -32,29 +78,10 @@ Player::~Player()
     delete hand;
 }
 
-/*  Function: takeTurn()
-    Goal:     Draws a new card from the deck (if possible).
-              Returns the card the player drew in order to handle
-              action cards; notice that action cards are NOT
-              appended to the hand.
-    Throws:   RanOutOfCardsException -- passed from drawNextCard */
 char Player::takeTurn()
 {
-    char newCard = ' ';
-    try
-    {
-        newCard = deck->drawNextCard();
-    }
-    catch (RanOutOfCardsException &e)
-    {
-        throw e;
-    }
-
-    if (!(cardInfo->isActionCard(newCard)))
-        // a non-action card was drawn, so add it to your hand
-        hand->addToHand(newCard);
-
-    return newCard;
+    
+    return drawCard();
 }
 
 /*  Function: drawNonActionCard()

@@ -197,7 +197,6 @@ void Game::gameRound()
         }
         catch (RanOutOfCardsException &e1)
         {
-            std::cout << "RAN OUT OF CARDS EXCEPTION" << std::endl;
             throw e1;
         }
         catch (OnlyActionCardsException &e4)

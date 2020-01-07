@@ -16,21 +16,22 @@ private:
     // std::unordered_set<std::vector<char>, vectorHash> allHands;
     Hand *hand;
     Deck *deck;
-    Cards* cardInfo;
+    Cards *cardInfo;
 
     int playerNum;
+
+    char drawCard();
+    char handleActionCard(char actionCard);
+    void moveCard();
 
 public:
     Player(Deck *deck, std::string goalString, Cards* cardInfo, int playerNum);
     ~Player();
 
     char takeTurn();
-    void handleActionCard(char card);
 
     /**** ACTION CARDS ****/
     void drawNonActionCard();
-
-    void drawCard();
     void discardCard(std::string goalString);
     void springCleaning(std::string goalString);
 
@@ -42,6 +43,7 @@ public:
     void getRobbed(std::string goalString, int cardToSteal);    
 
     int getPlayerNum() { return playerNum; }
+    Hand* getHand() { return this->hand; }
 };
 
 #endif
