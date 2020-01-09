@@ -32,8 +32,10 @@ public:
 
     /**** ACTION CARDS ****/
     void drawNonActionCard();
-    void discardCard();
-    void springCleaning(std::string goalString);
+    virtual void discardCard() = 0;
+    virtual void springCleaning(std::string goalString) = 0;
+    virtual void poisonUnicorn() = 0;
+    virtual void stealCard() = 0;
 
     // pair<int, int> == pair<targetCard, damageDone>
     std::pair<int, int> unicornToPoison(std::string goalString);

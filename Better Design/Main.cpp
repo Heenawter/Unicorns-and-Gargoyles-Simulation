@@ -13,14 +13,14 @@ int main()
     std::cout << "main" << std::endl;
 
     Game *game = new Game(5, "[ ][*][*][ ]");
-    Player *player1 = game->getPlayer(1);
-    Player *player2 = game->getPlayer(2);
+    // Player *player1 = game->getPlayer(1);
+    // Player *player2 = game->getPlayer(2);
 
-    player1->drawNonActionCard();
-    player1->drawNonActionCard();
-    player1->drawNonActionCard();
+    // player1->drawNonActionCard();
+    // player1->drawNonActionCard();
+    // player1->drawNonActionCard();
 
-    player1->discardCard();
+    // player1->discardCard();
 
     // for (int i = 0; i < 10; i++)
     // {

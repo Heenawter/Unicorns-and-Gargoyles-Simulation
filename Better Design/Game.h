@@ -6,6 +6,7 @@
 #include <string>
 
 #include "Player.h"
+#include "Player_Aggressive.h"
 #include "Deck.h"
 #include "Constants.h"
 #include "Cards.h"

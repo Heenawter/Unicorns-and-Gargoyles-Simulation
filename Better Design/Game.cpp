@@ -150,7 +150,7 @@ Game::Game(int numPlayers, std::string goal)
 
     for(int i = 0; i < this->numPlayers; i++)
     {
-        players.push_back(new Player(deck, goal, cardInfo, i));
+        players.push_back(new AggressivePlayer(deck, goal, cardInfo, i));
     }
 
     winningPlayer = MAX_INT;
