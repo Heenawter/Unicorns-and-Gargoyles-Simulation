@@ -16,16 +16,24 @@ int main()
     Player *player1 = game->getPlayer(1);
     Player *player2 = game->getPlayer(2);
 
-    for (int i = 0; i < 10; i++)
-    {
-        game->gameRound();
-    }
+    player1->drawNonActionCard();
+    player1->drawNonActionCard();
+    player1->drawNonActionCard();
 
-    Hand* hand1 = player1->getHand();
-    Hand* hand2 = player2->getHand();
+    player1->discardCard();
 
-    bool test = (*hand1) < *hand2;
-    std::cout << test << std::endl;
+    // for (int i = 0; i < 10; i++)
+    // {
+    //     game->gameRound();
+    // }
+
+
+
+    // Hand* hand1 = player1->getHand();
+    // Hand* hand2 = player2->getHand();
+
+    // bool test = (*hand1) < *hand2;
+    // std::cout << test << std::endl;
 
     // try
     // {

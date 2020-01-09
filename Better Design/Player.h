@@ -32,7 +32,7 @@ public:
 
     /**** ACTION CARDS ****/
     void drawNonActionCard();
-    void discardCard(std::string goalString);
+    void discardCard();
     void springCleaning(std::string goalString);
 
     // pair<int, int> == pair<targetCard, damageDone>

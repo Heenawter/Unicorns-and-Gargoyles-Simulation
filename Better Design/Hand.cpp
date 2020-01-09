@@ -132,6 +132,8 @@ Hand::Hand(std::string goalString, Cards *cardInfo)
 
 Hand::Hand(const Hand &oldHand)
 {
+    this->cards = oldHand.cards;
+
     this->goalString = oldHand.goalString;
     this->cardInfo = oldHand.cardInfo;
     this->numCards = oldHand.numCards;
@@ -163,7 +165,6 @@ std::string Hand::generateString()
               call with (*hand1) < (*hand2) */
 bool Hand::operator < (const Hand &h2)
 {
-    std::cout << "here!!!" << std::endl;
     int distance1 = this->currentDistance;
     int distance2 = h2.currentDistance;
     return distance1 < distance2;
@@ -190,6 +191,7 @@ void Hand::addToHand(char card)
               the goal string */
 void Hand::removeCard(int i) {
     this->cards.erase(this->cards.begin() + i);
+
     this->numCards--;
     this->currentString = generateString();
     this->currentDistance = stringDistance(this->currentString, this->goalString);

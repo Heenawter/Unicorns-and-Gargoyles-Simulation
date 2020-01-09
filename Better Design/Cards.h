@@ -18,7 +18,7 @@ static const char ACTION_CARD_REVERSE = 15;
 static const char ACTION_CARD_POISON = 16;
 static const char ACTION_CARD_STEAL = 17;
 
-class Cards
+class Cards 
 {
 private:
     std::map<char, std::string> cardMap; // <card type, long name>

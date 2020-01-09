@@ -38,6 +38,8 @@ public:
     bool operator < (const Hand &oldHand);
     void addToHand(char card);
     void removeCard(int i);
+
+    int getNumCards() { return this->numCards; }
 };
 
 #endif
