@@ -70,6 +70,7 @@ void Player::initOtherPlayers(std::vector<Player *> otherPlayers)
     }
 }
 
+
 char Player::takeTurn()
 {
     
@@ -98,24 +99,24 @@ void Player::drawNonActionCard_helper()
     }
 }
 
-/*  Function: drawNonActionCard()
+/*  Function: action_drawNonActionCard()
     Goal:     Do the "draw non action card" for yourself and everyone else
     Throws:   RanOutOfCardsException   -- if you run out of cards
               OnlyActionCardsException -- if there is no non-action card left 
               (Both exceptions are passed from deck->drawNonActionCard) */
-void Player::drawNonActionCard()
+void Player::action_drawNonActionCard()
 {
     try
     {
         drawNonActionCard_helper(); // do it for yourself
-        this->hand->printHand();
+        printHand();
 
         // then, do it for everyone else...
         int numPlayers = this->otherPlayers.size();
         for (int i = 0; i < numPlayers; i++)
         {
             this->otherPlayers[i]->drawNonActionCard_helper();
-            this->otherPlayers[i]->getHand()->printHand();
+            this->otherPlayers[i]->printHand();
         }
     }
     catch (RanOutOfCardsException &e1)
@@ -126,4 +127,31 @@ void Player::drawNonActionCard()
     {
         throw e2;
     }
+}
+
+/*  Function: stealCard_helper()
+    Goal:     Steal the Nth card from targetPlayer and add it
+              to your own hand, where N = cardToSteal */
+void Player::stealCard_helper(int cardToSteal, Player* targetPlayer)
+{
+    char cardType = targetPlayer->hand->removeCard(cardToSteal);
+    this->hand->addToHand(cardType);
+}
+
+/*  Function: discardCard()
+    Goal:     Remove the Nth card from your hand and put it
+              back in the deck, where N = card */
+void Player::discardCard(int card) 
+{
+    char cardType = this->hand->removeCard(card);
+    this->deck->discardCard(cardType);
+}
+
+/*  Function: discardCard()
+    Goal:     Remove the Nth uncorn from your hand and put it
+              back in the deck, where N = unicornNumber */
+void Player::discardUnicorn(int unicornNumber)
+{
+    this->hand->removeUnicorn(unicornNumber);
+    this->deck->discardCard(UNICORN);
 }

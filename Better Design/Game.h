@@ -45,6 +45,7 @@ public:
     Player *getPlayer(int index) { return players.at(index); }
     std::vector<Player *> getPlayers() { return players; }
     int getWinningPlayer() { return winningPlayer; }
+    int getDeckSize() { return deck->getDeckSize(); }
 };
 
 #endif

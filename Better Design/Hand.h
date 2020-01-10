@@ -39,7 +39,7 @@ public:
     void addToHand(char card);
 
     char getCard(int i);
-    void removeCard(int i);
+    char removeCard(int i);
 
     int getNumCards() { return this->numCards; }
     int getNumUnicorns();

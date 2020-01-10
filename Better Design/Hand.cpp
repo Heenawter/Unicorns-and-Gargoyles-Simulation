@@ -193,13 +193,18 @@ char Hand::getCard(int i)
     Goal:     Removes the card at the given index from the hand;
               also decreases the number of cards, generates the
               new string, and calculates the new distance from 
-              the goal string */
-void Hand::removeCard(int i) {
+              the goal string 
+    Returns:  The card removed */
+char Hand::removeCard(int i) {
+    char cardType = this->cards[i];
+
     this->cards.erase(this->cards.begin() + i);
 
     this->numCards--;
     this->currentString = generateString();
     this->currentDistance = stringDistance(this->currentString, this->goalString);
+
+    return cardType;
 }
 
 /*  Function: getNumUnicorns()

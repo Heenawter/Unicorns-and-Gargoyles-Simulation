@@ -13,7 +13,7 @@ AggressivePlayer::~AggressivePlayer()
 }
 
 /**** ACTION CARDS ****/
-void AggressivePlayer::discardCard()
+void AggressivePlayer::action_discardCard()
 {
     Hand testHand = Hand(*this->hand); // use copy constructor to make a copy
     Hand bestHand = Hand(*this->hand);
@@ -51,17 +51,17 @@ void AggressivePlayer::discardCard()
     std::cout << "best hand: " << &bestHand << std::endl;
 }
 
-void AggressivePlayer::springCleaning()
+void AggressivePlayer::action_springCleaning()
 {
 
 }
 
-void AggressivePlayer::poisonUnicorn()
+void AggressivePlayer::action_poisonUnicorn()
 {
 
 }
 
-void AggressivePlayer::stealCard()
+void AggressivePlayer::action_stealCard()
 {
 
 }

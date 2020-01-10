@@ -35,14 +35,21 @@ public:
     char takeTurn();
 
     /**** ACTION CARDS ****/
-    void drawNonActionCard();
-    virtual void discardCard() = 0;
-    virtual void springCleaning() = 0;
-    virtual void poisonUnicorn() = 0;
-    virtual void stealCard() = 0;
+    void action_drawNonActionCard();
+    virtual void action_discardCard() = 0;
+    virtual void action_springCleaning() = 0;
+    virtual void action_poisonUnicorn() = 0;
+    virtual void action_stealCard() = 0;
 
+    void stealCard_helper(int cardToSteal, Player* targetPlayer);
+    void discardCard(int card);
+    void discardUnicorn(int unicornNumber);
+
+    void printHand() { this->hand->printHand(); }
+    int getUnicornCount() { return this->hand->getNumUnicorns(); }
+    int getHandSize() { return this->hand->getNumCards(); }
+    char getCard(int i) { return this->hand->getCard(i); }
     int getPlayerNum() { return playerNum; }
-    Hand* getHand() { return this->hand; }
 };
 
 #endif

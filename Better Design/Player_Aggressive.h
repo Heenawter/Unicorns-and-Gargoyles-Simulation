@@ -13,10 +13,10 @@ public:
     ~AggressivePlayer();
 
     /**** ACTION CARDS ****/
-    void discardCard();
-    void springCleaning();
-    void poisonUnicorn();
-    void stealCard();
+    void action_discardCard();
+    void action_springCleaning();
+    void action_poisonUnicorn();
+    void action_stealCard();
 };
 
 #endif
