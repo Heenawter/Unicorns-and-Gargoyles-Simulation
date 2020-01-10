@@ -71,46 +71,11 @@ void Game::handleActionCard(char type)
     {
         switch (type)
         {
-        case ACTION_CARD_DRAW:
-            actionCard_draw();
-            break;
         case ACTION_CARD_REVERSE:
             actionCard_reverse();
             break;
         default:
             break;
-        }
-    }
-    catch (RanOutOfCardsException &e1)
-    {
-        throw e1;
-    }
-    catch (OnlyActionCardsException &e2)
-    {
-        throw e2;
-    }
-}
-
-/*  Function: actionCard_draw()
-    Goal:     Have every player (in order, starting from the current player)
-              draw a non action card from the deck and add it to their hand
-    Throws:   RanOutOfCardsException   -- if you run out of cards
-              OnlyActionCardsException -- if there is no non-action card left 
-              (Both exceptions are passed from player->drawNonActionCard) */
-void Game::actionCard_draw()
-{
-    std::cout << "draw..." << std::endl;
-
-    try
-    {
-        Player *current = currentPlayer;
-        int playerCount = 0;
-        while (playerCount < this->numPlayers)
-        {
-            std::cout << "- " << current->getPlayerNum() << std::endl;
-            current = getNextPlayer(current);
-            current->drawNonActionCard();
-            playerCount++;
         }
     }
     catch (RanOutOfCardsException &e1)

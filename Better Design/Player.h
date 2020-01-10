@@ -25,6 +25,8 @@ protected:
     char handleActionCard(char actionCard);
     void moveCard();
 
+    void drawNonActionCard_helper();
+
 public:
     Player(Deck *deck, std::string goalString, Cards* cardInfo, int playerNum);
     ~Player();

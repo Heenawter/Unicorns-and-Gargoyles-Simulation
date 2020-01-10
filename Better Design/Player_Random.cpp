@@ -79,6 +79,8 @@ void TrollPlayer::poisonUnicorn()
               that is, if player has no cards, try another random player */
 void TrollPlayer::stealCard()
 {
+
+    std::cout << "???" << std::endl;
     // first, narrow down only to players with cards...
     int numOtherPlayers = this->otherPlayers.size();
     std::vector<Player *> playersWithCards;

@@ -13,19 +13,26 @@ int main()
     std::cout << "main" << std::endl;
 
     Game *game = new Game(5, "[ ][*][*][ ]");
-    Player *player1 = game->getPlayer(1);
+    Player *player1 = game->getPlayer(0);
     // Player *player2 = game->getPlayer(2);
 
-    for(int i = 0; i < 5; i++)
+    try
     {
-        game->getPlayer(0)->drawNonActionCard();
-        game->getPlayer(1)->drawNonActionCard();
-        game->getPlayer(2)->drawNonActionCard();
-        game->getPlayer(3)->drawNonActionCard();
-        game->getPlayer(4)->drawNonActionCard();
-    }
 
-    player1->stealCard();
+        for(int i = 0; i < 5; i++)
+        {
+            std::cout << "------- " << i << " -------" << std::endl;
+            player1->drawNonActionCard();        
+        }
+    }
+    catch (RanOutOfCardsException &e1)
+    {
+        std::cout << e1.what() << std::endl;
+    }
+    catch (OnlyActionCardsException &e2)
+    {
+        std::cout << e2.what() << std::endl;
+    }
 
     // for (int i = 0; i < 10; i++)
     // {

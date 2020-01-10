@@ -58,6 +58,10 @@ Player::~Player()
     delete hand;
 }
 
+/*  Function: initOtherPlayers()
+    Goal:     Initializes pointers to the other players; this is needed
+              for action cards, which may require interaction
+              between players, such as stealing cards */
 void Player::initOtherPlayers(std::vector<Player *> otherPlayers)
 {
     for(int i = 0; i < otherPlayers.size(); i++) {
@@ -72,8 +76,30 @@ char Player::takeTurn()
     return drawCard();
 }
 
-/*  Function: drawNonActionCard()
+/*  Function: drawNonActionCard_helper()
     Goal:     Draw a non action card from the deck and add it to your hand
+    Throws:   RanOutOfCardsException   -- if you run out of cards
+              OnlyActionCardsException -- if there is no non-action card left 
+              (Both exceptions are passed from deck->drawNonActionCard) */
+void Player::drawNonActionCard_helper()
+{
+    try
+    {
+        char nonActionCard = deck->drawNonActionCard();
+        hand->addToHand(nonActionCard);
+    }
+    catch (RanOutOfCardsException &e1)
+    {
+        throw e1;
+    }
+    catch (OnlyActionCardsException &e2)
+    {
+        throw e2;
+    }
+}
+
+/*  Function: drawNonActionCard()
+    Goal:     Do the "draw non action card" for yourself and everyone else
     Throws:   RanOutOfCardsException   -- if you run out of cards
               OnlyActionCardsException -- if there is no non-action card left 
               (Both exceptions are passed from deck->drawNonActionCard) */
@@ -81,8 +107,16 @@ void Player::drawNonActionCard()
 {
     try
     {
-        char nonActionCard = deck->drawNonActionCard();
-        hand->addToHand(nonActionCard);
+        drawNonActionCard_helper(); // do it for yourself
+        this->hand->printHand();
+
+        // then, do it for everyone else...
+        int numPlayers = this->otherPlayers.size();
+        for (int i = 0; i < numPlayers; i++)
+        {
+            this->otherPlayers[i]->drawNonActionCard_helper();
+            this->otherPlayers[i]->getHand()->printHand();
+        }
     }
     catch (RanOutOfCardsException &e1)
     {

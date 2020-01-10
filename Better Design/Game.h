@@ -34,7 +34,6 @@ private:
     Player* getNextPlayer(Player *current);
 
     void handleActionCard(char type);
-    void actionCard_draw();
     void actionCard_reverse();
 
 public:
