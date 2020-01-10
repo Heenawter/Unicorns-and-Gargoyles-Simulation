@@ -40,6 +40,9 @@ public:
     void removeCard(int i);
 
     int getNumCards() { return this->numCards; }
+    int getNumUnicorns();
+    void removeUnicorn(int unicornNumber);
+    void printHand();
 };
 
 #endif

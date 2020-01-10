@@ -196,3 +196,53 @@ void Hand::removeCard(int i) {
     this->currentString = generateString();
     this->currentDistance = stringDistance(this->currentString, this->goalString);
 }
+
+/*  Function: getNumUnicorns()
+    Goal:     Return the number of unicorns in the hand */
+int Hand::getNumUnicorns()
+{
+    int numUnicorns = 0;
+    for(int i = 0; i < this->numCards; i++) 
+    {
+        if(cards[i] == UNICORN)
+            numUnicorns++;
+    }
+    return numUnicorns;
+}
+
+/*  Function: removeUnicorn()
+    Goal:     Removes the Nth unicorn where N=unicornNumber; that is, 
+              you must count the unicorns until you find the unicornNumber-nth
+              unicorn and remove that one; for example, 
+                    Suppose unicornNumber = 2
+                    Before:   [append 1][append 2][unicorn][append 2][unicorn][append 3]
+                                                    ^ 1                 ^ 2
+                    After:    [append 1][append 2][unicorn][append 2][append 3] */
+void Hand::removeUnicorn(int unicornNumber)
+{
+    int unicornCounter = 0;
+    bool unicornFound = false;
+
+    int i;
+    for(i = 0; i < this->numCards && !unicornFound; i++)
+    {
+        if(this->cards[i] == UNICORN)
+            unicornCounter++;
+
+        if(unicornCounter == unicornNumber)
+        {
+            unicornFound = true;
+            removeCard(i);
+        }
+    }
+}
+
+/*  Function: printHand()
+    Goal:     Print the cards in the hand */
+void Hand::printHand() {
+    for(int i = 0; i < this->numCards; i++) 
+    {
+        std::cout << this->cardInfo->getCardName(this->cards[i]);
+    }
+    std::cout << std::endl;
+}

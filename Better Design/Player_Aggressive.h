@@ -14,7 +14,7 @@ public:
 
     /**** ACTION CARDS ****/
     void discardCard();
-    void springCleaning(std::string goalString);
+    void springCleaning();
     void poisonUnicorn();
     void stealCard();
 };

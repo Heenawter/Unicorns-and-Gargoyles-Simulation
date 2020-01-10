@@ -150,7 +150,11 @@ Game::Game(int numPlayers, std::string goal)
 
     for(int i = 0; i < this->numPlayers; i++)
     {
-        players.push_back(new AggressivePlayer(deck, goal, cardInfo, i));
+        players.push_back(new TrollPlayer(deck, goal, cardInfo, i));
+    }
+
+    for(int i = 0; i < this->numPlayers; i++) {
+        players[i]->initOtherPlayers(players);
     }
 
     winningPlayer = MAX_INT;

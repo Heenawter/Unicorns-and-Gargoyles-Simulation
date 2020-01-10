@@ -12,11 +12,12 @@
 
 class Player
 {
-private:
+protected:
     // std::unordered_set<std::vector<char>, vectorHash> allHands;
     Hand *hand;
     Deck *deck;
     Cards *cardInfo;
+    std::vector<Player*> otherPlayers;
 
     int playerNum;
 
@@ -28,21 +29,15 @@ public:
     Player(Deck *deck, std::string goalString, Cards* cardInfo, int playerNum);
     ~Player();
 
+    void initOtherPlayers(std::vector<Player *> otherPlayers);
     char takeTurn();
 
     /**** ACTION CARDS ****/
     void drawNonActionCard();
     virtual void discardCard() = 0;
-    virtual void springCleaning(std::string goalString) = 0;
+    virtual void springCleaning() = 0;
     virtual void poisonUnicorn() = 0;
     virtual void stealCard() = 0;
-
-    // pair<int, int> == pair<targetCard, damageDone>
-    std::pair<int, int> unicornToPoison(std::string goalString);
-    std::pair<int, int> cardToSteal(std::string goalString);
-
-    void getPoisoned(std::string goalString, int unicornToPoison);
-    void getRobbed(std::string goalString, int cardToSteal);    
 
     int getPlayerNum() { return playerNum; }
     Hand* getHand() { return this->hand; }
