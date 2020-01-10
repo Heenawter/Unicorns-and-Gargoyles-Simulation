@@ -184,6 +184,11 @@ void Hand::addToHand(char card)
     this->currentDistance = stringDistance(this->currentString, this->goalString);
 }
 
+char Hand::getCard(int i)
+{
+    return this->cards[i];
+}
+
 /*  Function: removeCard()
     Goal:     Removes the card at the given index from the hand;
               also decreases the number of cards, generates the

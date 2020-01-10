@@ -25,7 +25,7 @@ int main()
         game->getPlayer(4)->drawNonActionCard();
     }
 
-    player1->poisonUnicorn();
+    player1->stealCard();
 
     // for (int i = 0; i < 10; i++)
     // {

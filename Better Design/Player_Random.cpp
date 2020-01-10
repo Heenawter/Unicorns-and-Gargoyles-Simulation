@@ -55,18 +55,17 @@ void TrollPlayer::poisonUnicorn()
     for(int i = 0; i < numOtherPlayers; i++) 
     {
         if(this->otherPlayers[i]->getHand()->getNumUnicorns() != 0) 
-        {
             playersWithUnicorns.push_back(this->otherPlayers[i]);
-        }
     }
 
     int numPlayersWithUnicorns = playersWithUnicorns.size();
     if (numPlayersWithUnicorns > 0) // if at least one person has a unicorn....
     {
-        // remove a random unicorn
+        // target a random player with a unicorn
         std::uniform_int_distribution<int> playerDistribution(0, numPlayersWithUnicorns - 1);
-        int targetPlayer = playerDistribution(this->randomGenerator);
+        int targetPlayer = playerDistribution(this->randomGenerator); // found a target!!
 
+        // then remove a random unicorn from that player
         Hand* targetHand = playersWithUnicorns[targetPlayer]->getHand();
         std::uniform_int_distribution<int> unicornDistribution(1, targetHand->getNumUnicorns());
         int targetUnicorn = unicornDistribution(this->randomGenerator);
@@ -80,5 +79,30 @@ void TrollPlayer::poisonUnicorn()
               that is, if player has no cards, try another random player */
 void TrollPlayer::stealCard()
 {
-    
+    // first, narrow down only to players with cards...
+    int numOtherPlayers = this->otherPlayers.size();
+    std::vector<Player *> playersWithCards;
+    for(int i = 0; i < numOtherPlayers; i++)
+    {
+        if(this->otherPlayers[i]->getHand()->getNumCards() > 0)
+            playersWithCards.push_back(this->otherPlayers[i]);
+    }
+
+    int numPlayersWithCards = playersWithCards.size();
+    if(numPlayersWithCards > 0) // if at least one player has cards...
+    {
+        // target a random player that has cards
+        std::uniform_int_distribution<int> playerDistribution(0, numPlayersWithCards - 1);
+        int targetPlayer = playerDistribution(this->randomGenerator); 
+
+        // then find a random card to steal
+        Hand *targetHand = playersWithCards[targetPlayer]->getHand();
+        std::uniform_int_distribution<int> cardDistribution(0, targetHand->getNumCards() - 1);
+        int targetCard = cardDistribution(this->randomGenerator); // found the card to steal!
+
+        // now that we know which card to steal, actually steal it
+        char stolenCard = targetHand->getCard(targetCard);
+        targetHand->removeCard(targetCard);
+        this->hand->addToHand(stolenCard);
+    }
 }
