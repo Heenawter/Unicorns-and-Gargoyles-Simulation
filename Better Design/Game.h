@@ -33,7 +33,6 @@ private:
     void addToMaps(std::string line, char cardType);
     Player* getNextPlayer(Player *current);
 
-    void handleActionCard(char type);
     void actionCard_reverse();
 
 public:

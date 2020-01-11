@@ -6,6 +6,7 @@
 #include <string>
 #include <chrono>
 #include <random>
+#include <tuple>
 #include "Player.h"
 
 class TrollPlayer : public Player
@@ -16,12 +17,15 @@ private:
 public:
     TrollPlayer(Deck *deck, std::string goalString, Cards *cardInfo, int playerNum);
     ~TrollPlayer();
+    char takeTurn();
 
     /**** ACTION CARDS ****/
     void action_discardCard();
     void action_springCleaning();
-    void action_poisonUnicorn();
-    void action_stealCard();
+    std::tuple<Player*, int> action_poisonUnicorn();
+    std::tuple<Player*, int> action_stealCard();
+
+    // NEED TO CODE TAKE TURN ASWELL
 };
 
 #endif

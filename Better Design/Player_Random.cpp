@@ -13,6 +13,15 @@ TrollPlayer::~TrollPlayer()
 
 }
 
+char TrollPlayer::takeTurn()
+{
+    std::cout << " Take turn ... ";
+
+    char card = drawCard();
+
+    return card;
+}
+
 /******************************* ACTION CARDS ******************************* /
 
 /*  Function: discardCard()
@@ -26,7 +35,7 @@ void TrollPlayer::action_discardCard()
         std::uniform_int_distribution<int> distribution(0, numCards - 1);
         int cardToRemove = distribution(this->randomGenerator);
         
-        discardCard(cardToRemove);
+        this->discardCard(cardToRemove);
     }
 }
 
@@ -41,14 +50,14 @@ void TrollPlayer::action_springCleaning()
 
     for(int i = 0; i < numCardsToRemove; i++)
     {
-        action_discardCard();
+        this->action_discardCard();
     }
 }
 
 /*  Function: poisonUnicorn()
     Goal:     Target a random player with a unicorn and poison one;
               decide which unicorn to poison randomly */
-void TrollPlayer::action_poisonUnicorn()
+std::tuple<Player *, int> TrollPlayer::action_poisonUnicorn()
 {
     // first, narrow down to only players who HAVE unicorns
     int numOtherPlayers = this->otherPlayers.size();
@@ -60,24 +69,26 @@ void TrollPlayer::action_poisonUnicorn()
     }
 
     int numPlayersWithUnicorns = playersWithUnicorns.size();
+    Player* targetPlayer = NULL;
+    int targetUnicorn = -1;
     if (numPlayersWithUnicorns > 0) // if at least one person has a unicorn....
     {
         // target a random player with a unicorn
         std::uniform_int_distribution<int> playerDistribution(0, numPlayersWithUnicorns - 1);
-        Player* targetPlayer = playersWithUnicorns[playerDistribution(this->randomGenerator)]; // found a target!!
+        targetPlayer = playersWithUnicorns[playerDistribution(this->randomGenerator)]; // found a target!!
         
         // then remove a random unicorn from that player
         std::uniform_int_distribution<int> unicornDistribution(1, targetPlayer->getUnicornCount());
-        int targetUnicorn = unicornDistribution(this->randomGenerator);
-
-        targetPlayer->discardUnicorn(targetUnicorn);
+        targetUnicorn = unicornDistribution(this->randomGenerator);
     }
+
+    return std::tuple<Player *, int>(targetPlayer, targetUnicorn);
 }
 
 /*  Function: stealCard()
     Goal:     Steal a random card from a random player that has cards; 
               that is, if player has no cards, try another random player */
-void TrollPlayer::action_stealCard()
+std::tuple<Player *, int> TrollPlayer::action_stealCard()
 {
     // first, narrow down only to players with cards...
     int numOtherPlayers = this->otherPlayers.size();
@@ -89,17 +100,18 @@ void TrollPlayer::action_stealCard()
     }
 
     int numPlayersWithCards = playersWithCards.size();
+    Player* targetPlayer = NULL;
+    int targetCard = -1;
     if(numPlayersWithCards > 0) // if at least one player has cards...
     {
         // target a random player that has cards
         std::uniform_int_distribution<int> playerDistribution(0, numPlayersWithCards - 1);
-        Player* targetPlayer = playersWithCards[playerDistribution(this->randomGenerator)]; 
+        targetPlayer = playersWithCards[playerDistribution(this->randomGenerator)]; 
 
         // then find a random card to steal
         std::uniform_int_distribution<int> cardDistribution(0, targetPlayer->getHandSize() - 1);
-        int targetCard = cardDistribution(this->randomGenerator); // found the card to steal!
-
-        // now that we know which card to steal, actually steal it
-        stealCard_helper(targetCard, targetPlayer);
+        targetCard = cardDistribution(this->randomGenerator); // found the card to steal!
     }
+
+    return std::tuple<Player *, int>(targetPlayer, targetCard);
 }

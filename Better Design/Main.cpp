@@ -19,13 +19,9 @@ int main()
     try
     {
 
-        for(int i = 0; i < 12; i++)
+        for(int i = 0; i < 15; i++)
         {
-            std::cout << "------- " << i << " -------" << std::endl;
-            player1->action_drawNonActionCard();
-            player1->action_poisonUnicorn();
-
-            std::cout << game->getDeckSize() << std::endl;
+            game->gameRound();
         }
     }
     catch (RanOutOfCardsException &e1)

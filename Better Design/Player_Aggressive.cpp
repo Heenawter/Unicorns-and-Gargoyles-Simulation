@@ -12,6 +12,11 @@ AggressivePlayer::~AggressivePlayer()
 
 }
 
+char AggressivePlayer::takeTurn()
+{
+
+}
+
 /**** ACTION CARDS ****/
 void AggressivePlayer::action_discardCard()
 {
@@ -56,12 +61,12 @@ void AggressivePlayer::action_springCleaning()
 
 }
 
-void AggressivePlayer::action_poisonUnicorn()
+std::tuple<Player *, int> AggressivePlayer::action_poisonUnicorn()
 {
-
+    return std::tuple<Player *, int>(NULL, 1);
 }
 
-void AggressivePlayer::action_stealCard()
+std::tuple<Player *, int> AggressivePlayer::action_stealCard()
 {
-
+    return std::tuple<Player *, int>(NULL, 1);
 }

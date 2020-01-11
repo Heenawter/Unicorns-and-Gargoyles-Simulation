@@ -59,35 +59,6 @@ Player* Game::getNextPlayer(Player* current)
     return players[playerNum];
 }
 
-/*  Function: handleActionCard()
-    Goal:     Call the appropriate function depending on which action card
-              was drawn;
-    Throws:   RanOutOfCardsException   -- if you run out of cards
-              OnlyActionCardsException -- if there is no non-action card left 
-              (Both exceptions are passed from game->actionCardDraw) */
-void Game::handleActionCard(char type)
-{
-    try
-    {
-        switch (type)
-        {
-        case ACTION_CARD_REVERSE:
-            actionCard_reverse();
-            break;
-        default:
-            break;
-        }
-    }
-    catch (RanOutOfCardsException &e1)
-    {
-        throw e1;
-    }
-    catch (OnlyActionCardsException &e2)
-    {
-        throw e2;
-    }
-}
-
 /*  Function: actionCard_reverse()
     Goal:     Reverse the current play order */
 void Game::actionCard_reverse()
@@ -146,22 +117,22 @@ void Game::gameRound()
     int count = 0;
     char newestCard;
 
-    std::cout << "-- NEW ROUND --" << std::endl;
+    std::cout << std::endl << "------------------ NEW ROUND ------------------" << std::endl;
     while (count < this->numPlayers)
     {
         // a round always consists of <numPlayers> turns; 
         // because of the reverse order card, it is not guaranteed that
         // every player will go in a round.
 
-        std::cout << "Player " << this->currentPlayer->getPlayerNum() << ": " << std::endl;
+        std::cout << "Player " << this->currentPlayer->getPlayerNum() << ":";
         // playerTurn(goalString, playerNum);
-
         try
         {
             newestCard = this->currentPlayer->takeTurn();
-            if (cardInfo->isActionCard(newestCard))
+            if (newestCard == ACTION_CARD_REVERSE)
             {
-                handleActionCard(newestCard);
+                std::cout << "REVERSE" << std::endl;
+                actionCard_reverse();
             }
         }
         catch (RanOutOfCardsException &e1)
@@ -175,5 +146,13 @@ void Game::gameRound()
         
         currentPlayer = getNextPlayer(currentPlayer); // advance to the next player
         count++; // and increase the counter for the number of turns in this round
+        std::cout << std::endl;
     }
+
+    for(int i = 0; i < numPlayers; i++) {
+        std::cout << "- Player " << i << ": ";
+        players[i]->printHand();
+    }
+    std::cout << "Deck size:    " << this->deck->getDeckSize() << std::endl;
+    std::cout << "Discard size: " << this->deck->getDiscardSize() << std::endl;
 }
