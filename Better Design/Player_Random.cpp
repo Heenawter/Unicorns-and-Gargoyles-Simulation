@@ -149,7 +149,7 @@ char TrollPlayer::takeTurn()
         }
         else // rearrange cards...
         {
-            LOG("Rearrange cards ... ");
+            LOG("Re-arrange cards ... ");
             std::uniform_int_distribution<int> cardDistribution(0, this->getHandSize() - 1);
             int targetCard = cardDistribution(this->randomGenerator);
             int newLocation = cardDistribution(this->randomGenerator);

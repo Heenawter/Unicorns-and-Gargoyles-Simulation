@@ -123,7 +123,7 @@ void Game::gameRound()
         // because of the reverse order card, it is not guaranteed that
         // every player will go in a round.
 
-        LOG("Player " + std::to_string(this->currentPlayer->getPlayerNum()) + ":");
+        LOG("Player " + std::to_string(this->currentPlayer->getPlayerNum()) + ": ");
         // playerTurn(goalString, playerNum);
         try
         {
