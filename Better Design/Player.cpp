@@ -19,7 +19,7 @@ char Player::drawCard()
     try
     {
         newCard = deck->drawNextCard();
-        
+        std::cout << "Drew " << this->cardInfo->getCardName(newCard) << " .... ";
     }
     catch (RanOutOfCardsException &e)
     {
@@ -31,7 +31,6 @@ char Player::drawCard()
         hand->addToHand(newCard);
     else
     {
-        std::cout << "Action card... ";
         handleActionCard(newCard);
     }
     
@@ -44,23 +43,18 @@ void Player::handleActionCard(char type)
     switch (type)
     {
     case ACTION_CARD_DRAW:
-        std::cout << "DRAW";
         action_drawNonActionCard_helper();
         break;
     case ACTION_CARD_DISCARD:
-        std::cout << "DISCARD";
         action_discardCard_helper();
         break;
     case ACTION_CARD_SPRING_CLEANING:
-        std::cout << "SPRING CLEANING";
         action_springCleaning_helper();
         break;
     case ACTION_CARD_POISON:
-        std::cout << "POISON";
         action_poisonUnicorn_helper();
         break;
     case ACTION_CARD_STEAL:
-        std::cout << "STEAL";
         action_stealCard_helper();
         break;
     default:
@@ -143,7 +137,7 @@ void Player::action_stealCard_helper()
 
     if (targetPlayer != NULL)
     {
-        this->deck->discardCard(targetPlayer->hand->removeCard(targetCard));
+        this->hand->addToHand(targetPlayer->hand->removeCard(targetCard));
     }
 }
 
@@ -204,6 +198,7 @@ void Player::action_drawNonActionCard()
     {
         char nonActionCard = deck->drawNonActionCard();
         hand->addToHand(nonActionCard);
+        std::cout << "Player " << this->playerNum << " drew " << this->cardInfo->getCardName(nonActionCard) << " ...";
     }
     catch (RanOutOfCardsException &e1)
     {

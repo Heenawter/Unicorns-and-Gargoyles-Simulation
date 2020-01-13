@@ -32,6 +32,7 @@ public:
 
     bool hasNonActionCard();
     std::string getCardName(char card);
+    void printDecks();
 
     int getDeckSize() { return cards.size(); }
     int getDiscardSize() { return discard.size(); }

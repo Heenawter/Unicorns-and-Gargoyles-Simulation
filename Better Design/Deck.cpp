@@ -141,3 +141,19 @@ std::string Deck::getCardName(char card)
 {
     cardInfo->getCardName(card);
 }
+
+void Deck::printDecks() 
+{
+    std::cout << std::endl << "-- Deck --" << std::endl;
+    for(int i = 0; i < cards.size(); i++)
+    {
+        std::cout << cardInfo->getCardName(cards[i]);
+    }
+
+    std::cout << std::endl << std::endl << "-- Discard --" << std::endl;
+    for (int i = 0; i < discard.size(); i++)
+    {
+        std::cout << cardInfo->getCardName(discard[i]);
+    }
+    std::cout << std::endl;
+}

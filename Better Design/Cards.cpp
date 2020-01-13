@@ -153,7 +153,7 @@ std::string Cards::getCardName(char type)
     if (type < ACTION_CARD_DISCARD)
         cardName = "[" + cardMap[type] + "]";
     else
-        cardName = "*" + cardMap[type] + "*";
+        cardName = "[*" + cardMap[type] + "*]";
     return cardName;
 }
 

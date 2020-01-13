@@ -63,7 +63,6 @@ Player* Game::getNextPlayer(Player* current)
     Goal:     Reverse the current play order */
 void Game::actionCard_reverse()
 {
-    std::cout << "reverse..." << std::endl;
     this->gameDirection *= -1;
 }
 
@@ -131,7 +130,7 @@ void Game::gameRound()
             newestCard = this->currentPlayer->takeTurn();
             if (newestCard == ACTION_CARD_REVERSE)
             {
-                std::cout << "REVERSE" << std::endl;
+                std::cout << " reverse ... " << std::endl;
                 actionCard_reverse();
             }
         }
@@ -155,4 +154,6 @@ void Game::gameRound()
     }
     std::cout << "Deck size:    " << this->deck->getDeckSize() << std::endl;
     std::cout << "Discard size: " << this->deck->getDiscardSize() << std::endl;
+
+    this->deck->printDecks();
 }

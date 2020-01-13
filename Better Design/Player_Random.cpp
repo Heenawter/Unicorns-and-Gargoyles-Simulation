@@ -18,7 +18,6 @@ char TrollPlayer::takeTurn()
     std::cout << " Take turn ... ";
 
     char card = drawCard();
-
     return card;
 }
 
@@ -36,6 +35,8 @@ void TrollPlayer::action_discardCard()
         int cardToRemove = distribution(this->randomGenerator);
         
         this->discardCard(cardToRemove);
+
+        std::cout << "Player " << this->playerNum << " removed card " << cardToRemove << " ... ";
     }
 }
 
@@ -48,6 +49,7 @@ void TrollPlayer::action_springCleaning()
     std::uniform_int_distribution<int> distribution(0, numCards);
     int numCardsToRemove = distribution(this->randomGenerator);
 
+    std::cout << "remove " << numCardsToRemove << " cards... ";
     for(int i = 0; i < numCardsToRemove; i++)
     {
         this->action_discardCard();
@@ -82,6 +84,10 @@ std::tuple<Player *, int> TrollPlayer::action_poisonUnicorn()
         targetUnicorn = unicornDistribution(this->randomGenerator);
     }
 
+    if(targetPlayer != NULL)
+        std::cout << "targetting player " << targetPlayer->getPlayerNum() << " and poisoning unicorn " << targetUnicorn << " ...";
+    else
+        std::cout << "no player targetted... ";
     return std::tuple<Player *, int>(targetPlayer, targetUnicorn);
 }
 
@@ -113,5 +119,10 @@ std::tuple<Player *, int> TrollPlayer::action_stealCard()
         targetCard = cardDistribution(this->randomGenerator); // found the card to steal!
     }
 
+
+    if (targetPlayer != NULL)
+        std::cout << "targetting player " << targetPlayer->getPlayerNum() << " and stealing card " << targetCard << " ...";
+    else
+        std::cout << "no player targetted... ";
     return std::tuple<Player *, int>(targetPlayer, targetCard);
 }
