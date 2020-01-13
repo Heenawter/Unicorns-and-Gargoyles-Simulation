@@ -27,15 +27,17 @@ private:
                          int start, int end,
                          int index, int r);
     int stringDistance(const std::string &string1, const std::string &string2);
+    std::string generateString();
     std::string generateString(std::vector<char> cards); // used in combinationUtil
 
 public:
     Hand(std::string goalString, Cards *cardInfo);
     Hand(const Hand &oldHand); // copy constructor
     std::string getCardName(char type);
-    std::string generateString();
 
     bool operator < (const Hand &oldHand);
+    std::string toString();
+
     void addToHand(char card);
     void moveCard(int oldIndex, int newIndex);
     char removeCard(int i);
@@ -43,8 +45,8 @@ public:
 
     int getNumCards() { return this->numCards; }
     int getNumUnicorns();
+    std::string getCurrentString() { return this->currentString; }
     void removeUnicorn(int unicornNumber);
-    void printHand();
 };
 
 #endif

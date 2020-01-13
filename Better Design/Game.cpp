@@ -116,21 +116,21 @@ void Game::gameRound()
     int count = 0;
     char newestCard;
 
-    std::cout << std::endl << "------------------ NEW ROUND ------------------" << std::endl;
+    LOG("\n------------------ NEW ROUND ------------------\n");
     while (count < this->numPlayers)
     {
         // a round always consists of <numPlayers> turns; 
         // because of the reverse order card, it is not guaranteed that
         // every player will go in a round.
 
-        std::cout << "Player " << this->currentPlayer->getPlayerNum() << ":";
+        LOG("Player " + std::to_string(this->currentPlayer->getPlayerNum()) + ":");
         // playerTurn(goalString, playerNum);
         try
         {
             newestCard = this->currentPlayer->takeTurn();
             if (newestCard == ACTION_CARD_REVERSE)
             {
-                std::cout << " reverse ... " << std::endl;
+                LOG(" reverse ... \n");
                 actionCard_reverse();
             }
         }
@@ -145,15 +145,14 @@ void Game::gameRound()
         
         currentPlayer = getNextPlayer(currentPlayer); // advance to the next player
         count++; // and increase the counter for the number of turns in this round
-        std::cout << std::endl;
+        LOG("\n");
     }
 
     for(int i = 0; i < numPlayers; i++) {
-        std::cout << "- Player " << i << ": ";
-        players[i]->printHand();
+        LOG("- Player " + std::to_string(i) + ": ");
+        LOG(players[i]->toString() + "\n");
     }
-    std::cout << "Deck size:    " << this->deck->getDeckSize() << std::endl;
-    std::cout << "Discard size: " << this->deck->getDiscardSize() << std::endl;
-
-    this->deck->printDecks();
+    LOG("Deck size:    " + std::to_string(this->deck->getDeckSize()) + "\n");
+    LOG("Discard size: " + std::to_string(this->deck->getDiscardSize()) + "\n"); 
+    LOG(this->deck->toString() + "\n");
 }

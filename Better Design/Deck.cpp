@@ -101,7 +101,6 @@ char Deck::drawNonActionCard()
             // while the card drawn is an action card...
             discardCard(nextCard); // discard the action card
             nextCard = drawNextCard();
-            // std::cout << "next card: " << int(nextCard) << std::endl;
         }
     }
     catch (RanOutOfCardsException &e)
@@ -142,18 +141,20 @@ std::string Deck::getCardName(char card)
     cardInfo->getCardName(card);
 }
 
-void Deck::printDecks() 
+std::string Deck::toString() 
 {
-    std::cout << std::endl << "-- Deck --" << std::endl;
+    std::string str = "";
+
+    str += "-- Deck --\n";
     for(int i = 0; i < cards.size(); i++)
     {
-        std::cout << cardInfo->getCardName(cards[i]);
+        str += cardInfo->getCardName(cards[i]);
     }
 
-    std::cout << std::endl << std::endl << "-- Discard --" << std::endl;
+    str += "\n-- Discard --\n";
     for (int i = 0; i < discard.size(); i++)
     {
-        std::cout << cardInfo->getCardName(discard[i]);
+        str += cardInfo->getCardName(discard[i]);
     }
-    std::cout << std::endl;
+    return str;
 }

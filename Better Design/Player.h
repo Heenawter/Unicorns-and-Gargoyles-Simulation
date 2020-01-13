@@ -6,9 +6,11 @@
 #include <string>
 #include <unordered_set>
 
+#include "Debugging.h"
 #include "Cards.h"
 #include "Hand.h"
 #include "Deck.h"
+
 
 class Player
 {
@@ -44,7 +46,7 @@ public:
     void initOtherPlayers(std::vector<Player *> otherPlayers);
     virtual char takeTurn() = 0;
 
-    void printHand() { this->hand->printHand(); }
+    std::string toString();
     int getUnicornCount() { return this->hand->getNumUnicorns(); }
     int getHandSize() { return this->hand->getNumCards(); }
     char getCard(int i) { return this->hand->getCard(i); }

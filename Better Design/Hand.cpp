@@ -255,12 +255,14 @@ void Hand::removeUnicorn(int unicornNumber)
     }
 }
 
-/*  Function: printHand()
-    Goal:     Print the cards in the hand */
-void Hand::printHand() {
-    for(int i = 0; i < this->numCards; i++) 
+/*  Function: toString()
+    Goal:     Generate string for all the cards in the hand  */
+std::string Hand::toString() 
+{
+    std::string str = "";
+    for (int i = 0; i < this->numCards; i++)
     {
-        std::cout << this->cardInfo->getCardName(this->cards[i]);
+        str += this->cardInfo->getCardName(this->cards[i]);
     }
-    std::cout << std::endl;
+    return str;
 }

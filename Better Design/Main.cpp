@@ -13,15 +13,14 @@ int main()
     std::cout << "main" << std::endl;
 
     Game *game = new Game(5, "[ ][*][*][ ]");
-    Player *player1 = game->getPlayer(0);
-    // Player *player2 = game->getPlayer(2);
-
+    int roundCount = 0;
     try
     {
 
-        for(int i = 0; i < 15; i++)
+        for(int i = 0; i < 30; i++)
         {
             game->gameRound();
+            roundCount++;
         }
     }
     catch (RanOutOfCardsException &e1)
@@ -33,6 +32,7 @@ int main()
         std::cout << e2.what() << std::endl;
     }
 
+    LOG("There were " + std::to_string(roundCount) + " rounds. \n");
     delete game;
 
     // for (int i = 0; i < 10; i++)

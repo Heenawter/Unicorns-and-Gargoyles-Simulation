@@ -20,7 +20,7 @@ void TrollPlayer::action_discardCard()
 
         this->discardCard(cardToRemove);
 
-        std::cout << "Player " << this->playerNum << " removed card " << cardToRemove << " ... ";
+        LOG("Player " + std::to_string(this->playerNum) + " removed card " + std::to_string(cardToRemove) + " ... ");
     }
 }
 
@@ -33,7 +33,7 @@ void TrollPlayer::action_springCleaning()
     std::uniform_int_distribution<int> distribution(0, numCards);
     int numCardsToRemove = distribution(this->randomGenerator);
 
-    std::cout << "remove " << numCardsToRemove << " cards... ";
+    LOG("remove " + std::to_string(numCardsToRemove) + " cards ... ");
     for (int i = 0; i < numCardsToRemove; i++)
     {
         this->action_discardCard();
@@ -69,9 +69,13 @@ std::tuple<Player *, int> TrollPlayer::action_poisonUnicorn()
     }
 
     if (targetPlayer != NULL)
-        std::cout << "targetting player " << targetPlayer->getPlayerNum() << " and poisoning unicorn " << targetUnicorn << " ...";
+    {
+        LOG("targetting player " + std::to_string(targetPlayer->getPlayerNum()) + " and poisoning unicorn " + std::to_string(targetUnicorn) + " ... ");
+    }
     else
-        std::cout << "no player targetted... ";
+    {
+        LOG("no player targetted ... ");
+    }
     return std::tuple<Player *, int>(targetPlayer, targetUnicorn);
 }
 
@@ -104,9 +108,13 @@ std::tuple<Player *, int> TrollPlayer::action_stealCard()
     }
 
     if (targetPlayer != NULL)
-        std::cout << "targetting player " << targetPlayer->getPlayerNum() << " and stealing card " << targetCard << " ...";
+    {
+        LOG("targetting player " + std::to_string(targetPlayer->getPlayerNum()) + " and stealing card " + std::to_string(targetCard) + " ... ");
+    }
     else
-        std::cout << "no player targetted... ";
+    {
+        LOG("no player targetted ... ");
+    }
     return std::tuple<Player *, int>(targetPlayer, targetCard);
 }
 
@@ -123,7 +131,7 @@ TrollPlayer::TrollPlayer(Deck *deck, std::string goalString, Cards *cardInfo, in
 
 char TrollPlayer::takeTurn()
 {
-    std::cout << " Take turn ... ";
+    LOG(" Take turn ... ");
     char card = ' ';
 
     // randomly decide to either draw a card or randomly rearrange your cards...
@@ -141,7 +149,7 @@ char TrollPlayer::takeTurn()
         }
         else // rearrange cards...
         {
-            std::cout << "rearrange cards ... ";
+            LOG("Rearrange cards ... ");
             std::uniform_int_distribution<int> cardDistribution(0, this->getHandSize() - 1);
             int targetCard = cardDistribution(this->randomGenerator);
             int newLocation = cardDistribution(this->randomGenerator);
@@ -149,7 +157,7 @@ char TrollPlayer::takeTurn()
             {
                 newLocation = cardDistribution(this->randomGenerator);
             }
-            std::cout << "move " << targetCard << " to " << newLocation << " ... ";
+            LOG("move " + std::to_string(targetCard) + " to " + std::to_string(newLocation) + " ... ");
 
             this->moveCard(targetCard, newLocation);
         }

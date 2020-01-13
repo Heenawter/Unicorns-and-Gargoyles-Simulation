@@ -19,7 +19,7 @@ char Player::drawCard()
     try
     {
         newCard = deck->drawNextCard();
-        std::cout << "Drew " << this->cardInfo->getCardName(newCard) << " .... ";
+        LOG("Drew " + this->cardInfo->getCardName(newCard) + " ... ");
     }
     catch (RanOutOfCardsException &e)
     {
@@ -171,7 +171,7 @@ void Player::action_drawNonActionCard()
     {
         char nonActionCard = deck->drawNonActionCard();
         hand->addToHand(nonActionCard);
-        std::cout << "Player " << this->playerNum << " drew " << this->cardInfo->getCardName(nonActionCard) << " ...";
+        LOG("Player " + std::to_string(this->playerNum) + " drew " + this->cardInfo->getCardName(nonActionCard) + " ... ");
     }
     catch (RanOutOfCardsException &e1)
     {
@@ -220,6 +220,13 @@ void Player::initOtherPlayers(std::vector<Player *> otherPlayers)
     }
 }
 
+std::string Player::toString()
+{
+    std::string handString = this->hand->toString();
+    std::string generatedString = this->hand->getCurrentString();
+
+    return handString + " --> " + generatedString;
+}
 
 /*  Function: discardCard()
     Goal:     Remove the Nth card from your hand and put it
