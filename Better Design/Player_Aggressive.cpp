@@ -7,11 +7,6 @@ AggressivePlayer::AggressivePlayer(Deck *deck, std::string goalString, Cards *ca
 
 }
 
-AggressivePlayer::~AggressivePlayer()
-{
-
-}
-
 char AggressivePlayer::takeTurn()
 {
 

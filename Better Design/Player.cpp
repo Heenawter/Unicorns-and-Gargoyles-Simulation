@@ -38,6 +38,9 @@ char Player::drawCard()
     return newCard;
 }
 
+/*  Function: handleActionCard()
+    Goal:     Handles calling the appropriate helper function depending on
+              the action card drawn  */
 void Player::handleActionCard(char type)
 {
     switch (type)
@@ -92,6 +95,9 @@ void Player::action_drawNonActionCard_helper()
     }
 }
 
+/*  Function: action_discardCard_helper()
+    Goal:     Helper for discardCard function, which is virtual function that depends on
+              the player type; for each player, call their relevant discardCard function */
 void Player::action_discardCard_helper()
 {
     this->action_discardCard(); // do it for yourself
@@ -104,6 +110,9 @@ void Player::action_discardCard_helper()
     }
 }
 
+/*  Function: action_springCleaning_helper()
+    Goal:     Helper for springCleaning function, which is virtual function that depends on
+              the player type; for each player, call their relevant springCleaning function */
 void Player::action_springCleaning_helper()
 {
     this->action_springCleaning(); // do it for yourself
@@ -116,6 +125,11 @@ void Player::action_springCleaning_helper()
     }
 }
 
+/*  Function: action_poisonUnicorn_helper()
+    Goal:     Helper for poisonUnicorn function, which is virtual function that depends on
+              the player type; call poisonUnicorn, which returns which player to target and 
+              which unicorn to poison; then, remove the unicorn from the target player's
+              hand and discard it */
 void Player::action_poisonUnicorn_helper()
 {
     Player *targetPlayer;
@@ -129,6 +143,11 @@ void Player::action_poisonUnicorn_helper()
     }
 }
 
+/*  Function: action_stealCard_helper()
+    Goal:     Helper for stealCard function, which is virtual function that depends on
+              the player type; call stealCard, which returns which player to steal from 
+              and which card to steal; then, remove that card from the target's hand
+              and add it to your own */
 void Player::action_stealCard_helper()
 {
     Player *targetPlayer;
@@ -141,13 +160,27 @@ void Player::action_stealCard_helper()
     }
 }
 
-/*  Function: stealCard_helper()
-    Goal:     Steal the Nth card from targetPlayer and add it
-              to your own hand, where N = cardToSteal */
-void Player::stealCard_helper(int cardToSteal, Player *targetPlayer)
+/*  Function: action_drawNonActionCard()
+    Goal:     Do the "draw non action card" for yourself and everyone else
+    Throws:   RanOutOfCardsException   -- if you run out of cards
+              OnlyActionCardsException -- if there is no non-action card left 
+              (Both exceptions are passed from deck->drawNonActionCard) */
+void Player::action_drawNonActionCard()
 {
-    char cardType = targetPlayer->hand->removeCard(cardToSteal);
-    this->hand->addToHand(cardType);
+    try
+    {
+        char nonActionCard = deck->drawNonActionCard();
+        hand->addToHand(nonActionCard);
+        std::cout << "Player " << this->playerNum << " drew " << this->cardInfo->getCardName(nonActionCard) << " ...";
+    }
+    catch (RanOutOfCardsException &e1)
+    {
+        throw e1;
+    }
+    catch (OnlyActionCardsException &e2)
+    {
+        throw e2;
+    }
 }
 
 /**************************************************/
@@ -187,29 +220,6 @@ void Player::initOtherPlayers(std::vector<Player *> otherPlayers)
     }
 }
 
-/*  Function: action_drawNonActionCard()
-    Goal:     Do the "draw non action card" for yourself and everyone else
-    Throws:   RanOutOfCardsException   -- if you run out of cards
-              OnlyActionCardsException -- if there is no non-action card left 
-              (Both exceptions are passed from deck->drawNonActionCard) */
-void Player::action_drawNonActionCard()
-{
-    try
-    {
-        char nonActionCard = deck->drawNonActionCard();
-        hand->addToHand(nonActionCard);
-        std::cout << "Player " << this->playerNum << " drew " << this->cardInfo->getCardName(nonActionCard) << " ...";
-    }
-    catch (RanOutOfCardsException &e1)
-    {
-        throw e1;
-    }
-    catch (OnlyActionCardsException &e2)
-    {
-        throw e2;
-    }
-}
-
 
 /*  Function: discardCard()
     Goal:     Remove the Nth card from your hand and put it
@@ -218,4 +228,9 @@ void Player::discardCard(int card)
 {
     char cardType = this->hand->removeCard(card);
     this->deck->discardCard(cardType);
+}
+
+void Player::moveCard(int oldIndex, int newIndex) 
+{
+    this->hand->moveCard(oldIndex, newIndex);
 }

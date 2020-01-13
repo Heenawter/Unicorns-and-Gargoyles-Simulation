@@ -177,16 +177,23 @@ bool Hand::operator < (const Hand &h2)
               the goal string */
 void Hand::addToHand(char card)
 {
-    // std::cout << "CHECK:     " << int(card) << std::endl;
     this->cards.push_back(card);
     this->numCards++;
     this->currentString = generateString();
     this->currentDistance = stringDistance(this->currentString, this->goalString);
 }
 
-char Hand::getCard(int i)
+void Hand::moveCard(int oldIndex, int newIndex)
 {
-    return this->cards[i];
+    // first, save the target card's value
+    char cardToMove = this->cards[oldIndex];
+    // then, remove the card from the hand
+    this->cards.erase(this->cards.begin() + oldIndex);
+    // and reinsert it in the proper location
+    this->cards.insert(this->cards.begin() + newIndex, cardToMove);
+
+    this->currentString = generateString();
+    this->currentDistance = stringDistance(this->currentString, this->goalString);
 }
 
 /*  Function: removeCard()
@@ -195,7 +202,8 @@ char Hand::getCard(int i)
               new string, and calculates the new distance from 
               the goal string 
     Returns:  The card removed */
-char Hand::removeCard(int i) {
+char Hand::removeCard(int i)
+{
     char cardType = this->cards[i];
 
     this->cards.erase(this->cards.begin() + i);

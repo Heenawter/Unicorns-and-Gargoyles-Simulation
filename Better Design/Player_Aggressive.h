@@ -9,16 +9,16 @@
 
 class AggressivePlayer : public Player
 {
-public:
-    AggressivePlayer(Deck *deck, std::string goalString, Cards *cardInfo, int playerNum);
-    ~AggressivePlayer();
-    char takeTurn();
-
+private:
     /**** ACTION CARDS ****/
     void action_discardCard();
     void action_springCleaning();
     std::tuple<Player *, int> action_poisonUnicorn();
     std::tuple<Player *, int> action_stealCard();
+
+public:
+    AggressivePlayer(Deck *deck, std::string goalString, Cards *cardInfo, int playerNum);
+    char takeTurn();
 };
 
 #endif

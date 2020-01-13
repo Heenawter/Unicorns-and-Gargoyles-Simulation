@@ -37,9 +37,9 @@ public:
 
     bool operator < (const Hand &oldHand);
     void addToHand(char card);
-
-    char getCard(int i);
+    void moveCard(int oldIndex, int newIndex);
     char removeCard(int i);
+    char getCard(int i) { return this->cards[i]; }
 
     int getNumCards() { return this->numCards; }
     int getNumUnicorns();

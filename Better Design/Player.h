@@ -23,21 +23,12 @@ protected:
 
     char drawCard();
     void handleActionCard(char type);
-    void moveCard();
 
     void action_drawNonActionCard_helper();
     void action_discardCard_helper();
     void action_springCleaning_helper();
     void action_poisonUnicorn_helper();
     void action_stealCard_helper();
-    void stealCard_helper(int cardToSteal, Player *targetPlayer);
-
-public:
-    Player(Deck *deck, std::string goalString, Cards* cardInfo, int playerNum);
-    ~Player();
-
-    void initOtherPlayers(std::vector<Player *> otherPlayers);
-    virtual char takeTurn() = 0;
 
     /**** ACTION CARDS ****/
     void action_drawNonActionCard();
@@ -46,6 +37,13 @@ public:
     virtual std::tuple<Player *, int> action_poisonUnicorn() = 0;
     virtual std::tuple<Player *, int> action_stealCard() = 0;
 
+public:
+    Player(Deck *deck, std::string goalString, Cards* cardInfo, int playerNum);
+    ~Player();
+
+    void initOtherPlayers(std::vector<Player *> otherPlayers);
+    virtual char takeTurn() = 0;
+
     void printHand() { this->hand->printHand(); }
     int getUnicornCount() { return this->hand->getNumUnicorns(); }
     int getHandSize() { return this->hand->getNumCards(); }
@@ -53,6 +51,7 @@ public:
     int getPlayerNum() { return playerNum; }
 
     void discardCard(int card);
+    void moveCard(int oldIndex, int newIndex);
 };
 
 #endif

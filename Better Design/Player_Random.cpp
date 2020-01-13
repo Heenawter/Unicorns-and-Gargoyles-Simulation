@@ -1,25 +1,9 @@
 
 #include "Player_Random.h"
 
-TrollPlayer::TrollPlayer(Deck *deck, std::string goalString, Cards *cardInfo, int playerNum)
-    : Player(deck, goalString, cardInfo, playerNum)
-{
-    int seed = std::chrono::system_clock::now().time_since_epoch().count();
-    this->randomGenerator = std::mt19937(seed);
-}
-
-TrollPlayer::~TrollPlayer()
-{
-
-}
-
-char TrollPlayer::takeTurn()
-{
-    std::cout << " Take turn ... ";
-
-    char card = drawCard();
-    return card;
-}
+/**************************************************/
+/*               Private Functions                */
+/**************************************************/
 
 /******************************* ACTION CARDS ******************************* /
 
@@ -29,11 +13,11 @@ char TrollPlayer::takeTurn()
 void TrollPlayer::action_discardCard()
 {
     int numCards = getHandSize();
-    if(numCards > 0)
+    if (numCards > 0)
     {
         std::uniform_int_distribution<int> distribution(0, numCards - 1);
         int cardToRemove = distribution(this->randomGenerator);
-        
+
         this->discardCard(cardToRemove);
 
         std::cout << "Player " << this->playerNum << " removed card " << cardToRemove << " ... ";
@@ -50,7 +34,7 @@ void TrollPlayer::action_springCleaning()
     int numCardsToRemove = distribution(this->randomGenerator);
 
     std::cout << "remove " << numCardsToRemove << " cards... ";
-    for(int i = 0; i < numCardsToRemove; i++)
+    for (int i = 0; i < numCardsToRemove; i++)
     {
         this->action_discardCard();
     }
@@ -63,28 +47,28 @@ std::tuple<Player *, int> TrollPlayer::action_poisonUnicorn()
 {
     // first, narrow down to only players who HAVE unicorns
     int numOtherPlayers = this->otherPlayers.size();
-    std::vector<Player*> playersWithUnicorns;
-    for(int i = 0; i < numOtherPlayers; i++) 
+    std::vector<Player *> playersWithUnicorns;
+    for (int i = 0; i < numOtherPlayers; i++)
     {
         if (this->otherPlayers[i]->getUnicornCount() != 0)
             playersWithUnicorns.push_back(this->otherPlayers[i]);
     }
 
     int numPlayersWithUnicorns = playersWithUnicorns.size();
-    Player* targetPlayer = NULL;
+    Player *targetPlayer = NULL;
     int targetUnicorn = -1;
     if (numPlayersWithUnicorns > 0) // if at least one person has a unicorn....
     {
         // target a random player with a unicorn
         std::uniform_int_distribution<int> playerDistribution(0, numPlayersWithUnicorns - 1);
         targetPlayer = playersWithUnicorns[playerDistribution(this->randomGenerator)]; // found a target!!
-        
+
         // then remove a random unicorn from that player
         std::uniform_int_distribution<int> unicornDistribution(1, targetPlayer->getUnicornCount());
         targetUnicorn = unicornDistribution(this->randomGenerator);
     }
 
-    if(targetPlayer != NULL)
+    if (targetPlayer != NULL)
         std::cout << "targetting player " << targetPlayer->getPlayerNum() << " and poisoning unicorn " << targetUnicorn << " ...";
     else
         std::cout << "no player targetted... ";
@@ -99,30 +83,81 @@ std::tuple<Player *, int> TrollPlayer::action_stealCard()
     // first, narrow down only to players with cards...
     int numOtherPlayers = this->otherPlayers.size();
     std::vector<Player *> playersWithCards;
-    for(int i = 0; i < numOtherPlayers; i++)
+    for (int i = 0; i < numOtherPlayers; i++)
     {
         if (this->otherPlayers[i]->getHandSize() > 0)
             playersWithCards.push_back(this->otherPlayers[i]);
     }
 
     int numPlayersWithCards = playersWithCards.size();
-    Player* targetPlayer = NULL;
+    Player *targetPlayer = NULL;
     int targetCard = -1;
-    if(numPlayersWithCards > 0) // if at least one player has cards...
+    if (numPlayersWithCards > 0) // if at least one player has cards...
     {
         // target a random player that has cards
         std::uniform_int_distribution<int> playerDistribution(0, numPlayersWithCards - 1);
-        targetPlayer = playersWithCards[playerDistribution(this->randomGenerator)]; 
+        targetPlayer = playersWithCards[playerDistribution(this->randomGenerator)];
 
         // then find a random card to steal
         std::uniform_int_distribution<int> cardDistribution(0, targetPlayer->getHandSize() - 1);
         targetCard = cardDistribution(this->randomGenerator); // found the card to steal!
     }
 
-
     if (targetPlayer != NULL)
         std::cout << "targetting player " << targetPlayer->getPlayerNum() << " and stealing card " << targetCard << " ...";
     else
         std::cout << "no player targetted... ";
     return std::tuple<Player *, int>(targetPlayer, targetCard);
+}
+
+/**************************************************/
+/*                Public Functions                */
+/**************************************************/
+
+TrollPlayer::TrollPlayer(Deck *deck, std::string goalString, Cards *cardInfo, int playerNum)
+    : Player(deck, goalString, cardInfo, playerNum)
+{
+    int seed = std::chrono::system_clock::now().time_since_epoch().count();
+    this->randomGenerator = std::mt19937(seed);
+}
+
+char TrollPlayer::takeTurn()
+{
+    std::cout << " Take turn ... ";
+    char card = ' ';
+
+    // randomly decide to either draw a card or randomly rearrange your cards...
+    // obviously, if there is not more than 1 card in your hand, just draw;
+    // otherwise, randomly decide between drawing and rearranging
+
+    if(this->getHandSize() > 1)
+    {
+        // we have more than 1 card, so randomly decide between drawing and rearranging
+        std::uniform_int_distribution<int> choice(0, 100);
+        int randomChoice = choice(this->randomGenerator);
+        if(randomChoice < 50) // draw a card!
+        {
+            card = drawCard();
+        }
+        else // rearrange cards...
+        {
+            std::cout << "rearrange cards ... ";
+            std::uniform_int_distribution<int> cardDistribution(0, this->getHandSize() - 1);
+            int targetCard = cardDistribution(this->randomGenerator);
+            int newLocation = cardDistribution(this->randomGenerator);
+            while(newLocation == targetCard)
+            {
+                newLocation = cardDistribution(this->randomGenerator);
+            }
+            std::cout << "move " << targetCard << " to " << newLocation << " ... ";
+
+            this->moveCard(targetCard, newLocation);
+        }
+    }
+    else
+    {
+        card = drawCard();
+    }
+    
+    return card;
 }

@@ -33,6 +33,8 @@ int main()
         std::cout << e2.what() << std::endl;
     }
 
+    delete game;
+
     // for (int i = 0; i < 10; i++)
     // {
     //     game->gameRound();
