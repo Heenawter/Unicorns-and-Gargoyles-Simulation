@@ -111,13 +111,14 @@ Game::~Game()
     }
 }
 
-void Game::gameRound()
+bool Game::gameRound()
 {
     int count = 0;
     char newestCard;
+    bool win = false;
 
     LOG("\n------------------ NEW ROUND ------------------\n");
-    while (count < this->numPlayers)
+    while (count < this->numPlayers && !win)
     {
         // a round always consists of <numPlayers> turns; 
         // because of the reverse order card, it is not guaranteed that
@@ -142,10 +143,18 @@ void Game::gameRound()
         {
             throw e4;
         }
-        
-        currentPlayer = getNextPlayer(currentPlayer); // advance to the next player
-        count++; // and increase the counter for the number of turns in this round
-        LOG("\n");
+
+        if(this->currentPlayer->matchesGoal())
+        {
+            win = true;
+            LOG("Player " + std::to_string(this->currentPlayer->getPlayerNum()) + " wins!! \n");
+        }
+        else
+        {
+            currentPlayer = getNextPlayer(currentPlayer); // advance to the next player
+            count++;                                      // and increase the counter for the number of turns in this round
+            LOG("\n");
+        }
     }
 
     for(int i = 0; i < numPlayers; i++) {
@@ -155,4 +164,6 @@ void Game::gameRound()
     LOG("Deck size:    " + std::to_string(this->deck->getDeckSize()) + "\n");
     LOG("Discard size: " + std::to_string(this->deck->getDiscardSize()) + "\n"); 
     LOG(this->deck->toString() + "\n");
+
+    return win;
 }

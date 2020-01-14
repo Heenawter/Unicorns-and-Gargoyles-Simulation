@@ -220,6 +220,13 @@ void Player::initOtherPlayers(std::vector<Player *> otherPlayers)
     }
 }
 
+bool Player::matchesGoal()
+{
+    std::string current = this->hand->getCurrentString();
+    std::string goal    = this->hand->getGoalString();
+    return current == goal;
+}
+
 std::string Player::toString()
 {
     std::string handString = this->hand->toString();

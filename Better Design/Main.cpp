@@ -12,14 +12,15 @@ int main()
 {
     std::cout << "main" << std::endl;
 
-    Game *game = new Game(5, "[ ][*][*][ ]");
+    Game *game = new Game(5, "[ ][ ][ ][*]");
     int roundCount = 0;
+    bool win = false;
     try
     {
 
-        for(int i = 0; i < 30; i++)
+        while(!win)
         {
-            game->gameRound();
+            win = game->gameRound();
             roundCount++;
         }
     }

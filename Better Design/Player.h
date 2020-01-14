@@ -45,6 +45,7 @@ public:
 
     void initOtherPlayers(std::vector<Player *> otherPlayers);
     virtual char takeTurn() = 0;
+    bool matchesGoal();
 
     std::string toString();
     int getUnicornCount() { return this->hand->getNumUnicorns(); }

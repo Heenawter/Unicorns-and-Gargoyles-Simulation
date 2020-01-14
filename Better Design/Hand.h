@@ -46,6 +46,7 @@ public:
     int getNumCards() { return this->numCards; }
     int getNumUnicorns();
     std::string getCurrentString() { return this->currentString; }
+    std::string getGoalString() { return this->goalString; }
     void removeUnicorn(int unicornNumber);
 };
 

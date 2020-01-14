@@ -41,7 +41,7 @@ public:
     Game(int numPlayers, std::string goal);
     ~Game();
 
-    void gameRound();
+    bool gameRound();
 
     Player *getPlayer(int index) { return players.at(index); }
     std::vector<Player *> getPlayers() { return players; }
