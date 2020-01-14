@@ -2,23 +2,57 @@
 #include "Game.h"
 #include "GameStates.h"
 
+#include <fstream>
+
 /*
     - loop through each goal
         - loop through 2-10 players
-            - find ideal number of players for current deck configuration
+            - report statistics
 */
+
+void runGame(int numPlayers, std::string goal);
 
 int main()
 {
     std::cout << "main" << std::endl;
 
-    Game *game = new Game(5, "[ ][ ][ ][*]");
+    std::ifstream file;
+    file.open("./GameInfo/Goals.txt");
+
+    if (file.is_open())
+    {
+        std::string goal;
+        int numGoals;
+
+        /* read the goals */
+        file >> numGoals;         // the number of goals to try
+        std::getline(file, goal); // garbage read of new line
+        for (int i = 0; i < numGoals; i++)
+        {
+            std::getline(file, goal);
+            std::cout << goal;
+
+            for(int numPlayers = 2; numPlayers <= 10; numPlayers++)
+            {
+                std::cout << ".";
+                runGame(numPlayers, goal);
+            }
+            std::cout << std::endl;
+        }
+
+        file.close();
+    }
+}
+
+void runGame(int numPlayers, std::string goal)
+{
+    Game *game = new Game(numPlayers, goal);
     int roundCount = 0;
     bool win = false;
     try
     {
 
-        while(!win)
+        while (!win)
         {
             win = game->gameRound();
             roundCount++;
@@ -26,73 +60,13 @@ int main()
     }
     catch (RanOutOfCardsException &e1)
     {
-        std::cout << e1.what() << std::endl;
+        // std::cout << e1.what();
     }
     catch (OnlyActionCardsException &e2)
     {
-        std::cout << e2.what() << std::endl;
+        // std::cout << e2.what();
     }
 
     LOG("There were " + std::to_string(roundCount) + " rounds. \n");
     delete game;
-
-    // for (int i = 0; i < 10; i++)
-    // {
-    //     game->gameRound();
-    // }
-
-
-
-    // Hand* hand1 = player1->getHand();
-    // Hand* hand2 = player2->getHand();
-
-    // bool test = (*hand1) < *hand2;
-    // std::cout << test << std::endl;
-
-    // try
-    // {
-    //     for (int i = 0; i < 10; i++)
-    //     {
-    //         game->gameRound();
-    //     }
-    // }
-    // catch (RanOutOfCardsException &e1)
-    // {
-    //     std::cout << e1.what() << std::endl;
-    // }
-    // catch (OnlyActionCardsException &e2)
-    // {
-    //     std::cout << e2.what() << std::endl;
-    // }
-    // catch (std::exception &e3)
-    // {
-    //     std::cout << e3.what() << std::endl;
-    // }
-
-
-    // delete game;
-
-        // Cards cardRules;
-        // cardRules.readCards();
-        // std::cout << cardRules.getCardName(14) << std::endl;
-
-        // Deck deck;
-        // char newCard;
-
-        // try
-        // {
-        //     for(int i = 0; i < 100; i++)
-        //     {
-        //         newCard = deck.drawNonActionCard();
-        //         std::cout << deck.getCardName(newCard) << std::endl;
-        //     }
-        // }
-        // catch (RanOutOfCardsException &e1)
-        // {
-        //     std::cout << e1.what() << std::endl;
-        // }
-        // catch (OnlyActionCardsException &e2)
-        // {
-        //     std::cout << e2.what() << std::endl;
-        // }
 }
