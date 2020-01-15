@@ -1,14 +1,55 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
+from itertools import chain
 import math
 
+def numRounds_vs_numPlayers():
+    df = pd.read_csv("../GameInfo/results.csv")
+    onlyWins = df[df["End Result"].str.contains("win")]
+    onlyWins = onlyWins[["Number of Rounds", "Number of Players"]]
+
+    sns.set_style("darkgrid")
+    fig, ax = plt.subplots(figsize=(16, 8))
+    ax = sns.boxplot(x="Number of Rounds", y="Number of Players", data=onlyWins, orient="h")
+
+    plt.title("Number of Rounds VS Number of Players (for Games with a Winner)")
+    plt.tight_layout()
+    plt.savefig("./Plots/WinningGames_NumRoundsVSNumPlayers_AllTrolls")
+    plt.show()
+
+def plotHist():
+    df = pd.read_csv("../GameInfo/results.csv")
+
+    sns.set_style("darkgrid")
+    maxRounds = max(df["Number of Rounds"])
+    rounded = int(math.ceil(maxRounds / 10.0)) * 10
+    lastTwo = rounded % 100
+
+    customRange = chain(range(0, 100 + lastTwo, 10), range(100 + lastTwo, rounded + 1, 100)) 
+    customBins = []
+    for i in customRange:
+        customBins.append(i);  
+
+    df["Bin"] = pd.cut(df["Number of Rounds"], bins=customBins)
+    df = df[["Bin", "Goal"]].groupby('Bin').count().reset_index()
+    df.rename(columns={"Bin": "Number of Rounds", "Goal": "Number of Games"}, inplace=True)
+    print(df)
+
+    fig, ax = plt.subplots(figsize=(16, 8))
+    ax = sns.barplot(x="Number of Rounds", y="Number of Games", data=df);
+  
+    plt.title("How Often Do Games Usually Last?")
+    plt.tight_layout()
+    plt.savefig("./Plots/GameLengths_AllTrolls")
+    plt.show()
+    
 
 def plotBar_meanRoundsPerGoal():
     df = pd.read_csv("../GameInfo/results.csv")
 
     meanRoundsPerGoal = df[["Goal", "Number of Rounds"]].groupby("Goal").mean().reset_index()
-    # meanRoundsPerGoal.sort_values("Number of Rounds", inplace=True, ascending=False);
 
     meanRoundsPerGoal["Card Count"] = meanRoundsPerGoal["Goal"].str.len() / 3
     meanRoundsPerGoal["Unicorn Count"] = meanRoundsPerGoal.Goal.str.count('\*')
@@ -26,4 +67,6 @@ def plotBar_meanRoundsPerGoal():
     plt.show()
 
 
-plotBar_meanRoundsPerGoal()
+# plotBar_meanRoundsPerGoal()
+plotHist()
+# numRounds_vs_numPlayers()
