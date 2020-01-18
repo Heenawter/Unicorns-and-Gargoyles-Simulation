@@ -10,45 +10,83 @@
             - report statistics
 */
 
-void runGame(int numPlayers, std::string goal);
+void testPlayerType();
+void runAnalysis();
+void runGame(int numPlayers, std::string goal, std::ofstream &outputFile);
 
 int main()
 {
     std::cout << "main" << std::endl;
 
-    std::ifstream file;
-    file.open("./GameInfo/Goals.txt");
+    testPlayerType();
+}
 
-    if (file.is_open())
+void testPlayerType()
+{
+    Game *game = new Game(5, "[ ][ ][ ][*]");
+    Player* player1 = game->getPlayer(0);
+
+    player1->action_drawNonActionCard();
+    player1->action_drawNonActionCard();
+    player1->action_drawNonActionCard();
+    player1->action_drawNonActionCard();
+
+    player1->takeTurn();
+
+    std::cout << player1->toString() << std::endl;
+
+    delete game;
+}
+
+void runAnalysis()
+{
+    std::ifstream goalsFile;
+    goalsFile.open("./GameInfo/Goals.txt");
+
+    std::ofstream outputFile;
+    outputFile.open("./GameInfo/results.csv");
+
+    if (goalsFile.is_open() && outputFile.is_open())
     {
         std::string goal;
         int numGoals;
 
         /* read the goals */
-        file >> numGoals;         // the number of goals to try
-        std::getline(file, goal); // garbage read of new line
+        goalsFile >> numGoals;         // the number of goals to try
+        std::getline(goalsFile, goal); // garbage read of new line
+
+        outputFile << "Goal,Number of Players,Number of Rounds,End Result" << std::endl;
         for (int i = 0; i < numGoals; i++)
         {
-            std::getline(file, goal);
+            std::getline(goalsFile, goal);
             std::cout << goal;
 
-            for(int numPlayers = 2; numPlayers <= 10; numPlayers++)
+            for (int numPlayers = 2; numPlayers <= 10; numPlayers++)
             {
-                std::cout << ".";
-                runGame(numPlayers, goal);
+                for (int j = 0; j < 300; j++)
+                {
+                    std::cout << ".";
+                    runGame(numPlayers, goal, outputFile);
+                }
             }
             std::cout << std::endl;
         }
 
-        file.close();
+        goalsFile.close();
+        outputFile.close();
     }
 }
 
-void runGame(int numPlayers, std::string goal)
+void runGame(int numPlayers, std::string goal, std::ofstream &outputFile)
 {
     Game *game = new Game(numPlayers, goal);
     int roundCount = 0;
     bool win = false;
+    std::string endResult = "";
+
+    outputFile << goal << ",";
+    outputFile << numPlayers << ",";
+
     try
     {
 
@@ -57,16 +95,22 @@ void runGame(int numPlayers, std::string goal)
             win = game->gameRound();
             roundCount++;
         }
+        endResult = "Player " + std::to_string(game->getWinningPlayer()) + " wins";
+
     }
     catch (RanOutOfCardsException &e1)
     {
         // std::cout << e1.what();
+        endResult = "Ran out of cards";
     }
     catch (OnlyActionCardsException &e2)
     {
         // std::cout << e2.what();
+        endResult = "Only action cards left";
     }
 
+    outputFile << roundCount << ",";
+    outputFile << endResult << std::endl;
     LOG("There were " + std::to_string(roundCount) + " rounds. \n");
     delete game;
 }

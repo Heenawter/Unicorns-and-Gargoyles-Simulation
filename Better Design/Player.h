@@ -33,7 +33,7 @@ protected:
     void action_stealCard_helper();
 
     /**** ACTION CARDS ****/
-    void action_drawNonActionCard();
+    // void action_drawNonActionCard();
     virtual void action_discardCard() = 0;
     virtual void action_springCleaning() = 0;
     virtual std::tuple<Player *, int> action_poisonUnicorn() = 0;
@@ -48,6 +48,9 @@ public:
     bool matchesGoal();
 
     std::string toString();
+
+    void action_drawNonActionCard(); // MAKE ME PRIVATE WHEN NOT TESTING
+
     int getUnicornCount() { return this->hand->getNumUnicorns(); }
     int getHandSize() { return this->hand->getNumCards(); }
     char getCard(int i) { return this->hand->getCard(i); }

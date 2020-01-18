@@ -205,7 +205,7 @@ Player::Player(Deck *deck, std::string goalString, Cards *cardInfo, int playerNu
               For every new, there must be a delete. */
 Player::~Player()
 {
-    delete hand;
+    delete this->hand;
 }
 
 /*  Function: initOtherPlayers()

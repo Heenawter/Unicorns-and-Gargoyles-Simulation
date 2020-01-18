@@ -85,7 +85,7 @@ Game::Game(int numPlayers, std::string goal)
 
     for(int i = 0; i < this->numPlayers; i++)
     {
-        players.push_back(new TrollPlayer(deck, goal, cardInfo, i));
+        players.push_back(new GreedyPlayer(deck, goal, cardInfo, i));
     }
 
     for(int i = 0; i < this->numPlayers; i++) {
@@ -147,6 +147,7 @@ bool Game::gameRound()
         if(this->currentPlayer->matchesGoal())
         {
             win = true;
+            winningPlayer = this->currentPlayer->getPlayerNum();
             LOG("Player " + std::to_string(this->currentPlayer->getPlayerNum()) + " wins!! \n");
         }
         else

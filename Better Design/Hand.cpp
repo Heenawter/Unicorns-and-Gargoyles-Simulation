@@ -130,6 +130,8 @@ Hand::Hand(std::string goalString, Cards *cardInfo)
     this->currentString = "";
 }
 
+/*  Function: Hand(Hand)
+    Goal:     Copy constructor; make a copy of the given hand */
 Hand::Hand(const Hand &oldHand)
 {
     this->cards = oldHand.cards;
@@ -139,6 +141,22 @@ Hand::Hand(const Hand &oldHand)
     this->numCards = oldHand.numCards;
     this->currentDistance = oldHand.currentDistance;
     this->currentString = oldHand.currentString;
+}
+
+/*  Function: Hand(Hand, r)
+    Goal:     Copies the hand from 0 to r */
+Hand::Hand(Hand oldHand, int r)
+{
+    for(int i = 0; i < r; i++)
+    {
+        this->cards.push_back(oldHand.getCard(i));
+    }
+
+    this->goalString = oldHand.goalString;
+    this->cardInfo = oldHand.cardInfo;
+    this->numCards = r;
+    this->currentString = generateString();
+    this->currentDistance = stringDistance(this->currentString, this->goalString);
 }
 
 /*  Function: getCardName(chard)
@@ -163,11 +181,25 @@ std::string Hand::generateString()
               If hand2 is farther from the goal than hand2, return false
     Example:  If hand1, hand2 are of type Hand*
               call with (*hand1) < (*hand2) */
-bool Hand::operator < (const Hand &h2)
+bool Hand::operator<(const Hand &otherHand)
 {
     int distance1 = this->currentDistance;
-    int distance2 = h2.currentDistance;
+    int distance2 = otherHand.currentDistance;
     return distance1 < distance2;
+}
+
+bool Hand::operator<=(const Hand &otherHand)
+{
+    int distance1 = this->currentDistance;
+    int distance2 = otherHand.currentDistance;
+    return distance1 <= distance2;
+}
+
+bool Hand::operator==(const Hand &otherHand)
+{
+    int distance1 = this->currentDistance;
+    int distance2 = otherHand.currentDistance;
+    return distance1 == distance2;
 }
 
 /*  Function: addToHand()
@@ -200,7 +232,7 @@ void Hand::moveCard(int oldIndex, int newIndex)
     Goal:     Removes the card at the given index from the hand;
               also decreases the number of cards, generates the
               new string, and calculates the new distance from 
-              the goal string 
+              the goal string; DOES NOT ADD BACK TO DECK
     Returns:  The card removed */
 char Hand::removeCard(int i)
 {
@@ -260,9 +292,43 @@ void Hand::removeUnicorn(int unicornNumber)
 std::string Hand::toString() 
 {
     std::string str = "";
+
     for (int i = 0; i < this->numCards; i++)
     {
         str += this->cardInfo->getCardName(this->cards[i]);
     }
     return str;
+}
+
+std::vector<char> Hand::setDifference(Hand otherHand)
+{
+    std::vector<char> cardsRemoved;
+    std::vector<char> smaller = otherHand.getCards();
+    std::vector<char> larger = this->cards;
+    // std::vector<char> smaller{UNICORN, DOUBLE};
+    // std::vector<char> larger{UNICORN, REMOVE_1, DOUBLE, REMOVE_2};
+
+    // other is guaranteed to be <= the size of "this"
+    int i = 0;
+    int j = 0;
+    while(i < larger.size() && j < smaller.size())
+    {
+        if (larger[i] == smaller[j])
+        {
+            i++;
+            j++;
+        } else {
+            cardsRemoved.push_back(larger[i]);
+            i++;
+        }
+    }
+    while (i < larger.size())
+    {
+        // remove the rest of the hand
+
+        cardsRemoved.push_back(larger[i]);
+        i++;
+    }
+
+    return cardsRemoved;
 }

@@ -32,22 +32,31 @@ private:
 
 public:
     Hand(std::string goalString, Cards *cardInfo);
-    Hand(const Hand &oldHand); // copy constructor
+    Hand(const Hand &oldHand);  // copy constructor
+    Hand(Hand oldHand, int r); // copy cards from 0 to r
+
     std::string getCardName(char type);
 
-    bool operator < (const Hand &oldHand);
+    bool operator < (const Hand &otherHand);
+    bool operator <= (const Hand &otherHand);
+    bool operator == (const Hand &otherHand);
     std::string toString();
 
     void addToHand(char card);
     void moveCard(int oldIndex, int newIndex);
     char removeCard(int i);
-    char getCard(int i) { return this->cards[i]; }
-
-    int getNumCards() { return this->numCards; }
     int getNumUnicorns();
+    void removeUnicorn(int unicornNumber);
+
+    void changeCard(int i, char card) { this->cards[i] = card; }
+    char getCard(int i) { return this->cards[i]; }
+    std::vector<char> getCards() { return this->cards; }
+    int getNumCards() { return this->numCards; }
+    int getDistance() { return this->currentDistance; }
     std::string getCurrentString() { return this->currentString; }
     std::string getGoalString() { return this->goalString; }
-    void removeUnicorn(int unicornNumber);
+
+    std::vector<char> setDifference(Hand otherHand);
 };
 
 #endif

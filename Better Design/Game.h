@@ -7,7 +7,7 @@
 
 #include "Debugging.h"
 #include "Player.h"
-#include "Player_Aggressive.h"
+#include "Player_Greedy.h"
 #include "Player_Random.h"
 #include "Deck.h"
 #include "Constants.h"
