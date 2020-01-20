@@ -16,7 +16,8 @@ private:
     std::tuple<Player *, int> action_poisonUnicorn();
     std::tuple<Player *, int> action_stealCard();
 
-    bool removeFirst(std::function<bool(int, int)> func);
+    void combinationUtil(Hand hand, Hand tempHand, Hand &bestHand,
+                         int start, int end, int index, int r);
 
 public:
     GreedyPlayer(Deck *deck, std::string goalString, Cards *cardInfo, int playerNum);
