@@ -55,6 +55,7 @@ public:
     int getHandSize() { return this->hand->getNumCards(); }
     char getCard(int i) { return this->hand->getCard(i); }
     int getPlayerNum() { return playerNum; }
+    Hand* getHand() { return this->hand; }
 
     void discardCard(int card);
     void moveCard(int oldIndex, int newIndex);

@@ -68,9 +68,53 @@ void GreedyPlayer::action_springCleaning()
 }
 
 /*  Function: poisonUnicorn()
-    Goal:     */
+    Goal:     Target the player and unicorn such that, when the unicorn
+              is removed, that player's solution gets worse; in other words,
+                    for each player, 
+                        for each unicorn in their hand,
+                            if removal of that unicorn makes the player's
+                            hand worse (i.e. makes their distance larger),
+                            then target that player + that unicorn 
+                            and exit both loops 
+              If there are no unicorns to poison, simply do nothing
+              If no removal makes the solutions worse, try >= rather than >
+              If removal only makes the solutions BETTER, target the first
+              player and the first unicorn */
 std::tuple<Player *, int> GreedyPlayer::action_poisonUnicorn()
 {
+    bool removed = false;
+
+    Player* currentPlayer;
+    Hand* currentHand;
+    char currentCard;
+    int currentDistance;
+    Hand testHand = Hand(*this->hand);
+    int testDistance;
+
+    for(int i = 0; i < this->otherPlayers.size() && !removed; i++)
+    {
+        currentPlayer = this->otherPlayers[i];
+        currentHand = currentPlayer->getHand();
+        for(int j = 0; j < currentHand->getNumCards() && !removed; j++)
+        {
+            currentCard = currentHand->getCard(j);
+            currentDistance = currentHand->getDistance();
+            if(currentCard == UNICORN)
+            {
+                std::cout << "Before: " << currentPlayer->toString() << std::endl;
+                testHand = Hand(*currentHand);
+                testHand.removeCard(j);
+                testDistance = testHand.getDistance();
+                std::cout << "After: " << testHand.toString() << std::endl;
+
+                if(testDistance > currentDistance)
+                {
+                    removed = true;
+                    std::cout << "made it worse!!" << std::endl;
+                }
+            }
+        }
+    }
 
     return std::tuple<Player *, int>(NULL, 1);
 }

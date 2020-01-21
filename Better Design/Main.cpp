@@ -23,17 +23,21 @@ int main()
 
 void testPlayerType()
 {
-    Game *game = new Game(5, "[ ][ ][ ][*]");
-    Player* player1 = game->getPlayer(0);
+    Game *game = new Game(5, "[ ][ ][ ][*]");\
+    Player* current;
+    for(int i = 0; i < 5; i++)
+    {
+        current = game->getPlayer(i);
+        for(int j = 0; j < 4; j++)
+        {
+            current->action_drawNonActionCard();
+        }
+    }
 
-    player1->action_drawNonActionCard();
-    player1->action_drawNonActionCard();
-    player1->action_drawNonActionCard();
-    player1->action_drawNonActionCard();
+    current = game->getPlayer(0); 
+    current->takeTurn();
 
-    player1->takeTurn();
-
-    std::cout << player1->toString() << std::endl;
+    std::cout << current->toString() << std::endl;
 
     delete game;
 }
