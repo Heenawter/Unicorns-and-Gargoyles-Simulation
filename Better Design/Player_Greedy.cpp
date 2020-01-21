@@ -8,27 +8,34 @@
 /******************************* ACTION CARDS ******************************* /
 
 /*  Function: discardCard()
-    Goal:     Remove the first card that makes your solution better */
+    Goal:     Remove the first card that makes your solution better; if no card
+              IMPROVES your hand, then remove one that at least doesn't make it
+              any worse; otherwise, if no such card exists, just remove the
+              first card in your hand regardless of its impact */
 void GreedyPlayer::action_discardCard()
 {
+    std::cout << "before: " << this->hand->getDistance() << ", " << this->hand->toString() << std::endl;
     // first, try removing a card that makes the hand better
     bool removed = removeFirst(std::less<int>());
 
     if(!removed) {
         // then, remove the first card that doesn't make the hand worse...
-        std::cout << "... no card made the hand better ..." << std::endl;
         removed = removeFirst(std::less_equal<int>());
 
         if(!removed) {
-            // then, remove the first card
-            std::cout << "... can only make the hand worse ..." << std::endl;
+            // then, just remove the first card regardless of the consequences
+            this->hand->removeCard(0);
         }
     }
+    std::cout << "after:  " << this->hand->getDistance() << ", " << this->hand->toString() << std::endl;
 }
 
 /*  Function: springCleaning()
     Goal:     Remove a card; if the solution gets better, continue with 
-              that hand and try removing another card */
+              that hand and try removing another card.
+              Basically, go through the hand ONCE and, every time you 
+              encounter a card such that, when it is removed, the hand
+              gets closer to the goal, remove it and continue */
 void GreedyPlayer::action_springCleaning()
 {
     Hand testHand = Hand(*this->hand); // use copy constructor to make a copy
@@ -38,24 +45,33 @@ void GreedyPlayer::action_springCleaning()
 
     for (int i = 0; i < testHand.getNumCards(); i++)
     {
-        std::cout << "i: " << i << std::endl;
         testHand.removeCard(i);
         testDistance = testHand.getDistance();
+
+        std::cout << i << ", distance: " << currentHand.getDistance();
+        std::cout << ", current hand: " << currentHand.toString() << std::endl;
+        std::cout << i << ", distance: " << testHand.getDistance();
+        std::cout << ", test hand:    " << testHand.toString() << std::endl;
+
         if (testDistance < currentDistance)
         {
-            std::cout << " <<<< " << std::endl;
-            currentHand = Hand(testHand);
+            std::cout << "... remove card " << i << " ... " << std::endl;
+            currentHand.removeCard(i);
+            currentDistance = currentHand.getDistance();
+            i--;
         }
         testHand = Hand(currentHand);
-        std::cout << "Test hand: " << testHand.toString() << std::endl;
-        std::cout << "Current hand: " << currentHand.toString() << std::endl;
+        // std::cout << "Test hand: " << testHand.toString() << std::endl;
     }
+    delete this->hand;
+    this->hand = new Hand(currentHand);
 }
 
 /*  Function: poisonUnicorn()
     Goal:     */
 std::tuple<Player *, int> GreedyPlayer::action_poisonUnicorn()
 {
+
     return std::tuple<Player *, int>(NULL, 1);
 }
 
@@ -80,19 +96,13 @@ bool GreedyPlayer::removeFirst(std::function<bool(int, int)> func)
     int currentDistance = testDistance;
     bool removed = false;
 
-    std::cout << "before: " << this->hand->toString() << std::endl;
-    std::cout << "--- distance: " << currentDistance << std::endl;
     for (int i = 0; i < testHand.getNumCards() && !removed; i++)
     {
         testHand.removeCard(i);
         testDistance = testHand.getDistance();
 
-        std::cout << i << ": " << testDistance << " ? " << currentDistance << " = ";
-        std::cout << std::boolalpha << func(testDistance, currentDistance) << std::endl;
-
         if (func(testDistance, currentDistance)) // either <, <=, >, >=, or ==
         {
-            std::cout << "removed " << i << std::endl;
             removed = true;
             this->hand->removeCard(i);
         }
@@ -101,8 +111,6 @@ bool GreedyPlayer::removeFirst(std::function<bool(int, int)> func)
             testHand = Hand(*this->hand);
         }
     }
-    std::cout << "after: " << this->hand->toString() << std::endl;
-    std::cout << "--- distance: " << this->hand->getDistance() << std::endl;
     return removed;
 }
 
@@ -117,7 +125,8 @@ GreedyPlayer::GreedyPlayer(Deck *deck, std::string goalString, Cards *cardInfo, 
 
 char GreedyPlayer::takeTurn()
 {
-    action_discardCard();
+    // action_discardCard();
     // action_springCleaning();
+    action_poisonUnicorn();
     return 'n';
 }
