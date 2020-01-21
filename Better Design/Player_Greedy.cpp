@@ -131,7 +131,13 @@ std::tuple<Player *, int> GreedyPlayer::action_poisonUnicorn()
 }
 
 /*  Function: stealCard()
-    Goal:     */
+    Goal:     Go through the hands of every player and steal the first card you find
+              that will improve your current hand; that is, for each player, go 
+              through their cards one by one; once you find a card that will
+              improve your hand, quit. 
+              If no cards will improve your hand, take one that won't make it WORSE
+              Otherwise, if no such cards exist, just steal the first card from the 
+              first other player */
 std::tuple<Player *, int> GreedyPlayer::action_stealCard()
 {
     return std::tuple<Player *, int>(NULL, 1);
@@ -169,6 +175,13 @@ bool GreedyPlayer::removeFirst(std::function<bool(int, int)> func)
     return removed;
 }
 
+/*  Function: removeFirstUnicorn()
+    Goal:     Remove the first unicorn such that func(testDistance, currentDistance)
+              returns true; this function expects <, <=, ==, >=, > for func; 
+              for example, if func = > = std::greater,
+                    - find and remove the first unicorn such that, when it is 
+                      removed, it makes the hand WORSE (i.e. farther from 
+                      the goal string) */
 bool GreedyPlayer::removeFirstUnicorn(Player* player, int& unicornNumber, std::function<bool(int, int)> func)
 {
     bool removed = false;
@@ -194,21 +207,18 @@ bool GreedyPlayer::removeFirstUnicorn(Player* player, int& unicornNumber, std::f
             if (func(testDistance, currentDistance))
             {
                 removed = true;
-                // std::cout << "... remove card " << i << " ..." << std::endl;
-                // std::cout << "... before ... " << currentDistance << ", " << player->toString() << std::endl;
-                // std::cout << "... after  ... " << testHand.getDistance() << ", " << testHand.toString() << std::endl;
             }
         }
     }
     return removed;
 }
 
-    /**************************************************/
-    /*                Public Functions                */
-    /**************************************************/
+/**************************************************/
+/*                Public Functions                */
+/**************************************************/
 
-    GreedyPlayer::GreedyPlayer(Deck *deck, std::string goalString, Cards *cardInfo, int playerNum)
-    : Player(deck, goalString, cardInfo, playerNum)
+GreedyPlayer::GreedyPlayer(Deck *deck, std::string goalString, Cards *cardInfo, int playerNum)
+: Player(deck, goalString, cardInfo, playerNum)
 {
 }
 
