@@ -35,9 +35,9 @@ void testPlayerType()
     }
 
     current = game->getPlayer(0); 
-    current->takeTurn();
+    current->action_poisonUnicorn_helper();
 
-    std::cout << current->toString() << std::endl;
+    // std::cout << current->toString() << std::endl;
 
     delete game;
 }

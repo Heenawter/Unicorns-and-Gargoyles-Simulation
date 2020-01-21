@@ -83,40 +83,49 @@ void GreedyPlayer::action_springCleaning()
 std::tuple<Player *, int> GreedyPlayer::action_poisonUnicorn()
 {
     bool removed = false;
-
-    Player* currentPlayer;
-    Hand* currentHand;
-    char currentCard;
-    int currentDistance;
-    Hand testHand = Hand(*this->hand);
-    int testDistance;
-
-    for(int i = 0; i < this->otherPlayers.size() && !removed; i++)
+    int numOtherPlayers = this->otherPlayers.size();
+    Player *targetPlayer = NULL;
+    int targetUnicorn;
+    bool foundUnicorn = false;
+    std::function<bool(int, int)> cases[2] = {std::greater<int>(), std::greater_equal<int>()};
+    for(int currentCase = 0; currentCase < 2 && !removed; currentCase++)
     {
-        currentPlayer = this->otherPlayers[i];
-        currentHand = currentPlayer->getHand();
-        for(int j = 0; j < currentHand->getNumCards() && !removed; j++)
-        {
-            currentCard = currentHand->getCard(j);
-            currentDistance = currentHand->getDistance();
-            if(currentCard == UNICORN)
-            {
-                std::cout << "Before: " << currentPlayer->toString() << std::endl;
-                testHand = Hand(*currentHand);
-                testHand.removeCard(j);
-                testDistance = testHand.getDistance();
-                std::cout << "After: " << testHand.toString() << std::endl;
+        std::cout << "-------- case: " << currentCase << " --------" << std::endl;
+        if (currentCase == 0)
+            std::cout << "making hand worse" << std::endl;
+        else if (currentCase == 1)
+            std::cout << "making hand equal" << std::endl;
 
-                if(testDistance > currentDistance)
-                {
-                    removed = true;
-                    std::cout << "made it worse!!" << std::endl;
-                }
-            }
+        for (int i = 0; i < numOtherPlayers && !removed; i++)
+        {
+            std::cout << i;
+            targetUnicorn = 0;
+            targetPlayer = this->otherPlayers[i];
+            removed = removeFirstUnicorn(targetPlayer, targetUnicorn, cases[currentCase]);
+            
+            if(!foundUnicorn && targetUnicorn != 0)
+                foundUnicorn = true;
         }
     }
 
-    return std::tuple<Player *, int>(NULL, 1);
+    if (removed)
+    {
+        std::cout << "Before: " << targetPlayer->getHand()->getDistance() << ", " << targetPlayer->toString() << std::endl;
+        // this->otherPlayers[i]->getHand()->removeCard(unicornNumber);
+        std::cout << "... targetting player " << targetPlayer->getPlayerNum() << " and unicorn #" << targetUnicorn << " ..." << std::endl;
+    } else {
+
+        if (!foundUnicorn)
+        {
+            std::cout << "no unicorns to remove" << std::endl;
+        }
+        else
+        {
+            std::cout << "didn't remove a unicorn" << std::endl;
+        }
+    } 
+
+    return std::tuple<Player *, int>(targetPlayer, targetUnicorn);
 }
 
 /*  Function: stealCard()
@@ -158,11 +167,47 @@ bool GreedyPlayer::removeFirst(std::function<bool(int, int)> func)
     return removed;
 }
 
-/**************************************************/
-/*                Public Functions                */
-/**************************************************/
+bool GreedyPlayer::removeFirstUnicorn(Player* player, int& unicornNumber, std::function<bool(int, int)> func)
+{
+    bool removed = false;
 
-GreedyPlayer::GreedyPlayer(Deck *deck, std::string goalString, Cards *cardInfo, int playerNum)
+    Hand* currentHand = player->getHand();
+    char currentCard;
+    int currentDistance;
+
+    Hand testHand = Hand(*currentHand);
+    int testDistance;
+
+    for (int i = 0; i < currentHand->getNumCards() & !removed; i++)
+    {
+        currentCard = currentHand->getCard(i);
+        currentDistance = currentHand->getDistance();
+        if (currentCard == UNICORN)
+        {
+            std::cout << "... unicorn ";
+            unicornNumber++;
+            testHand = Hand(*currentHand);
+            testHand.removeCard(i);
+            testDistance = testHand.getDistance();
+
+            if (func(testDistance, currentDistance))
+            {
+                removed = true;
+                // std::cout << "... remove card " << i << " ..." << std::endl;
+                // std::cout << "... before ... " << currentDistance << ", " << player->toString() << std::endl;
+                // std::cout << "... after  ... " << testHand.getDistance() << ", " << testHand.toString() << std::endl;
+            }
+        }
+    }
+    std::cout << "... done" << std::endl;
+    return removed;
+}
+
+    /**************************************************/
+    /*                Public Functions                */
+    /**************************************************/
+
+    GreedyPlayer::GreedyPlayer(Deck *deck, std::string goalString, Cards *cardInfo, int playerNum)
     : Player(deck, goalString, cardInfo, playerNum)
 {
 }

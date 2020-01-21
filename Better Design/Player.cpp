@@ -140,6 +140,8 @@ void Player::action_poisonUnicorn_helper()
     {
         targetPlayer->hand->removeUnicorn(targetUnicorn);
         this->deck->discardCard(UNICORN);
+
+        std::cout << "After: " << targetPlayer->getHand()->getDistance() << ", " << targetPlayer->toString() << std::endl;
     }
 }
 
