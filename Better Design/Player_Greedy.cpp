@@ -87,40 +87,42 @@ std::tuple<Player *, int> GreedyPlayer::action_poisonUnicorn()
     Player *targetPlayer = NULL;
     int targetUnicorn;
     bool foundUnicorn = false;
+    Player* firstPlayerWithUnicorn = NULL;
     std::function<bool(int, int)> cases[2] = {std::greater<int>(), std::greater_equal<int>()};
     for(int currentCase = 0; currentCase < 2 && !removed; currentCase++)
     {
+        // case 0: check if removing a unicorn can make the hand WORSE
+        // case 1: check if removing a unicorn won't make a difference
+        // case 2: removing a unicorn ONLY makes every hand better
         std::cout << "-------- case: " << currentCase << " --------" << std::endl;
-        if (currentCase == 0)
-            std::cout << "making hand worse" << std::endl;
-        else if (currentCase == 1)
-            std::cout << "making hand equal" << std::endl;
-
         for (int i = 0; i < numOtherPlayers && !removed; i++)
         {
-            std::cout << i;
             targetUnicorn = 0;
             targetPlayer = this->otherPlayers[i];
             removed = removeFirstUnicorn(targetPlayer, targetUnicorn, cases[currentCase]);
             
             if(!foundUnicorn && targetUnicorn != 0)
+            {
                 foundUnicorn = true;
+                firstPlayerWithUnicorn = targetPlayer;
+            }
         }
     }
 
     if (removed)
     {
-        std::cout << "Before: " << targetPlayer->getHand()->getDistance() << ", " << targetPlayer->toString() << std::endl;
-        // this->otherPlayers[i]->getHand()->removeCard(unicornNumber);
-        std::cout << "... targetting player " << targetPlayer->getPlayerNum() << " and unicorn #" << targetUnicorn << " ..." << std::endl;
-    } else {
-
+        LOG("targetting player " + std::to_string(targetPlayer->getPlayerNum()) + " and poisoning unicorn " + std::to_string(targetUnicorn) + " ... ");
+    }
+    else
+    {
         if (!foundUnicorn)
         {
-            std::cout << "no unicorns to remove" << std::endl;
+            LOG("no unicorns to remove ... ");
         }
         else
         {
+            targetPlayer = firstPlayerWithUnicorn;
+            targetUnicorn = 1;
             std::cout << "didn't remove a unicorn" << std::endl;
         }
     } 
@@ -184,7 +186,6 @@ bool GreedyPlayer::removeFirstUnicorn(Player* player, int& unicornNumber, std::f
         currentDistance = currentHand->getDistance();
         if (currentCard == UNICORN)
         {
-            std::cout << "... unicorn ";
             unicornNumber++;
             testHand = Hand(*currentHand);
             testHand.removeCard(i);
@@ -199,7 +200,6 @@ bool GreedyPlayer::removeFirstUnicorn(Player* player, int& unicornNumber, std::f
             }
         }
     }
-    std::cout << "... done" << std::endl;
     return removed;
 }
 

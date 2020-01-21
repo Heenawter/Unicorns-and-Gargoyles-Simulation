@@ -32,7 +32,15 @@ void testPlayerType()
         {
             current->action_drawNonActionCard();
         }
+        std::cout << std::endl;
     }
+
+    for (int i = 0; i < 5; i++)
+    {
+        current = game->getPlayer(i);
+        std::cout << i << ": " << current->toString() << ", distance: " << current->getHand()->getDistance() << std::endl;
+    }
+    
 
     current = game->getPlayer(0); 
     current->action_poisonUnicorn_helper();

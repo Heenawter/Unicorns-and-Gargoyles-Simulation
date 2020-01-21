@@ -74,7 +74,7 @@ std::tuple<Player *, int> TrollPlayer::action_poisonUnicorn()
     }
     else
     {
-        LOG("no player targetted ... ");
+        LOG("no unicorns to remove ... ");
     }
     return std::tuple<Player *, int>(targetPlayer, targetUnicorn);
 }
