@@ -5,8 +5,9 @@ import seaborn as sns
 from itertools import chain
 import math
 
-def numRounds_vs_numPlayers():
-    df = pd.read_csv("../GameInfo/results.csv")
+PLAYER_TYPE = "Troll"
+
+def numRounds_vs_numPlayers(df):
     onlyWins = df[df["End Result"].str.contains("win")]
     onlyWins = onlyWins[["Number of Rounds", "Number of Players"]]
 
@@ -16,18 +17,18 @@ def numRounds_vs_numPlayers():
 
     plt.title("Number of Rounds VS Number of Players (for Games with a Winner)")
     plt.tight_layout()
-    plt.savefig("./Plots/WinningGames_NumRoundsVSNumPlayers_AllTrolls")
+    plt.savefig("./Plots/WinningGames_NumRoundsVSNumPlayers_All" + PLAYER_TYPE)
     plt.show()
 
-def plotHist():
-    df = pd.read_csv("../GameInfo/results.csv")
-
+def plotHist(df):
     sns.set_style("darkgrid")
     maxRounds = max(df["Number of Rounds"])
     rounded = int(math.ceil(maxRounds / 10.0)) * 10
     lastTwo = rounded % 100
 
-    customRange = chain(range(0, 100 + lastTwo, 10), range(100 + lastTwo, rounded + 1, 100)) 
+
+    customRange = chain(range(0, lastTwo, 10), range(lastTwo, rounded + 1, 100)) 
+    # customRange = range(0, rounded, 10);
     customBins = []
     for i in customRange:
         customBins.append(i);  
@@ -42,13 +43,11 @@ def plotHist():
   
     plt.title("How Often Do Games Usually Last?")
     plt.tight_layout()
-    plt.savefig("./Plots/GameLengths_AllTrolls")
+    plt.savefig("./Plots/GameLengths_All" + PLAYER_TYPE)
     plt.show()
     
 
-def plotBar_meanRoundsPerGoal():
-    df = pd.read_csv("../GameInfo/results.csv")
-
+def plotBar_meanRoundsPerGoal(df):
     meanRoundsPerGoal = df[["Goal", "Number of Rounds"]].groupby("Goal").mean().reset_index()
 
     meanRoundsPerGoal["Card Count"] = meanRoundsPerGoal["Goal"].str.len() / 3
@@ -68,5 +67,8 @@ def plotBar_meanRoundsPerGoal():
 
 
 # plotBar_meanRoundsPerGoal()
-plotHist()
-# numRounds_vs_numPlayers()
+
+df = pd.read_csv("../GameInfo/" + PLAYER_TYPE + "Results.csv")
+
+plotHist(df)
+numRounds_vs_numPlayers(df)
