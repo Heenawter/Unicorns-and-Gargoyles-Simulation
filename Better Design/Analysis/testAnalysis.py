@@ -5,7 +5,7 @@ import seaborn as sns
 from itertools import chain
 import math
 
-PLAYER_TYPE = "Troll"
+PLAYER_TYPE = "Greedy"
 
 def numRounds_vs_numPlayers(df):
     onlyWins = df[df["End Result"].str.contains("win")]
@@ -65,10 +65,54 @@ def plotBar_meanRoundsPerGoal(df):
     fig.set_xlabel("Mean Number of Rounds")
     plt.show()
 
+def countResults(df):
+    test = df[["End Result", "Number of Players", "Goal"]].groupby(["End Result", "Number of Players"]).count().reset_index()
 
-# plotBar_meanRoundsPerGoal()
+    def formatResults(value):
+        if(value[0] == 'P'):
+            number = int(value[7]) + 1
+            return "Player " + str(number)
+        else:
+            return "No Winner"
+
+    sns.set_style("darkgrid")
+    fig, ax = plt.subplots(nrows=3, ncols=3, figsize=(10, 10))
+
+    test["End Result"] = test.apply(lambda x: formatResults(x["End Result"]), axis=1)
+
+    i = 2
+    for row in ax:
+        for col in row:
+            current = test[test["Number of Players"] == i]
+            col.pie(current["Goal"], labels=current["End Result"])
+            col.set_title("Who Wins? (" + str(i) + " Players)")
+            i += 1
+
+
+    fig.subplots_adjust(wspace=0.5, hspace=0.3)
+    plt.tight_layout()
+    plt.savefig("./Plots/WhoWins_" + PLAYER_TYPE)
+    plt.show()
+    
+    # ax.pie(percentages, explode=explode, labels=labels,
+    #        colors=color_palette_list[0:2], autopct='%1.0f%%',
+    #        shadow=False, startangle=0,
+    #        pctdistance=1.2, labeldistance=1.4)
+    
+
+    # fig.subplots_adjust(wspace=.2)
+
+    # sns.barplot(x="Number of Players", y="Goal", hue="End Result", data=test)
+    # test.T.plot.pie(subplots=True, figsize=(10, 3))
+    # plt.show()
+
+    # print(test.head(5))
+
 
 df = pd.read_csv("../GameInfo/" + PLAYER_TYPE + "Results.csv")
 
-plotHist(df)
-numRounds_vs_numPlayers(df)
+# plotHist(df)
+# plotBar_meanRoundsPerGoal(df)
+# numRounds_vs_numPlayers(df)
+
+countResults(df)
