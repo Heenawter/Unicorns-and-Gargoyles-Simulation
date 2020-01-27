@@ -63,7 +63,7 @@ void Player::handleActionCard(char type)
     default:
         break;
     }
-
+    
     this->deck->discardCard(type); // discard the action card after use
 }
 
@@ -141,7 +141,7 @@ void Player::action_poisonUnicorn_helper()
         targetPlayer->hand->removeUnicorn(targetUnicorn);
         this->deck->discardCard(UNICORN);
 
-        std::cout << std::endl << targetPlayer->toString() << ", distance: " << targetPlayer->getHand()->getDistance() << std::endl;
+        // std::cout << std::endl << targetPlayer->toString() << ", distance: " << targetPlayer->getHand()->getDistance() << std::endl;
     }
 }
 
@@ -155,10 +155,15 @@ void Player::action_stealCard_helper()
     Player *targetPlayer;
     int targetCard;
     std::tie(targetPlayer, targetCard) = this->action_stealCard();
+    LOG("DONE");
 
     if (targetPlayer != NULL)
     {
-        this->hand->addToHand(targetPlayer->hand->removeCard(targetCard));
+        LOG("\nbefore: current=" + std::to_string(this->hand->getDistance()));
+        LOG(", target=" + std::to_string(targetPlayer->getHand()->getDistance()) + "\n");
+        this->hand->addToHand(targetPlayer->getHand()->removeCard(targetCard));
+        LOG("after:  current=" + std::to_string(this->hand->getDistance()));
+        LOG(", target=" + std::to_string(targetPlayer->getHand()->getDistance()) + "\n");
     }
 }
 

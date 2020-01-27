@@ -85,7 +85,7 @@ Game::Game(int numPlayers, std::string goal)
 
     for(int i = 0; i < this->numPlayers; i++)
     {
-        players.push_back(new GreedyPlayer(deck, goal, cardInfo, i));
+        players.push_back(new AggressivePlayer(deck, goal, cardInfo, i));
     }
 
     for(int i = 0; i < this->numPlayers; i++) {
@@ -144,11 +144,25 @@ bool Game::gameRound()
             throw e4;
         }
 
-        if(this->currentPlayer->matchesGoal())
+        if (this->currentPlayer->matchesGoal())
         {
             win = true;
             winningPlayer = this->currentPlayer->getPlayerNum();
             LOG("Player " + std::to_string(this->currentPlayer->getPlayerNum()) + " wins!! \n");
+        }
+        else if (this->cardInfo->isActionCard(newestCard))
+        {
+            // some action cards will allkow OTHER players to win other than current; 
+            // need to account for this by checking ALL players            
+            for(int i = 0; i < numPlayers && !win; i++)
+            {
+                if(this->players[i]->matchesGoal())
+                {
+                    win = true;
+                    winningPlayer = this->currentPlayer->getPlayerNum();
+                    LOG("Player " + std::to_string(this->currentPlayer->getPlayerNum()) + " wins!! \n");
+                }
+            }
         }
         else
         {

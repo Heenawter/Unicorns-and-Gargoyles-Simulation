@@ -129,14 +129,14 @@ TrollPlayer::TrollPlayer(Deck *deck, std::string goalString, Cards *cardInfo, in
     this->randomGenerator = std::mt19937(seed);
 }
 
+/*  Function: takeTurn()
+    Goal:     Randomly decide to either draw a card or randomly rearrange your cards...
+              obviously, if there is not more than 1 card in your hand, just draw;
+              otherwise, randomly decide between drawing and rearranging */
 char TrollPlayer::takeTurn()
 {
     LOG(" Take turn ... ");
     char card = ' ';
-
-    // randomly decide to either draw a card or randomly rearrange your cards...
-    // obviously, if there is not more than 1 card in your hand, just draw;
-    // otherwise, randomly decide between drawing and rearranging
 
     if(this->getHandSize() > 1)
     {

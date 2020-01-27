@@ -300,13 +300,11 @@ std::string Hand::toString()
     return str;
 }
 
-std::vector<char> Hand::setDifference(Hand otherHand)
+std::vector<int> Hand::setDifference(Hand otherHand)
 {
-    std::vector<char> cardsRemoved;
+    std::vector<int> cardsRemoved;
     std::vector<char> smaller = otherHand.getCards();
     std::vector<char> larger = this->cards;
-    // std::vector<char> smaller{UNICORN, DOUBLE};
-    // std::vector<char> larger{UNICORN, REMOVE_1, DOUBLE, REMOVE_2};
 
     // other is guaranteed to be <= the size of "this"
     int i = 0;
@@ -318,7 +316,7 @@ std::vector<char> Hand::setDifference(Hand otherHand)
             i++;
             j++;
         } else {
-            cardsRemoved.push_back(larger[i]);
+            cardsRemoved.push_back(i);
             i++;
         }
     }
@@ -326,9 +324,9 @@ std::vector<char> Hand::setDifference(Hand otherHand)
     {
         // remove the rest of the hand
 
-        cardsRemoved.push_back(larger[i]);
+        cardsRemoved.push_back(i);
         i++;
     }
-
+    
     return cardsRemoved;
 }

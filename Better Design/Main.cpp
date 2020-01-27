@@ -17,13 +17,21 @@ void runGame(int numPlayers, std::string goal, std::ofstream &outputFile);
 int main()
 {
     std::cout << "main" << std::endl;
+    // runAnalysis();
 
+    // std::ofstream outputFile;
+    // outputFile.open("./test.txt");
+
+    // runGame(5, "[ ][ ][ ][*]", outputFile);
+
+    // outputFile.close();
     testPlayerType();
+
 }
 
 void testPlayerType()
 {
-    Game *game = new Game(5, "[ ][ ][ ][*]");\
+    Game *game = new Game(5, "[ ][ ][ ][*]");
     Player* current;
     for(int i = 0; i < 5; i++)
     {
@@ -32,7 +40,6 @@ void testPlayerType()
         {
             current->action_drawNonActionCard();
         }
-        std::cout << std::endl;
     }
 
     for (int i = 0; i < 5; i++)
@@ -43,7 +50,9 @@ void testPlayerType()
     
 
     current = game->getPlayer(0); 
-    current->action_poisonUnicorn_helper();
+    // current->action_poisonUnicorn_helper();
+    current->takeTurn();
+    // current->action_stealCard_helper();
 
     // std::cout << current->toString() << std::endl;
 
@@ -56,7 +65,7 @@ void runAnalysis()
     goalsFile.open("./GameInfo/Goals.txt");
 
     std::ofstream outputFile;
-    outputFile.open("./GameInfo/results.csv");
+    outputFile.open("./GameInfo/TrollResults.csv");
 
     if (goalsFile.is_open() && outputFile.is_open())
     {

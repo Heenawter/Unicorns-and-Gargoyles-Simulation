@@ -9,6 +9,7 @@
 #include "Player.h"
 #include "Player_Greedy.h"
 #include "Player_Random.h"
+#include "Player_Aggressive.h"
 #include "Deck.h"
 #include "Constants.h"
 #include "Cards.h"

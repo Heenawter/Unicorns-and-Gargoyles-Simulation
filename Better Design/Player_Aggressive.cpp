@@ -1,5 +1,5 @@
 
-#include "Player_Greedy.h"
+#include "Player_Aggressive.h"
 
 
 /**************************************************/
@@ -18,13 +18,8 @@
               For finding best case card, if there is a tie,
                     - remove the first one encountered
               For finding the worst case card, if there is a tie,
-                    - remove the last one encountered 
-                    - Why? Because, greedily, it is easier to 
-                           append cards to the end, so removing
-                           from the end is better 
-              WAIT THIS ISN'T GREEDY ---- GREEDY WOULD BE LIKE, 
-              Remove the first card that makes your solution better */
-void GreedyPlayer::action_discardCard()
+                    - remove the last one encountered */
+void AggressivePlayer::action_discardCard()
 {
     Hand testHand = Hand(*this->hand); // use copy constructor to make a copy
 
@@ -77,16 +72,13 @@ void GreedyPlayer::action_discardCard()
 /*  Function: springCleaning()
     Goal:     Remove cards ONLY if one makes the solution better; otherwise, 
               just keep everything (remember, spring cleaning makes removal
-              optional, whereas discardCard action is required) 
-              WAIT THIS ISN'T GREEDY ---- GREEDY WOULD BE LIKE, 
-              Remove a card; if the solution gets better, continue with 
-              that hand and try removing another card */
-void GreedyPlayer::action_springCleaning()
+              optional, whereas discardCard action is required)  */
+void AggressivePlayer::action_springCleaning()
 {
     Hand combinations = Hand(*this->hand);
     Hand bestHand = Hand(*this->hand);
 
-    // std::cout << "Distance: " << this->hand->getDistance() << std::endl;
+    std::cout << "Starting Distance: " << this->hand->getDistance() << std::endl;
 
     int numCards = this->hand->getNumCards();
     for (int i = 1; i <= numCards; i++)
@@ -95,34 +87,44 @@ void GreedyPlayer::action_springCleaning()
         // created by removing ZERO cards (i -less than OR EQUAL TO- numCards)
         combinationUtil(*this->hand, combinations, bestHand, 0, numCards - 1, 0, i);
     }
-    // std::cout << "Distance: " << bestHand.getDistance() << std::endl;
+    std::cout << "Best Distance: " << bestHand.getDistance() << std::endl;
 
     // now that we know which hand we are aiming for (bestHand), we must
     // actually CREATE that hand by discarding the appropriate cards
-    std::vector<char> setDifference = this->hand->setDifference(bestHand);
+    std::vector<int> setDifference = this->hand->setDifference(bestHand);
     std::cout << this->hand->toString() << " ---> " << bestHand.toString() << std::endl;
-    delete this->hand;
-    this->hand = new Hand(bestHand);
+    // delete this->hand;
+    // this->hand = new Hand(bestHand);
 
     // std::cout << this->deck->toString() << std::endl;
     for(int i = 0; i < setDifference.size(); i++)
     {
         // std::cout << this->cardInfo->getCardName(setDifference[i]);
-        std::cout << "-- discard "<< this->cardInfo->getCardName(setDifference[i]) << std::endl;
-        this->deck->discardCard(setDifference[i]);
+        std::cout << "-- discard "<< this->cardInfo->getCardName(this->hand->getCard(setDifference[i]));
+        std::cout << ", " << std::to_string(setDifference[i]) << std::endl;
+        this->discardCard(setDifference[i]);
+
+        // adjust next indeces, since hand is now 1 smaller
+        for(int j = i + 1; j < setDifference.size(); j++)
+        {
+            setDifference[j]--;
+        }
     }
+
+    std::cout << "After: " << this->hand->toString() << std::endl;
+
 }
 
 /*  Function: poisonUnicorn()
     Goal:     */
-std::tuple<Player *, int> GreedyPlayer::action_poisonUnicorn()
+std::tuple<Player *, int> AggressivePlayer::action_poisonUnicorn()
 {
     return std::tuple<Player *, int>(NULL, 1);
 }
 
 /*  Function: stealCard()
     Goal:     */
-std::tuple<Player *, int> GreedyPlayer::action_stealCard()
+std::tuple<Player *, int> AggressivePlayer::action_stealCard()
 {
     return std::tuple<Player *, int>(NULL, 1);
 }
@@ -133,13 +135,14 @@ std::tuple<Player *, int> GreedyPlayer::action_stealCard()
               and finds the hand that is closest to the goal string.
               This is a helper function for springCleaning */
 // https://www.geeksforgeeks.org/print-all-possible-combinations-of-r-elements-in-a-given-array-of-size-n/
-void GreedyPlayer::combinationUtil(Hand hand, Hand tempHand, Hand &bestHand, 
+void AggressivePlayer::combinationUtil(Hand hand, Hand tempHand, Hand &bestHand, 
                              int start, int end, int index, int r)
 {
     // base case
     if (index == r)
     {
         Hand newHand = Hand(tempHand, r);
+        std::cout << "... " << newHand.getDistance() << std::endl;
 
         if (newHand <= bestHand)
         {
@@ -165,13 +168,13 @@ void GreedyPlayer::combinationUtil(Hand hand, Hand tempHand, Hand &bestHand,
 /*                Public Functions                */
 /**************************************************/
 
-GreedyPlayer::GreedyPlayer(Deck *deck, std::string goalString, Cards *cardInfo, int playerNum)
+AggressivePlayer::AggressivePlayer(Deck *deck, std::string goalString, Cards *cardInfo, int playerNum)
     : Player(deck, goalString, cardInfo, playerNum)
 {
     
 }
 
-char GreedyPlayer::takeTurn()
+char AggressivePlayer::takeTurn()
 {
     // action_discardCard();
     action_springCleaning();

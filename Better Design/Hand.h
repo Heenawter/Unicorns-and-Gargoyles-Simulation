@@ -56,7 +56,7 @@ public:
     std::string getCurrentString() { return this->currentString; }
     std::string getGoalString() { return this->goalString; }
 
-    std::vector<char> setDifference(Hand otherHand);
+    std::vector<int> setDifference(Hand otherHand);
 };
 
 #endif

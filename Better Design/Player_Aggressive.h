@@ -1,13 +1,13 @@
 
 #pragma once
 
-#ifndef PLAYER_Greedy_H
+#ifndef PLAYER_Aggressive_H
 
 #include <string>
 #include <tuple>
 #include "Player.h"
 
-class GreedyPlayer : public Player
+class AggressivePlayer : public Player
 {
 private:
     /**** ACTION CARDS ****/
@@ -20,7 +20,7 @@ private:
                          int start, int end, int index, int r);
 
 public:
-    GreedyPlayer(Deck *deck, std::string goalString, Cards *cardInfo, int playerNum);
+    AggressivePlayer(Deck *deck, std::string goalString, Cards *cardInfo, int playerNum);
     char takeTurn();
 };
 
