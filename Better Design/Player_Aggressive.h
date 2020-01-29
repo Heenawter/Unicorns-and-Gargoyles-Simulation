@@ -18,7 +18,7 @@ private:
 
     /**** HELPER FUNCTIONS ****/
     std::vector<Player *> findWinningPlayers(std::vector<Player *> players);
-    std::tuple<int, int> findTargetUnicorn(Player *targetPlayer);
+    std::tuple<Player*, int, int> findTargetUnicorn(Player *targetPlayer);
     void combinationUtil(Hand hand, Hand tempHand, Hand &bestHand,
                          int start, int end, int index, int r);
 
