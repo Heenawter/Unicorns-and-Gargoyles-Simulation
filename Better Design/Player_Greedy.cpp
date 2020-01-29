@@ -97,12 +97,7 @@ std::tuple<Player *, int> GreedyPlayer::action_poisonUnicorn()
     int numOtherPlayers = this->otherPlayers.size();
     Player *targetPlayer = NULL;
     int targetUnicorn = -1;
-    std::vector<Player *> playersWithUnicorns;
-    for (int i = 0; i < numOtherPlayers; i++)
-    {
-        if (this->otherPlayers[i]->getUnicornCount() != 0)
-            playersWithUnicorns.push_back(this->otherPlayers[i]);
-    }
+    std::vector<Player *> playersWithUnicorns = this->getPlayersWithUnicorns();
     numOtherPlayers = playersWithUnicorns.size();
 
     if(numOtherPlayers > 0)

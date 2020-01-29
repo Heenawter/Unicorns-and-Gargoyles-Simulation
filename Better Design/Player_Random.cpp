@@ -47,13 +47,7 @@ std::tuple<Player *, int> TrollPlayer::action_poisonUnicorn()
 {
     // first, narrow down to only players who HAVE unicorns
     int numOtherPlayers = this->otherPlayers.size();
-    std::vector<Player *> playersWithUnicorns;
-    for (int i = 0; i < numOtherPlayers; i++)
-    {
-        if (this->otherPlayers[i]->getUnicornCount() != 0)
-            playersWithUnicorns.push_back(this->otherPlayers[i]);
-    }
-
+    std::vector<Player *> playersWithUnicorns = this->getPlayersWithUnicorns();
     int numPlayersWithUnicorns = playersWithUnicorns.size();
     Player *targetPlayer = NULL;
     int targetUnicorn = -1;

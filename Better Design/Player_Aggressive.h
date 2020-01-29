@@ -16,6 +16,9 @@ private:
     std::tuple<Player *, int> action_poisonUnicorn();
     std::tuple<Player *, int> action_stealCard();
 
+    /**** HELPER FUNCTIONS ****/
+    std::vector<Player *> findWinningPlayers(std::vector<Player *> players);
+    std::tuple<int, int> findTargetUnicorn(Player *targetPlayer);
     void combinationUtil(Hand hand, Hand tempHand, Hand &bestHand,
                          int start, int end, int index, int r);
 
