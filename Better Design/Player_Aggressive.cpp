@@ -115,113 +115,142 @@ void AggressivePlayer::action_springCleaning()
 
 }
 
+bool sortDamageInfo(const std::tuple<Player *, int, int> &a, const std::tuple<Player *, int, int> &b)
+{
+    // sort by DAMAGE primarily (decreasing)
+    if(std::get<2>(a) == std::get<2>(b)) 
+    {
+        // sort by DISTANCE secondarily (increasing)
+        int distanceA = std::get<0>(a)->getDistance();
+        int distanceB = std::get<0>(b)->getDistance();
+        if(distanceA == distanceB)
+        {
+            // sort by NUMBER OF UNICORNS thirdly (decreasing)
+            int numUnicornsA = std::get<0>(a)->getUnicornCount();
+            int numUnicornsB = std::get<0>(b)->getUnicornCount();
+            return numUnicornsA > numUnicornsB;
+        }
+        return distanceA < distanceB;
+    }
+    else 
+    {
+        return (std::get<2>(a) > std::get<2>(b));
+    }
+}
+
 /*  Function: poisonUnicorn()
-    Goal:     First, target a player:
-                    - If another player is winning (i.e. their hand is 
-                      closer to the goal than anyone elses'), then target
-                      the winning player; if there is a tie for winning, 
-                      target the player such that removing the unicorn 
-                      does the most damage; if this is also a tie, then
-                      remove from the player with the most unicorns
-              Then, find which unicorn to target:
-                    - Find the unicorn that does the most damage and
-                      remove it; if there is a tie, then remove
-                      from the FIRST unicorn that does the max
-                      damage (since it is harder to get a unicorn
-                      at the start of the string than the end) */
+    Goal:     Try to maximize the damage by removing a unicorn; that is,
+              target the player + unicorn such that removal of that unicorn
+              causes the MOST damage out of all other unicorns on the table. 
+              If there is a tie for the amount of damage, 
+                    - target the player that is CLOSEST to winning;
+                      that is, target the player with the smallest 
+                      distance from the goal string
+              If there is a tie for winners as well,
+                    - target the player with the most unicorns
+              If the number of unicorns is also a tie,
+                    - target the player with the most cards 
+              If this is ALSO a tie,
+                    - target the first player */
 std::tuple<Player *, int> AggressivePlayer::action_poisonUnicorn()
 {
-    std::vector<std::tuple<Player*, int, int> > damageInfo;
     Player *targetPlayer = NULL;
     int targetUnicorn = -1;
     
     // we only care about players with unicorns, so get them first
     std::vector<Player*> playersWithUnicorns = this->getPlayersWithUnicorns();
-    if(playersWithUnicorns.size() > 0)
+    int numPlayersWithUnicorns = playersWithUnicorns.size();
+    if(numPlayersWithUnicorns == 0)
+        return std::tuple<Player *, int>(targetPlayer, targetUnicorn);
+
+    // now, try to find the way to maximize the damage; that is,
+    // try removing each unicorn from eac player and target the
+    // player+unicorn pair that does the most damage
+
+    // start by generating all of the worst damages possible
+    Player *currentPlayer;
+    std::tuple <Player*, int, int> currentPlayerDamage;
+    std::vector<std::tuple<Player *, int, int>> damageInfo;
+    for (int i = 0; i < numPlayersWithUnicorns; i++)
     {
-        // start by searching for the winning players
-        std::vector<Player *> winners = findWinningPlayers(playersWithUnicorns);
-        int numWinners = winners.size();
-        // std::cout << "number of winning players w/ unicorns: " << numWinners << std::endl;
+        currentPlayer = playersWithUnicorns[i];
+        // std::cout << "Player " << currentPlayer->getPlayerNum() << ": ";
+        // std::cout << "before: " << currentPlayer->getDistance() << " ... ";
 
-        // now, try to find the way to maximize the damage; that is,
-        // try removing each unicorn from each winning player and target
-        // the player+unicorn pair that does the most damage
+        currentPlayerDamage = findTargetUnicorn(currentPlayer);
+        // std::cout << "target unicorn: " << std::get<1>(currentPlayerDamage) << " ... ";
+        // std::cout << "damage: " << std::get<2>(currentPlayerDamage) << std::endl;
 
-        // start by generating all of the worst damages possible
-        Player *currentPlayer;
-        std::tuple <Player*, int, int> currentPlayerDamage;
-        for (int i = 0; i < numWinners; i++)
-        {
-            currentPlayer = winners[i];
-            std::cout << "Player " << currentPlayer->getPlayerNum() << ": ";
-            std::cout << "before: " << currentPlayer->getDistance() << " ... ";
-
-            currentPlayerDamage = findTargetUnicorn(currentPlayer);
-            std::cout << "target unicorn: " << std::get<1>(currentPlayerDamage) << " ... ";
-            std::cout << "damage: " << std::get<2>(currentPlayerDamage) << std::endl;
-
-            damageInfo.push_back(currentPlayerDamage);
-        }
-        
-        // find the maximum damage possible
-        int maxDamage = 0;
-        for (auto val : damageInfo)
-        {
-            if (std::get<2>(val) > maxDamage)
-                maxDamage = std::get<2>(val);
-        }
-
-        // then filter out to only players where the moves will cause max damage
-        std::vector<std::tuple<Player *, int, int> > maxDamageInfo;
-        std::copy_if(damageInfo.begin(), damageInfo.end(), back_inserter(maxDamageInfo),
-                     [maxDamage](std::tuple<Player *, int, int> current) { return (std::get<2>(current) == maxDamage); });
-
-        if(maxDamageInfo.size() == 1)
-        {
-            // std::cout << "only one possible target" << std::endl;
-            targetPlayer = std::get<0>(maxDamageInfo[0]);
-            targetUnicorn = std::get<1>(maxDamageInfo[0]);
-        }
-        else
-        {
-            // more than one player has max damage, so target the player
-            // with the most unicorns -- if there is a tie, do the first
-            // std::cout << "more than one target" << std::endl;
-            int maxUnicorns = 0, numUnicorns;
-            int target = 0;
-            for(int i = 0; i < maxDamageInfo.size(); i++)
-            {
-                currentPlayer = std::get<0>(maxDamageInfo[i]);
-                numUnicorns = currentPlayer->getUnicornCount();
-                if (numUnicorns > maxUnicorns)
-                {
-                    target = i;
-                    maxUnicorns = numUnicorns;
-                }
-                targetPlayer = std::get<0>(maxDamageInfo[target]);
-                targetUnicorn = std::get<1>(maxDamageInfo[target]);
-            }
-
-        }
-        
-    } 
-    else
-    {
-        std::cout << "no player has a unicorn..." << std::endl;
+        damageInfo.push_back(currentPlayerDamage);
     }
+
+    std::sort(damageInfo.begin(), damageInfo.end(), sortDamageInfo);
+    // for(auto val : damageInfo)
+    // {
+    //     std::cout << "Player " << std::get<0>(val)->getPlayerNum() << ": ";
+    //     std::cout << "damage: " << std::get<2>(val) << " ... ";
+    //     std::cout << "distance: " << std::get<0>(val)->getDistance() << " ... ";
+    //     std::cout << "numUnicorns: " << std::get<0>(val)->getUnicornCount() << std::endl;
+    // }
+
+    targetPlayer  = std::get<0>(damageInfo[0]);
+    targetUnicorn = std::get<1>(damageInfo[0]);
+    std::cout << "Targetting Player " << targetPlayer->getPlayerNum();
+    std::cout << " and unicorn " << targetUnicorn << std::endl;
     
-    if(targetPlayer != NULL)
-    {
-        std::cout << "Targetting Player " << targetPlayer->getPlayerNum();
-        std::cout << " and unicorn " << targetUnicorn << std::endl;
-    }
     return std::tuple<Player *, int>(targetPlayer, targetUnicorn);
 }
 
-std::tuple<Player*, int, int> AggressivePlayer::findTargetUnicorn(Player *targetPlayer)
+/*  Function: stealCard()
+    Goal:     */
+std::tuple<Player *, int> AggressivePlayer::action_stealCard()
 {
-    std::tuple<Player*, int, int> damageInfo;
+    return std::tuple<Player *, int>(NULL, 1);
+}
+
+/*  Function: findWinningPlayers()
+    Goal:     Return the player(s) with the smallest distance from
+              the goal; that is, find the player(s) that are closest
+              to winning the game and return them */
+std::vector<std::tuple<Player *, int, int>> AggressivePlayer::
+    findWinningPlayers(std::vector<std::tuple<Player *, int, int>> playerInfo)
+{
+    int numPlayers = playerInfo.size();
+    int winningDistance = MAX_INT;
+    int testDistance;
+    Player* currentPlayer;
+    for (int i = 0; i < numPlayers; i++)
+    {
+        currentPlayer = std::get<0>(playerInfo[i]);
+        testDistance = currentPlayer->getDistance();
+        if (testDistance < winningDistance)
+            winningDistance = testDistance;
+    }
+    std::cout << "winning distance: " << winningDistance << std::endl;
+
+    std::vector<std::tuple<Player *, int, int>> winningInfo;
+    std::tuple<Player *, int, int> currentInfo;
+    for (int i = 0; i < numPlayers; i++)
+    {
+        currentPlayer = std::get<0>(playerInfo[i]);
+        if (currentPlayer->getDistance() == winningDistance)
+            winningInfo.push_back(playerInfo[i]);
+    }
+
+    return winningInfo;
+}
+
+/*  Function: findTargetUnicorn()
+    Goal:     For the given player, find the unicorn that would do the
+              most damage when removed (i.e. removing the unicorn makes 
+              that player's hand as bad as possible); if no unicorn 
+              makes a difference, then simply target the first unicorn
+              that makes no difference.
+              This function returns a tuple as follows: 
+                    tuple<Player*, targetUnicornIndex, damageDone> */
+std::tuple<Player *, int, int> AggressivePlayer::findTargetUnicorn(Player *targetPlayer)
+{
+    std::tuple<Player *, int, int> damageInfo;
 
     Hand testHand = Hand(*targetPlayer->getHand());
     int cardToRemove = -1;
@@ -229,9 +258,9 @@ std::tuple<Player*, int, int> AggressivePlayer::findTargetUnicorn(Player *target
     int testDistance, worstDistance = testHand.getDistance();
 
     int unicornCount = 0;
-    for(int i = 0; i < numCards; i++)
+    for (int i = 0; i < numCards; i++)
     {
-        if(testHand.getCard(i) == UNICORN)
+        if (testHand.getCard(i) == UNICORN)
         {
             unicornCount++;
             testHand.removeCard(i);
@@ -247,54 +276,18 @@ std::tuple<Player*, int, int> AggressivePlayer::findTargetUnicorn(Player *target
         }
     }
 
-    std::cout << "after: " << worstDistance << " ... ";
+    // std::cout << "after: " << worstDistance << " ... ";
 
-    int damage = worstDistance - targetPlayer->getDistance();
     if (cardToRemove == -1)
     {
-        // no unicorn causes outright damage, so just remove the first
-        cardToRemove = 1; 
+        // no unicorn causes outright damage, so just target the first
+        cardToRemove = 1;
     }
 
+    int damage = worstDistance - targetPlayer->getDistance();
     damageInfo = std::make_tuple(targetPlayer, cardToRemove, damage);
 
     return damageInfo;
-}
-
-/*  Function: stealCard()
-    Goal:     */
-std::tuple<Player *, int> AggressivePlayer::action_stealCard()
-{
-    return std::tuple<Player *, int>(NULL, 1);
-}
-
-/*  Function: findWinningPlayers()
-    Goal:     Return the player(s) with the smallest distance from
-              the goal; that is, find the player(s) that are closest
-              to winning the game and return them */
-std::vector<Player *> AggressivePlayer::findWinningPlayers(std::vector<Player*> players)
-{
-    int numPlayers = players.size();
-    int winningDistance = MAX_INT;
-    int testDistance;
-    for (int i = 0; i < numPlayers; i++)
-    {
-        testDistance = players[i]->getDistance();
-        if (testDistance < winningDistance)
-            winningDistance = testDistance;
-    }
-    std::cout << "winning distance: " << winningDistance << std::endl;
-
-    std::vector<Player *> winningPlayers;
-    Player *currentPlayer;
-    for (int i = 0; i < numPlayers; i++)
-    {
-        currentPlayer = players[i];
-        if (currentPlayer->getDistance() == winningDistance)
-            winningPlayers.push_back(currentPlayer);
-    }
-
-    return winningPlayers;
 }
 
 /*  Function: combinationUtil()
