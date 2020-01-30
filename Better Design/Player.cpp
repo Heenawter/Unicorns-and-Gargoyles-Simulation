@@ -138,12 +138,12 @@ void Player::action_poisonUnicorn_helper()
 
     if(targetPlayer != NULL) 
     {
-        std::cout << std::endl << targetPlayer->toString() << ", BEFORE distance: " << targetPlayer->getHand()->getDistance() << std::endl;
+        std::cout << std::endl << targetPlayer->toString() << ", BEFORE distance: " << targetPlayer->getDistance() << std::endl;
 
         targetPlayer->hand->removeUnicorn(targetUnicorn);
         this->deck->discardCard(UNICORN);
 
-        std::cout << targetPlayer->toString() << ", AFTER distance: " << targetPlayer->getHand()->getDistance() << std::endl;
+        std::cout << targetPlayer->toString() << ", AFTER distance: " << targetPlayer->getDistance() << std::endl;
     }
 }
 

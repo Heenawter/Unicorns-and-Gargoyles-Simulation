@@ -185,13 +185,13 @@ std::tuple<Player *, int> AggressivePlayer::action_poisonUnicorn()
     }
 
     std::sort(damageInfo.begin(), damageInfo.end(), sortDamageInfo);
-    // for(auto val : damageInfo)
-    // {
-    //     std::cout << "Player " << std::get<0>(val)->getPlayerNum() << ": ";
-    //     std::cout << "damage: " << std::get<2>(val) << " ... ";
-    //     std::cout << "distance: " << std::get<0>(val)->getDistance() << " ... ";
-    //     std::cout << "numUnicorns: " << std::get<0>(val)->getUnicornCount() << std::endl;
-    // }
+    for(auto val : damageInfo)
+    {
+        std::cout << "Player " << std::get<0>(val)->getPlayerNum() << ": ";
+        std::cout << "damage: " << std::get<2>(val) << " ... ";
+        std::cout << "distance: " << std::get<0>(val)->getDistance() << " ... ";
+        std::cout << "numUnicorns: " << std::get<0>(val)->getUnicornCount() << std::endl;
+    }
 
     targetPlayer  = std::get<0>(damageInfo[0]);
     targetUnicorn = std::get<1>(damageInfo[0]);
@@ -255,9 +255,14 @@ std::tuple<Player *, int, int> AggressivePlayer::findTargetUnicorn(Player *targe
     Hand testHand = Hand(*targetPlayer->getHand());
     int cardToRemove = -1;
     int numCards = targetPlayer->getHandSize();
-    int testDistance, worstDistance = testHand.getDistance();
+    
+    std::cout << "Target player " << targetPlayer->getPlayerNum() << ": ";
+    std::cout << "before: " << targetPlayer->getDistance() << " ... ";
 
     int unicornCount = 0;
+    bool found = false;
+    int currentDistance = targetPlayer->getDistance(), testDistance;
+    int maxDamage = -MAX_INT, testDamage;
     for (int i = 0; i < numCards; i++)
     {
         if (testHand.getCard(i) == UNICORN)
@@ -265,27 +270,36 @@ std::tuple<Player *, int, int> AggressivePlayer::findTargetUnicorn(Player *targe
             unicornCount++;
             testHand.removeCard(i);
             testDistance = testHand.getDistance();
-            if (testDistance > worstDistance)
+            testDamage = testDistance - currentDistance;
+            std::cout << testDistance << " ... ";
+            if (testDamage > maxDamage)
             {
                 // because > and not >=, always target FIRST unicorn encountered
                 // unless you find a better one - ties result in FIRST not LAST
-                worstDistance = testDistance;
                 cardToRemove = unicornCount;
+                maxDamage = testDamage;
+                found = true;
             }
             testHand = Hand(*targetPlayer->getHand());
         }
     }
 
-    // std::cout << "after: " << worstDistance << " ... ";
-
-    if (cardToRemove == -1)
+    std::cout << "max: " << maxDamage << " ... ";
+    std::cout << "after: " << currentDistance + maxDamage << " ... ";
+    int damage = maxDamage;
+    if (!found)
     {
         // no unicorn causes outright damage, so just target the first
+        std::cout << "here!" << " ... ";
+        testHand = Hand(*targetPlayer->getHand());
+        testHand.removeUnicorn(1);
+        testDistance = testHand.getDistance();
+        damage = testDistance - targetPlayer->getDistance();
         cardToRemove = 1;
     }
 
-    int damage = worstDistance - targetPlayer->getDistance();
     damageInfo = std::make_tuple(targetPlayer, cardToRemove, damage);
+    std::cout << "damage: " << damage << " ... " << std::endl;
 
     return damageInfo;
 }
