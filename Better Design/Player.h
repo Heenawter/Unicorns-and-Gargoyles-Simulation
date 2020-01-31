@@ -62,6 +62,7 @@ public:
     Hand* getHand() { return this->hand; }
 
     std::vector<Player *> getPlayersWithUnicorns();
+    std::vector<Player *> getPlayersWithCards();
     void discardCard(int card);
     void moveCard(int oldIndex, int newIndex);
 };

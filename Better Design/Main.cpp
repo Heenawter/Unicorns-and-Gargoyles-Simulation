@@ -50,9 +50,9 @@ void testPlayerType()
     
 
     current = game->getPlayer(0); 
-    current->action_poisonUnicorn_helper();
+    // current->action_poisonUnicorn_helper();
     // current->takeTurn();
-    // current->action_stealCard_helper();
+    current->action_stealCard_helper();
 
     // std::cout << current->toString() << std::endl;
 

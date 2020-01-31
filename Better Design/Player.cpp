@@ -161,11 +161,16 @@ void Player::action_stealCard_helper()
 
     if (targetPlayer != NULL)
     {
+
+        std::cout << std::endl << targetPlayer->toString() << ", BEFORE distance: " << targetPlayer->getDistance() << std::endl;
+
         LOG("\nbefore: current=" + std::to_string(this->hand->getDistance()));
         LOG(", target=" + std::to_string(targetPlayer->getHand()->getDistance()) + "\n");
         this->hand->addToHand(targetPlayer->getHand()->removeCard(targetCard));
         LOG("after:  current=" + std::to_string(this->hand->getDistance()));
         LOG(", target=" + std::to_string(targetPlayer->getHand()->getDistance()) + "\n");
+
+        std::cout << targetPlayer->toString() << ", AFTER distance: " << targetPlayer->getDistance() << std::endl;
     }
 }
 
@@ -253,6 +258,17 @@ std::vector<Player *> Player::getPlayersWithUnicorns()
             playersWithUnicorns.push_back(this->otherPlayers[i]);
     }
     return playersWithUnicorns;
+}
+
+std::vector<Player *> Player::getPlayersWithCards()
+{
+    std::vector<Player *> playersWithCards;
+    for (int i = 0; i < this->otherPlayers.size(); i++)
+    {
+        if (this->otherPlayers[i]->getHandSize() != 0)
+            playersWithCards.push_back(this->otherPlayers[i]);
+    }
+    return playersWithCards;
 }
 
 /*  Function: discardCard()
