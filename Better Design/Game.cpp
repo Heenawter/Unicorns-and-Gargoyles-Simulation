@@ -29,7 +29,6 @@ void Game::readCards()
             addToMaps(line, cardCounter);
             cardCounter++;
         }
-
         file.close();
     }
 }
@@ -125,7 +124,6 @@ bool Game::gameRound()
         // every player will go in a round.
 
         LOG("Player " + std::to_string(this->currentPlayer->getPlayerNum()) + ": ");
-        // playerTurn(goalString, playerNum);
         try
         {
             newestCard = this->currentPlayer->takeTurn();
@@ -152,7 +150,7 @@ bool Game::gameRound()
         }
         else if (this->cardInfo->isActionCard(newestCard))
         {
-            // some action cards will allkow OTHER players to win other than current; 
+            // some action cards will allow OTHER players to win other than current; 
             // need to account for this by checking ALL players            
             for(int i = 0; i < numPlayers && !win; i++)
             {
@@ -164,12 +162,9 @@ bool Game::gameRound()
                 }
             }
         }
-        else
-        {
-            currentPlayer = getNextPlayer(currentPlayer); // advance to the next player
-            count++;                                      // and increase the counter for the number of turns in this round
-            LOG("\n");
-        }
+        currentPlayer = getNextPlayer(currentPlayer); // advance to the next player
+        count++;                                      // and increase the counter for the number of turns in this round
+        LOG("\n");
     }
 
     for(int i = 0; i < numPlayers; i++) {

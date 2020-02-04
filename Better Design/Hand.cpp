@@ -4,52 +4,6 @@
 /*                Private Functions               */
 /**************************************************/
 
-// https://www.geeksforgeeks.org/print-all-possible-combinations-of-r-elements-in-a-given-array-of-size-n/
-void Hand::combinationUtil(std::vector<char> hand, std::vector<char> tempHand,
-                             std::vector<char> &bestHand, int &bestDistance,
-                             std::string goalString,
-                             int start, int end, int index, int r)
-{
-    // base case
-    if (index == r)
-    {
-        std::vector<char> newCombo;
-        for (int j = 0; j < r; j++)
-        {
-            newCombo.push_back(tempHand[j]);
-        }
-
-        std::string testString = generateString(newCombo);
-        int testDistance = stringDistance(testString, goalString);
-
-        if (testDistance <= bestDistance)
-        {
-            // because <= and not <, this implies we are being CONSERVATIVE
-            // i.e. the player is choosing to remove AS FEW CARDS
-            // AS POSSIBLE while still maintaining the best distance
-            bestDistance = testDistance;
-            bestHand = newCombo;
-        }
-
-        return;
-    }
-
-    // replace index with all possible
-    // elements. The condition "end-i+1 >= r-index"
-    // makes sure that including one element
-    // at index will make a combination with
-    // remaining elements at remaining positions
-    for (int i = start; i <= end &&
-                        end - i + 1 >= r - index;
-         i++)
-    {
-        tempHand[index] = hand[i];
-        combinationUtil(hand, tempHand, bestHand, bestDistance,
-                        goalString,
-                        i + 1, end, index + 1, r);
-    }
-}
-
 // https://dzone.com/articles/the-levenshtein-algorithm-1
 // https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C++
 int Hand::stringDistance(const std::string &string1, const std::string &string2)
@@ -159,47 +113,11 @@ Hand::Hand(Hand oldHand, int r)
     this->currentDistance = stringDistance(this->currentString, this->goalString);
 }
 
-/*  Function: getCardName(chard)
-    Goal:     Get the card name for the given card */
-std::string Hand::getCardName(char card)
-{
-    cardInfo->getCardName(card);
-}
-
 /*  Function: generateString()
     Goal:     Generates the string for the current hand */
 std::string Hand::generateString()
 {
     return cardInfo->generateString(this->cards);
-}
-
-/*  Function: operator <
-    Goal:     Compare two hands with the < symbol through overriding;
-              i.e. consider hand1 < hand2;
-              If hand1 is closer to the goal than hand2, return true
-                    -- since hand1 has smaller distance than hand2
-              If hand2 is farther from the goal than hand2, return false
-    Example:  If hand1, hand2 are of type Hand*
-              call with (*hand1) < (*hand2) */
-bool Hand::operator<(const Hand &otherHand)
-{
-    int distance1 = this->currentDistance;
-    int distance2 = otherHand.currentDistance;
-    return distance1 < distance2;
-}
-
-bool Hand::operator<=(const Hand &otherHand)
-{
-    int distance1 = this->currentDistance;
-    int distance2 = otherHand.currentDistance;
-    return distance1 <= distance2;
-}
-
-bool Hand::operator==(const Hand &otherHand)
-{
-    int distance1 = this->currentDistance;
-    int distance2 = otherHand.currentDistance;
-    return distance1 == distance2;
 }
 
 /*  Function: addToHand()

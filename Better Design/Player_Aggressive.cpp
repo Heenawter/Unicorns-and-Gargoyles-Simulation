@@ -21,52 +21,64 @@
                     - remove the last one encountered */
 void AggressivePlayer::action_discardCard()
 {
-    Hand testHand = Hand(*this->hand); // use copy constructor to make a copy
-
-    int testDistance = 0;
-    int bestDistance = this->hand->getDistance();
-    int worstDistance = MAX_INT;
-    int cardToRemove_bestCase = -1;
-    int cardToRemove_worstCase = -1;
-
-    // first, see if any card will IMPROVE the current hand....
-    for (int i = 0; i < this->hand->getNumCards(); i++)
+    int numCards = getHandSize();
+    if (numCards > 0)
     {
-        // try removing every single card once
-        testHand.removeCard(i);
-        testDistance = testHand.getDistance();
-        if (testDistance < bestDistance) 
-        {
-            // removing the card either made the hand BETTER or kept it the same
-            bestDistance = testDistance;
-            cardToRemove_bestCase = i;
-        } 
+        // combinationUtil(*this->hand, combinations, bestHand, 0, numCards - 1, 0, numCards - 1);
+        Hand testHand = Hand(*this->hand); // use copy constructor to make a copy
 
-        if(testDistance <= worstDistance)
+        int testDistance = 0;
+        int bestDistance = this->hand->getDistance();
+        int worstDistance = MAX_INT;
+        int cardToRemove_bestCase = -1;
+        int cardToRemove_worstCase = -1;
+
+        // first, see if any card will IMPROVE the current hand....
+        for (int i = 0; i < this->hand->getNumCards(); i++)
         {
-            // removing the card either made the hand WORSE or kept it the same
-            worstDistance = testDistance;
-            cardToRemove_worstCase = i;
+            // try removing every single card once
+            testHand.removeCard(i);
+            testDistance = testHand.getDistance();
+            if (testDistance < bestDistance)
+            {
+                // removing the card either made the hand BETTER or kept it the same
+                bestDistance = testDistance;
+                cardToRemove_bestCase = i;
+            }
+
+            if (testDistance <= worstDistance)
+            {
+                // removing the card either made the hand WORSE or kept it the same
+                worstDistance = testDistance;
+                cardToRemove_worstCase = i;
+            }
+
+            testHand = Hand(*this->hand); // start over
         }
-    
-        testHand = Hand(*this->hand); // start over
+
+        // std::cout << "Previous hand: " << this->hand->toString() << std::endl;
+        // std::cout << "Current distance: " << this->hand->getDistance() << std::endl;
+
+        if (cardToRemove_bestCase != -1)
+        {
+            // there is a card that makes the hand BETTER, so remove that one
+            this->discardCard(cardToRemove_bestCase);
+            LOG("Player " + std::to_string(this->playerNum) + " removed card " + std::to_string(cardToRemove_bestCase) + " ... ");
+
+            // std::cout << "Removal of card " << cardToRemove_bestCase << " made hand better..." << std::endl;
+        }
+        else
+        {
+            // no removal improves the hand, so remove the card that has the least impact
+            this->discardCard(cardToRemove_worstCase);
+            LOG("Player " + std::to_string(this->playerNum) + " removed card " + std::to_string(cardToRemove_worstCase) + " ... ");
+
+            // std::cout << "Removal of card " << cardToRemove_worstCase << " was the best option..." << std::endl;
+        }
+
+        // std::cout << "New hand: " << this->hand->toString() << std::endl;
+        // std::cout << "New distance: " << this->hand->getDistance() << std::endl;
     }
-
-    std::cout << "Previous hand: " << this->hand->toString() << std::endl;
-    std::cout << "Current distance: " << this->hand->getDistance() << std::endl;
-
-    if (cardToRemove_bestCase != -1) {
-        // there is a card that makes the hand BETTER, so remove that one
-        this->discardCard(cardToRemove_bestCase);
-        std::cout << "Removal of card " << cardToRemove_bestCase << " made hand better..." << std::endl;
-    } else {
-        // no removal improves the hand, so remove the card that has the least impact
-        this->discardCard(cardToRemove_worstCase);
-        std::cout << "Removal of card " << cardToRemove_worstCase << " was the best option..." << std::endl;
-    }
-
-    std::cout << "New hand: " << this->hand->toString() << std::endl;
-    std::cout << "New distance: " << this->hand->getDistance() << std::endl;
 }
 
 /*  Function: springCleaning()
@@ -78,30 +90,29 @@ void AggressivePlayer::action_springCleaning()
     Hand combinations = Hand(*this->hand);
     Hand bestHand = Hand(*this->hand);
 
-    std::cout << "Starting Distance: " << this->hand->getDistance() << std::endl;
-
+    std::cout << "Starting Distance: " << this->hand->getDistance() << ", ";
+    std::cout << "Starting length: " << this->hand->getNumCards() << std::endl;
     int numCards = this->hand->getNumCards();
-    for (int i = 1; i <= numCards; i++)
+    for (int i = numCards; i >= 1; i--)
     {
         // loop through subsets of ALL sizes, including the subset that would be
         // created by removing ZERO cards (i -less than OR EQUAL TO- numCards)
         combinationUtil(*this->hand, combinations, bestHand, 0, numCards - 1, 0, i);
     }
-    std::cout << "Best Distance: " << bestHand.getDistance() << std::endl;
+    std::cout << std::endl << "Best Distance: " << bestHand.getDistance() << ", ";
+    std::cout << "New length: " << bestHand.getNumCards() << std::endl;
 
     // now that we know which hand we are aiming for (bestHand), we must
     // actually CREATE that hand by discarding the appropriate cards
     std::vector<int> setDifference = this->hand->setDifference(bestHand);
-    std::cout << this->hand->toString() << " ---> " << bestHand.toString() << std::endl;
-    // delete this->hand;
-    // this->hand = new Hand(bestHand);
 
     // std::cout << this->deck->toString() << std::endl;
     for(int i = 0; i < setDifference.size(); i++)
     {
         // std::cout << this->cardInfo->getCardName(setDifference[i]);
-        std::cout << "-- discard "<< this->cardInfo->getCardName(this->hand->getCard(setDifference[i]));
-        std::cout << ", " << std::to_string(setDifference[i]) << std::endl;
+        // std::cout << "-- discard "<< this->cardInfo->getCardName(this->hand->getCard(setDifference[i]));
+        // std::cout << ", " << std::to_string(setDifference[i]) << std::endl;
+        LOG("removed card " + std::to_string(i) + " ... ");
         this->discardCard(setDifference[i]);
 
         // adjust next indeces, since hand is now 1 smaller
@@ -111,32 +122,8 @@ void AggressivePlayer::action_springCleaning()
         }
     }
 
-    std::cout << "After: " << this->hand->toString() << std::endl;
-
+    // std::cout << "After: " << this->hand->toString() << std::endl;
 }
-
-// bool sortDamageInfo(const std::tuple<Player *, int, int> &a, const std::tuple<Player *, int, int> &b)
-// {
-//     // sort by DAMAGE primarily (decreasing)
-//     if(std::get<2>(a) == std::get<2>(b)) 
-//     {
-//         // sort by DISTANCE secondarily (increasing)
-//         int distanceA = std::get<0>(a)->getDistance();
-//         int distanceB = std::get<0>(b)->getDistance();
-//         if(distanceA == distanceB)
-//         {
-//             // sort by NUMBER OF UNICORNS thirdly (decreasing)
-//             int numUnicornsA = std::get<0>(a)->getUnicornCount();
-//             int numUnicornsB = std::get<0>(b)->getUnicornCount();
-//             return numUnicornsA > numUnicornsB;
-//         }
-//         return distanceA < distanceB;
-//     }
-//     else 
-//     {
-//         return (std::get<2>(a) > std::get<2>(b));
-//     }
-// }
 
 /*  Function: poisonUnicorn()
     Goal:     Try to maximize the damage by removing a unicorn; that is,
@@ -185,18 +172,18 @@ std::tuple<Player *, int> AggressivePlayer::action_poisonUnicorn()
     }
 
     std::sort(damageInfo.begin(), damageInfo.end(), sortDamageInfo_Unicorns());
-    for(auto val : damageInfo)
-    {
-        std::cout << "Player " << std::get<0>(val)->getPlayerNum() << ": ";
-        std::cout << "damage: " << std::get<2>(val) << " ... ";
-        std::cout << "distance: " << std::get<0>(val)->getDistance() << " ... ";
-        std::cout << "numUnicorns: " << std::get<0>(val)->getUnicornCount() << std::endl;
-    }
+    // for(auto val : damageInfo)
+    // {
+    //     std::cout << "Player " << std::get<0>(val)->getPlayerNum() << ": ";
+    //     std::cout << "damage: " << std::get<2>(val) << " ... ";
+    //     std::cout << "distance: " << std::get<0>(val)->getDistance() << " ... ";
+    //     std::cout << "numUnicorns: " << std::get<0>(val)->getUnicornCount() << std::endl;
+    // }
 
     targetPlayer  = std::get<0>(damageInfo[0]);
     targetUnicorn = std::get<1>(damageInfo[0]);
-    std::cout << "Targetting Player " << targetPlayer->getPlayerNum();
-    std::cout << " and unicorn " << targetUnicorn << std::endl;
+    // std::cout << "Targetting Player " << targetPlayer->getPlayerNum();
+    // std::cout << " and unicorn " << targetUnicorn << std::endl;
     
     return std::tuple<Player *, int>(targetPlayer, targetUnicorn);
 }
@@ -238,18 +225,18 @@ std::tuple<Player *, int> AggressivePlayer::action_stealCard()
     }
 
     std::sort(damageInfo.begin(), damageInfo.end(), sortDamageInfo());
-    for (auto val : damageInfo)
-    {
-        std::cout << "Player " << std::get<0>(val)->getPlayerNum() << ": ";
-        std::cout << "damage: " << std::get<2>(val) << " ... ";
-        std::cout << "distance: " << std::get<0>(val)->getDistance() << " ... ";
-        std::cout << "numCards: " << std::get<0>(val)->getHandSize() << std::endl;
-    }
+    // for (auto val : damageInfo)
+    // {
+    //     std::cout << "Player " << std::get<0>(val)->getPlayerNum() << ": ";
+    //     std::cout << "damage: " << std::get<2>(val) << " ... ";
+    //     std::cout << "distance: " << std::get<0>(val)->getDistance() << " ... ";
+    //     std::cout << "numCards: " << std::get<0>(val)->getHandSize() << std::endl;
+    // }
 
     targetPlayer = std::get<0>(damageInfo[0]);
     targetCard = std::get<1>(damageInfo[0]);
-    std::cout << "Targetting Player " << targetPlayer->getPlayerNum();
-    std::cout << " and card " << targetCard << std::endl;
+    // std::cout << "Targetting Player " << targetPlayer->getPlayerNum();
+    // std::cout << " and card " << targetCard << std::endl;
 
     return std::tuple<Player *, int>(targetPlayer, targetCard);
 }
@@ -272,7 +259,7 @@ std::vector<std::tuple<Player *, int, int>> AggressivePlayer::
         if (testDistance < winningDistance)
             winningDistance = testDistance;
     }
-    std::cout << "winning distance: " << winningDistance << std::endl;
+    // std::cout << "winning distance: " << winningDistance << std::endl;
 
     std::vector<std::tuple<Player *, int, int>> winningInfo;
     std::tuple<Player *, int, int> currentInfo;
@@ -301,8 +288,8 @@ std::tuple<Player *, int, int> AggressivePlayer::findTargetCard(Player *targetPl
     Hand testHand = Hand(*targetPlayer->getHand());
     int cardToRemove = -1;
     
-    std::cout << "Target player " << targetPlayer->getPlayerNum() << ": ";
-    std::cout << "before: " << targetPlayer->getDistance() << " ... ";
+    // std::cout << "Target player " << targetPlayer->getPlayerNum() << ": ";
+    // std::cout << "before: " << targetPlayer->getDistance() << " ... ";
 
     int unicornCount = 0;
     int currentDistance = targetPlayer->getDistance(), testDistance;
@@ -321,7 +308,7 @@ std::tuple<Player *, int, int> AggressivePlayer::findTargetCard(Player *targetPl
             testHand.removeCard(i);
         testDistance = testHand.getDistance();
         testDamage = testDistance - currentDistance;
-        std::cout << testDistance << " ... ";
+        // std::cout << testDistance << " ... ";
         if (testDamage > maxDamage)
         {
             // because > and not >=, always target FIRST unicorn encountered
@@ -336,13 +323,13 @@ std::tuple<Player *, int, int> AggressivePlayer::findTargetCard(Player *targetPl
         testHand = Hand(*targetPlayer->getHand());
     }
 
-    std::cout << "max: " << maxDamage << " ... ";
-    std::cout << "after: " << currentDistance + maxDamage << " ... ";
+    // std::cout << "max: " << maxDamage << " ... ";
+    // std::cout << "after: " << currentDistance + maxDamage << " ... ";
     int damage = maxDamage;
     if (!found)
     {
         // no unicorn causes outright damage, so just target the first
-        std::cout << "here!" << " ... ";
+        // std::cout << "here!" << " ... ";
         testHand = Hand(*targetPlayer->getHand());
         testHand.removeUnicorn(1);
         testDistance = testHand.getDistance();
@@ -353,7 +340,7 @@ std::tuple<Player *, int, int> AggressivePlayer::findTargetCard(Player *targetPl
     }
 
     damageInfo = std::make_tuple(targetPlayer, cardToRemove, damage);
-    std::cout << "damage: " << damage << " ... " << std::endl;
+    // std::cout << "damage: " << damage << " ... " << std::endl;
 
     return damageInfo;
 }
@@ -371,12 +358,14 @@ void AggressivePlayer::combinationUtil(Hand hand, Hand tempHand, Hand &bestHand,
     if (index == r)
     {
         Hand newHand = Hand(tempHand, r);
-        std::cout << "... " << newHand.getDistance() << std::endl;
+        // std::cout << newHand.toString() << std::endl;
 
-        if (newHand <= bestHand)
+        if (newHand.getDistance() <= bestHand.getDistance())
         {
-            // because <= and not <, this implies we are being CONSERVATIVE i.e. the player is
-            // choosing to remove AS FEW CARDS AS POSSIBLE while still maintaining the best distance
+            // because <= and not <, this implies we are being AGRESSIVE i.e. the player is
+            // choosing to remove AS MANY CARDS AS POSSIBLE while still maintaining the best distance
+            // (remember that we are going from LARGEST subsets to SMALLEST when calling)
+            // std::cout << "[length: " << r << ", distance: " << newHand.getDistance() << "]";
             bestHand = newHand;
         }
 
@@ -403,10 +392,81 @@ AggressivePlayer::AggressivePlayer(Deck *deck, std::string goalString, Cards *ca
     
 }
 
+/*  Function: takeTurn()
+    Goal:     If you have less than 2 cards, simply draw a card; otherwise,
+              if swapping will improve your current hand, then do that;
+              for swapping, find the BEST POSSIBLE swap that will improve
+              your hand by the largest possible margin;
+              if swapping does not help, draw a new card */
 char AggressivePlayer::takeTurn()
 {
-    // action_discardCard();
-    // action_springCleaning();
-    action_poisonUnicorn();
-    return 'n';
+    LOG(" Take turn ... ");
+    char card = ' ';
+
+    if (this->getHandSize() > 1)
+    {
+        Hand bestSwap = trySwapping();
+        if (bestSwap.getDistance() < this->hand->getDistance())
+        {
+            // if swapping made the hand better, then make it the new hand
+            LOG("Re-arrange cards ... ");
+            delete this->hand;
+            this->hand = new Hand(bestSwap);
+        }
+        else
+        {
+            LOG("draw ... ")
+            card = drawCard();
+        }
+    }
+    else
+    {
+        LOG("can only draw ... ")
+        card = drawCard();
+    }
+
+    return card;
+}
+
+Hand AggressivePlayer::trySwapping()
+{
+    Hand bestHand = Hand(*this->hand);
+    Hand testHand = Hand(*this->hand);
+    int bestDistance = this->hand->getDistance(), testDistance;
+    int cardToMove, whereToMove;
+
+    int numCards = this->getHandSize();
+    // std::cout << "before distance: " << testHand.getDistance() << std::endl;
+
+    for (cardToMove = 0; cardToMove < numCards; cardToMove++)
+    {
+        // remove the card so we can insert it somewhere else
+        for (whereToMove = 0; whereToMove < numCards; whereToMove++)
+        {
+            // obviously, inserting a card in the exact position it already is
+            // is pointless; so just skip the entire thing when this happens
+            if (whereToMove != cardToMove)
+            {
+                testHand.moveCard(cardToMove, whereToMove);
+                testDistance = testHand.getDistance();
+                if (testDistance < bestDistance)
+                {
+                    bestHand = Hand(testHand);
+                    bestDistance = testDistance;
+                    LOG("move " + std::to_string(cardToMove) + " to " + std::to_string(whereToMove) + " ... ");
+                    // std::cout << "move " + std::to_string(cardToMove) + " to " + std::to_string(whereToMove) + " ... ";
+                    // std::cout << "distance becomes " << bestHand.getDistance() << " ... " << std::endl;
+                }
+                else
+                {
+                    testHand = Hand(*this->hand);
+                }
+            }
+        }
+    }
+
+    // std::cout << "after distance: " << bestHand.getDistance() << std::endl;
+
+    // return std::make_pair(bestDistance, bestHand);
+    return bestHand;
 }

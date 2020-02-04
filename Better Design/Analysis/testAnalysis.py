@@ -5,7 +5,7 @@ import seaborn as sns
 from itertools import chain
 import math
 
-PLAYER_TYPE = "Greedy"
+PLAYER_TYPE = "Troll"
 
 def numRounds_vs_numPlayers(df):
     onlyWins = df[df["End Result"].str.contains("win")]
@@ -17,7 +17,7 @@ def numRounds_vs_numPlayers(df):
 
     plt.title("Number of Rounds VS Number of Players (for Games with a Winner)")
     plt.tight_layout()
-    plt.savefig("./Plots/WinningGames_NumRoundsVSNumPlayers_All" + PLAYER_TYPE)
+    plt.savefig("./Plots/WinningGames_NumRoundsVSNumPlayers_All" + PLAYER_TYPE + "_fixed")
     plt.show()
 
 def plotHist(df):
@@ -25,9 +25,13 @@ def plotHist(df):
     maxRounds = max(df["Number of Rounds"])
     rounded = int(math.ceil(maxRounds / 10.0)) * 10
     lastTwo = rounded % 100
+    firstDigit = rounded / 100
 
-
-    customRange = chain(range(0, lastTwo, 10), range(lastTwo, rounded + 1, 100)) 
+    print(maxRounds, rounded, lastTwo, firstDigit)
+    if(lastTwo != 0):
+        customRange = chain(range(0, lastTwo, 10), range(lastTwo, rounded + 1, 100)) 
+    else: 
+        customRange = chain(range(0, lastTwo + 100, 10), range(lastTwo + 100, rounded + 1, 100)) 
     # customRange = range(0, rounded, 10);
     customBins = []
     for i in customRange:
@@ -43,7 +47,7 @@ def plotHist(df):
   
     plt.title("How Often Do Games Usually Last?")
     plt.tight_layout()
-    plt.savefig("./Plots/GameLengths_All" + PLAYER_TYPE)
+    plt.savefig("./Plots/GameLengths_All" + PLAYER_TYPE + "_fixed")
     plt.show()
     
 
@@ -91,7 +95,7 @@ def countResults(df):
 
     fig.subplots_adjust(wspace=0.5, hspace=0.3)
     plt.tight_layout()
-    plt.savefig("./Plots/WhoWins_" + PLAYER_TYPE)
+    plt.savefig("./Plots/WhoWins_" + PLAYER_TYPE + "_fixed")
     plt.show()
     
     # ax.pie(percentages, explode=explode, labels=labels,
@@ -109,10 +113,9 @@ def countResults(df):
     # print(test.head(5))
 
 
-df = pd.read_csv("../GameInfo/" + PLAYER_TYPE + "Results.csv")
+df = pd.read_csv("../GameInfo/" + PLAYER_TYPE + "Results_fixed.csv")
 
-# plotHist(df)
+plotHist(df)
 # plotBar_meanRoundsPerGoal(df)
 # numRounds_vs_numPlayers(df)
-
-countResults(df)
+# countResults(df)

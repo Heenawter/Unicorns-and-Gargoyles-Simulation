@@ -74,6 +74,7 @@ private:
     std::tuple<Player*, int, int> findTargetCard(Player *targetPlayer, bool unicornsOnly);
     void combinationUtil(Hand hand, Hand tempHand, Hand &bestHand,
                          int start, int end, int index, int r);
+    Hand trySwapping();
 
 public:
     AggressivePlayer(Deck *deck, std::string goalString, Cards *cardInfo, int playerNum);

@@ -66,7 +66,7 @@ void GreedyPlayer::action_springCleaning()
         if (testDistance < currentDistance)
         {
             // std::cout << "... remove card " << i << " ... " << std::endl;
-            LOG("removed card " + std::to_string(i) + " ... ");
+            // LOG("removed card " + std::to_string(i) + " ... ");
             currentHand.removeCard(i);
             currentDistance = currentHand.getDistance();
             i--;
@@ -74,8 +74,22 @@ void GreedyPlayer::action_springCleaning()
         testHand = Hand(currentHand);
         // std::cout << "Test hand: " << testHand.toString() << std::endl;
     }
-    delete this->hand;
-    this->hand = new Hand(currentHand);
+
+    std::vector<int> setDifference = this->hand->setDifference(currentHand);
+    for (int i = 0; i < setDifference.size(); i++)
+    {
+        LOG("removed card " + std::to_string(i) + " ... ");
+        this->discardCard(setDifference[i]);
+
+        // adjust next indeces, since hand is now 1 smaller
+        for (int j = i + 1; j < setDifference.size(); j++)
+        {
+            setDifference[j]--;
+        }
+    }
+
+    // delete this->hand;
+    // this->hand = new Hand(currentHand);
 }
 
 /*  Function: poisonUnicorn()

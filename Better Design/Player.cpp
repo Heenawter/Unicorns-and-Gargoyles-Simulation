@@ -43,6 +43,7 @@ char Player::drawCard()
               the action card drawn  */
 void Player::handleActionCard(char type)
 {
+    LOG("handling action card ... ");
     switch (type)
     {
     case ACTION_CARD_DRAW:
@@ -84,6 +85,7 @@ void Player::action_drawNonActionCard_helper()
         {
             this->otherPlayers[i]->action_drawNonActionCard();
         }
+        LOG("done drawing ... \n");
     }
     catch (RanOutOfCardsException &e1)
     {
@@ -108,6 +110,7 @@ void Player::action_discardCard_helper()
     {
         this->otherPlayers[i]->action_discardCard();
     }
+    LOG("done discarding ... \n");
 }
 
 /*  Function: action_springCleaning_helper()
@@ -123,6 +126,7 @@ void Player::action_springCleaning_helper()
     {
         this->otherPlayers[i]->action_springCleaning();
     }
+    LOG("\n");
 }
 
 /*  Function: action_poisonUnicorn_helper()
@@ -138,13 +142,12 @@ void Player::action_poisonUnicorn_helper()
 
     if(targetPlayer != NULL) 
     {
-        std::cout << std::endl << targetPlayer->toString() << ", BEFORE distance: " << targetPlayer->getDistance() << std::endl;
-
+        LOG("Target Player " + std::to_string(targetPlayer->getPlayerNum()) + " ");
+        LOG("and poison unicorn " + std::to_string(targetPlayer->getCard(targetUnicorn)) + " ... ");
         targetPlayer->hand->removeUnicorn(targetUnicorn);
         this->deck->discardCard(UNICORN);
-
-        std::cout << targetPlayer->toString() << ", AFTER distance: " << targetPlayer->getDistance() << std::endl;
     }
+    LOG("done poisoning ... \n");
 }
 
 /*  Function: action_stealCard_helper()
@@ -157,21 +160,14 @@ void Player::action_stealCard_helper()
     Player *targetPlayer;
     int targetCard;
     std::tie(targetPlayer, targetCard) = this->action_stealCard();
-    LOG("DONE");
 
     if (targetPlayer != NULL)
     {
-
-        std::cout << std::endl << targetPlayer->toString() << ", BEFORE distance: " << targetPlayer->getDistance() << std::endl;
-
-        LOG("\nbefore: current=" + std::to_string(this->hand->getDistance()));
-        LOG(", target=" + std::to_string(targetPlayer->getHand()->getDistance()) + "\n");
+        LOG("Target Player " + std::to_string(targetPlayer->getPlayerNum()) + " ");
+        LOG("and steal " + cardInfo->getCardName(targetPlayer->getCard(targetCard)) + " ... ");
         this->hand->addToHand(targetPlayer->getHand()->removeCard(targetCard));
-        LOG("after:  current=" + std::to_string(this->hand->getDistance()));
-        LOG(", target=" + std::to_string(targetPlayer->getHand()->getDistance()) + "\n");
-
-        std::cout << targetPlayer->toString() << ", AFTER distance: " << targetPlayer->getDistance() << std::endl;
     }
+    LOG("done stealing ... ");
 }
 
 /*  Function: action_drawNonActionCard()
@@ -245,8 +241,10 @@ std::string Player::toString()
 {
     std::string handString = this->hand->toString();
     std::string generatedString = this->hand->getCurrentString();
+    std::string numCards = std::to_string(this->getHandSize());
+    std::string distance = std::to_string(this->getDistance());
 
-    return handString + " --> " + generatedString;
+    return handString + " (" + numCards + ") " + " --> " + generatedString + " (" + distance + ") ";
 }
 
 std::vector<Player *> Player::getPlayersWithUnicorns()

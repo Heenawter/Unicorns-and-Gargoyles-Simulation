@@ -16,8 +16,8 @@ void runGame(int numPlayers, std::string goal, std::ofstream &outputFile);
 
 int main()
 {
-    std::cout << "main" << std::endl;
-    // runAnalysis();
+    // std::cout << "main" << std::endl;
+    runAnalysis();
 
     // std::ofstream outputFile;
     // outputFile.open("./test.txt");
@@ -25,8 +25,7 @@ int main()
     // runGame(5, "[ ][ ][ ][*]", outputFile);
 
     // outputFile.close();
-    testPlayerType();
-
+    // testPlayerType();
 }
 
 void testPlayerType()
@@ -50,9 +49,11 @@ void testPlayerType()
     
 
     current = game->getPlayer(0); 
+    std::cout << "Before: " << current->toString() << std::endl;
     // current->action_poisonUnicorn_helper();
-    // current->takeTurn();
-    current->action_stealCard_helper();
+    current->takeTurn();
+    // current->action_stealCard_helper();
+    std::cout << "After: " << current->toString() << std::endl;
 
     // std::cout << current->toString() << std::endl;
 
@@ -65,7 +66,7 @@ void runAnalysis()
     goalsFile.open("./GameInfo/Goals.txt");
 
     std::ofstream outputFile;
-    outputFile.open("./GameInfo/TrollResults.csv");
+    outputFile.open("./GameInfo/AggressiveResults_fixed.csv");
 
     if (goalsFile.is_open() && outputFile.is_open())
     {
