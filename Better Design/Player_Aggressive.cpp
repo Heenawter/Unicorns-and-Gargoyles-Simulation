@@ -90,6 +90,7 @@ void AggressivePlayer::action_springCleaning()
     Hand combinations = Hand(*this->hand);
     Hand bestHand = Hand(*this->hand);
 
+<<<<<<< HEAD
     // std::cout << "Starting Distance: " << this->hand->getDistance() << ", ";
     // std::cout << "Starting length: " << this->hand->getNumCards() << std::endl;
     int numCards = this->hand->getNumCards();
@@ -131,6 +132,41 @@ void AggressivePlayer::action_springCleaning()
         }
         // std::cout << "After: " << this->hand->toString() << std::endl;
     }
+=======
+    std::cout << "Starting Distance: " << this->hand->getDistance() << ", ";
+    std::cout << "Starting length: " << this->hand->getNumCards() << std::endl;
+    int numCards = this->hand->getNumCards();
+    for (int i = numCards; i >= 1; i--)
+    {
+        // loop through subsets of ALL sizes, including the subset that would be
+        // created by removing ZERO cards (i -less than OR EQUAL TO- numCards)
+        combinationUtil(*this->hand, combinations, bestHand, 0, numCards - 1, 0, i);
+    }
+    std::cout << std::endl << "Best Distance: " << bestHand.getDistance() << ", ";
+    std::cout << "New length: " << bestHand.getNumCards() << std::endl;
+
+    // now that we know which hand we are aiming for (bestHand), we must
+    // actually CREATE that hand by discarding the appropriate cards
+    std::vector<int> setDifference = this->hand->setDifference(bestHand);
+
+    // std::cout << this->deck->toString() << std::endl;
+    for(int i = 0; i < setDifference.size(); i++)
+    {
+        // std::cout << this->cardInfo->getCardName(setDifference[i]);
+        // std::cout << "-- discard "<< this->cardInfo->getCardName(this->hand->getCard(setDifference[i]));
+        // std::cout << ", " << std::to_string(setDifference[i]) << std::endl;
+        LOG("removed card " + std::to_string(i) + " ... ");
+        this->discardCard(setDifference[i]);
+
+        // adjust next indeces, since hand is now 1 smaller
+        for(int j = i + 1; j < setDifference.size(); j++)
+        {
+            setDifference[j]--;
+        }
+    }
+
+    // std::cout << "After: " << this->hand->toString() << std::endl;
+>>>>>>> f3b237074d3a5d2d20e6bc36e1c3809893dfc6a8
 }
 
 /*  Function: poisonUnicorn()
@@ -397,7 +433,11 @@ void AggressivePlayer::combinationUtil(Hand hand, Hand tempHand, Hand &bestHand,
 AggressivePlayer::AggressivePlayer(Deck *deck, std::string goalString, Cards *cardInfo, int playerNum)
     : Player(deck, goalString, cardInfo, playerNum)
 {
+<<<<<<< HEAD
     this->type = "aggressive";
+=======
+    
+>>>>>>> f3b237074d3a5d2d20e6bc36e1c3809893dfc6a8
 }
 
 /*  Function: takeTurn()

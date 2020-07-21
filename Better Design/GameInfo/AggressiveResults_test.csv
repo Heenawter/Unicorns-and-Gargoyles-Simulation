@@ -1,0 +1,307 @@
+Goal,Number of Players,Number of Rounds,End Result
+[ ][ ][ ],2,8,Player 0 wins
+[ ][ ][ ],3,4,Player 1 wins
+[ ][ ][ ],4,5,Player 1 wins
+[ ][ ][ ],5,3,Player 1 wins
+[ ][ ][ ],6,2,Player 0 wins
+[ ][ ][ ],7,4,Player 5 wins
+[ ][ ][ ],8,2,Player 7 wins
+[ ][ ][ ],9,3,Player 0 wins
+[ ][ ][ ],10,1,Player 1 wins
+[*][ ][ ],2,4,Player 0 wins
+[*][ ][ ],3,5,Player 0 wins
+[*][ ][ ],4,10,Player 2 wins
+[*][ ][ ],5,10,Player 4 wins
+[*][ ][ ],6,3,Player 5 wins
+[*][ ][ ],7,2,Player 5 wins
+[*][ ][ ],8,8,Only action cards left
+[*][ ][ ],9,3,Player 3 wins
+[*][ ][ ],10,2,Player 5 wins
+[ ][*][ ],2,20,Player 1 wins
+[ ][*][ ],3,17,Player 2 wins
+[ ][*][ ],4,10,Player 1 wins
+[ ][*][ ],5,14,Player 0 wins
+[ ][*][ ],6,9,Only action cards left
+[ ][*][ ],7,10,Player 4 wins
+[ ][*][ ],8,10,Player 7 wins
+[ ][*][ ],9,5,Only action cards left
+[ ][*][ ],10,4,Player 6 wins
+[ ][ ][*],2,7,Player 1 wins
+[ ][ ][*],3,6,Player 0 wins
+[ ][ ][*],4,12,Player 0 wins
+[ ][ ][*],5,5,Player 4 wins
+[ ][ ][*],6,12,Player 5 wins
+[ ][ ][*],7,6,Player 1 wins
+[ ][ ][*],8,2,Player 6 wins
+[ ][ ][*],9,6,Player 2 wins
+[ ][ ][*],10,3,Player 9 wins
+[*][*][ ],2,14,Player 1 wins
+[*][*][ ],3,20,Player 1 wins
+[*][*][ ],4,8,Player 0 wins
+[*][*][ ],5,9,Player 3 wins
+[*][*][ ],6,3,Player 3 wins
+[*][*][ ],7,10,Player 5 wins
+[*][*][ ],8,6,Player 2 wins
+[*][*][ ],9,6,Only action cards left
+[*][*][ ],10,4,Only action cards left
+[*][ ][*],2,7,Player 0 wins
+[*][ ][*],3,13,Player 1 wins
+[*][ ][*],4,14,Player 0 wins
+[*][ ][*],5,13,Player 0 wins
+[*][ ][*],6,12,Player 5 wins
+[*][ ][*],7,6,Player 6 wins
+[*][ ][*],8,7,Player 6 wins
+[*][ ][*],9,6,Only action cards left
+[*][ ][*],10,11,Player 7 wins
+[ ][*][*],2,48,Player 0 wins
+[ ][*][*],3,29,Player 0 wins
+[ ][*][*],4,7,Player 0 wins
+[ ][*][*],5,6,Player 3 wins
+[ ][*][*],6,10,Player 5 wins
+[ ][*][*],7,6,Player 0 wins
+[ ][*][*],8,9,Player 7 wins
+[ ][*][*],9,5,Player 6 wins
+[ ][*][*],10,4,Only action cards left
+[ ][ ][ ][ ],2,7,Player 1 wins
+[ ][ ][ ][ ],3,2,Player 1 wins
+[ ][ ][ ][ ],4,5,Player 3 wins
+[ ][ ][ ][ ],5,6,Player 2 wins
+[ ][ ][ ][ ],6,1,Player 1 wins
+[ ][ ][ ][ ],7,4,Player 0 wins
+[ ][ ][ ][ ],8,6,Player 0 wins
+[ ][ ][ ][ ],9,4,Player 4 wins
+[ ][ ][ ][ ],10,2,Player 2 wins
+[*][ ][ ][ ],2,15,Player 0 wins
+[*][ ][ ][ ],3,3,Player 1 wins
+[*][ ][ ][ ],4,6,Player 0 wins
+[*][ ][ ][ ],5,8,Player 4 wins
+[*][ ][ ][ ],6,3,Player 4 wins
+[*][ ][ ][ ],7,5,Player 0 wins
+[*][ ][ ][ ],8,5,Player 0 wins
+[*][ ][ ][ ],9,5,Player 6 wins
+[*][ ][ ][ ],10,5,Player 1 wins
+[ ][*][ ][ ],2,26,Player 0 wins
+[ ][*][ ][ ],3,13,Player 1 wins
+[ ][*][ ][ ],4,12,Player 0 wins
+[ ][*][ ][ ],5,12,Player 2 wins
+[ ][*][ ][ ],6,8,Player 4 wins
+[ ][*][ ][ ],7,5,Player 5 wins
+[ ][*][ ][ ],8,7,Player 1 wins
+[ ][*][ ][ ],9,8,Player 3 wins
+[ ][*][ ][ ],10,11,Only action cards left
+[ ][ ][*][ ],2,12,Player 0 wins
+[ ][ ][*][ ],3,6,Player 2 wins
+[ ][ ][*][ ],4,6,Player 1 wins
+[ ][ ][*][ ],5,9,Player 1 wins
+[ ][ ][*][ ],6,11,Player 2 wins
+[ ][ ][*][ ],7,6,Player 6 wins
+[ ][ ][*][ ],8,8,Player 5 wins
+[ ][ ][*][ ],9,5,Only action cards left
+[ ][ ][*][ ],10,3,Player 1 wins
+[ ][ ][ ][*],2,4,Player 0 wins
+[ ][ ][ ][*],3,22,Player 0 wins
+[ ][ ][ ][*],4,6,Player 3 wins
+[ ][ ][ ][*],5,6,Player 1 wins
+[ ][ ][ ][*],6,5,Player 2 wins
+[ ][ ][ ][*],7,3,Player 6 wins
+[ ][ ][ ][*],8,4,Player 7 wins
+[ ][ ][ ][*],9,6,Only action cards left
+[ ][ ][ ][*],10,4,Player 7 wins
+[*][*][ ][ ],2,21,Player 1 wins
+[*][*][ ][ ],3,9,Player 2 wins
+[*][*][ ][ ],4,11,Player 3 wins
+[*][*][ ][ ],5,15,Player 2 wins
+[*][*][ ][ ],6,9,Player 3 wins
+[*][*][ ][ ],7,8,Only action cards left
+[*][*][ ][ ],8,3,Player 1 wins
+[*][*][ ][ ],9,4,Player 4 wins
+[*][*][ ][ ],10,2,Player 4 wins
+[ ][*][*][ ],2,13,Player 0 wins
+[ ][*][*][ ],3,17,Player 2 wins
+[ ][*][*][ ],4,16,Player 0 wins
+[ ][*][*][ ],5,15,Player 3 wins
+[ ][*][*][ ],6,9,Player 0 wins
+[ ][*][*][ ],7,11,Only action cards left
+[ ][*][*][ ],8,8,Only action cards left
+[ ][*][*][ ],9,5,Only action cards left
+[ ][*][*][ ],10,10,Only action cards left
+[ ][ ][*][*],2,33,Player 1 wins
+[ ][ ][*][*],3,25,Player 2 wins
+[ ][ ][*][*],4,18,Player 3 wins
+[ ][ ][*][*],5,11,Player 3 wins
+[ ][ ][*][*],6,7,Player 1 wins
+[ ][ ][*][*],7,7,Player 2 wins
+[ ][ ][*][*],8,7,Player 0 wins
+[ ][ ][*][*],9,17,Player 7 wins
+[ ][ ][*][*],10,7,Only action cards left
+[*][ ][*][ ],2,23,Player 0 wins
+[*][ ][*][ ],3,17,Player 0 wins
+[*][ ][*][ ],4,16,Player 3 wins
+[*][ ][*][ ],5,7,Player 3 wins
+[*][ ][*][ ],6,14,Only action cards left
+[*][ ][*][ ],7,12,Player 0 wins
+[*][ ][*][ ],8,9,Player 4 wins
+[*][ ][*][ ],9,5,Only action cards left
+[*][ ][*][ ],10,5,Only action cards left
+[ ][*][ ][*],2,6,Player 1 wins
+[ ][*][ ][*],3,28,Player 0 wins
+[ ][*][ ][*],4,20,Player 0 wins
+[ ][*][ ][*],5,3,Player 4 wins
+[ ][*][ ][*],6,11,Player 0 wins
+[ ][*][ ][*],7,9,Only action cards left
+[ ][*][ ][*],8,7,Only action cards left
+[ ][*][ ][*],9,7,Only action cards left
+[ ][*][ ][*],10,13,Only action cards left
+[*][ ][ ][*],2,12,Player 0 wins
+[*][ ][ ][*],3,28,Player 0 wins
+[*][ ][ ][*],4,11,Player 0 wins
+[*][ ][ ][*],5,24,Player 4 wins
+[*][ ][ ][*],6,11,Player 0 wins
+[*][ ][ ][*],7,9,Player 3 wins
+[*][ ][ ][*],8,14,Only action cards left
+[*][ ][ ][*],9,4,Player 4 wins
+[*][ ][ ][*],10,6,Only action cards left
+[ ][ ][ ][ ][ ],2,9,Player 1 wins
+[ ][ ][ ][ ][ ],3,9,Player 2 wins
+[ ][ ][ ][ ][ ],4,12,Player 0 wins
+[ ][ ][ ][ ][ ],5,8,Player 1 wins
+[ ][ ][ ][ ][ ],6,4,Player 1 wins
+[ ][ ][ ][ ][ ],7,4,Player 3 wins
+[ ][ ][ ][ ][ ],8,4,Player 7 wins
+[ ][ ][ ][ ][ ],9,4,Only action cards left
+[ ][ ][ ][ ][ ],10,3,Player 9 wins
+[*][ ][ ][ ][ ],2,20,Player 0 wins
+[*][ ][ ][ ][ ],3,12,Player 1 wins
+[*][ ][ ][ ][ ],4,6,Player 1 wins
+[*][ ][ ][ ][ ],5,8,Player 0 wins
+[*][ ][ ][ ][ ],6,15,Player 4 wins
+[*][ ][ ][ ][ ],7,7,Player 6 wins
+[*][ ][ ][ ][ ],8,8,Player 0 wins
+[*][ ][ ][ ][ ],9,15,Only action cards left
+[*][ ][ ][ ][ ],10,7,Only action cards left
+[ ][*][ ][ ][ ],2,11,Player 1 wins
+[ ][*][ ][ ][ ],3,14,Player 2 wins
+[ ][*][ ][ ][ ],4,16,Player 2 wins
+[ ][*][ ][ ][ ],5,10,Player 3 wins
+[ ][*][ ][ ][ ],6,9,Player 2 wins
+[ ][*][ ][ ][ ],7,11,Player 2 wins
+[ ][*][ ][ ][ ],8,5,Player 4 wins
+[ ][*][ ][ ][ ],9,7,Player 8 wins
+[ ][*][ ][ ][ ],10,4,Only action cards left
+[ ][ ][*][ ][ ],2,36,Player 1 wins
+[ ][ ][*][ ][ ],3,5,Player 0 wins
+[ ][ ][*][ ][ ],4,12,Player 1 wins
+[ ][ ][*][ ][ ],5,16,Player 3 wins
+[ ][ ][*][ ][ ],6,6,Player 3 wins
+[ ][ ][*][ ][ ],7,11,Player 4 wins
+[ ][ ][*][ ][ ],8,4,Player 3 wins
+[ ][ ][*][ ][ ],9,4,Player 3 wins
+[ ][ ][*][ ][ ],10,5,Only action cards left
+[ ][ ][ ][*][ ],2,5,Player 1 wins
+[ ][ ][ ][*][ ],3,23,Player 2 wins
+[ ][ ][ ][*][ ],4,23,Player 1 wins
+[ ][ ][ ][*][ ],5,14,Player 0 wins
+[ ][ ][ ][*][ ],6,7,Player 0 wins
+[ ][ ][ ][*][ ],7,9,Player 0 wins
+[ ][ ][ ][*][ ],8,10,Player 6 wins
+[ ][ ][ ][*][ ],9,4,Only action cards left
+[ ][ ][ ][*][ ],10,10,Player 2 wins
+[ ][ ][ ][ ][*],2,22,Player 1 wins
+[ ][ ][ ][ ][*],3,15,Player 0 wins
+[ ][ ][ ][ ][*],4,8,Player 2 wins
+[ ][ ][ ][ ][*],5,14,Player 3 wins
+[ ][ ][ ][ ][*],6,6,Player 4 wins
+[ ][ ][ ][ ][*],7,5,Player 2 wins
+[ ][ ][ ][ ][*],8,9,Player 6 wins
+[ ][ ][ ][ ][*],9,6,Player 2 wins
+[ ][ ][ ][ ][*],10,4,Only action cards left
+[*][*][ ][ ][ ],2,13,Player 0 wins
+[*][*][ ][ ][ ],3,21,Player 0 wins
+[*][*][ ][ ][ ],4,15,Player 3 wins
+[*][*][ ][ ][ ],5,10,Player 4 wins
+[*][*][ ][ ][ ],6,8,Player 3 wins
+[*][*][ ][ ][ ],7,12,Player 0 wins
+[*][*][ ][ ][ ],8,7,Player 7 wins
+[*][*][ ][ ][ ],9,7,Player 0 wins
+[*][*][ ][ ][ ],10,5,Only action cards left
+[ ][*][*][ ][ ],2,22,Player 1 wins
+[ ][*][*][ ][ ],3,19,Player 0 wins
+[ ][*][*][ ][ ],4,4,Player 2 wins
+[ ][*][*][ ][ ],5,20,Player 0 wins
+[ ][*][*][ ][ ],6,15,Player 0 wins
+[ ][*][*][ ][ ],7,8,Only action cards left
+[ ][*][*][ ][ ],8,6,Player 6 wins
+[ ][*][*][ ][ ],9,6,Only action cards left
+[ ][*][*][ ][ ],10,4,Only action cards left
+[ ][ ][*][*][ ],2,18,Player 1 wins
+[ ][ ][*][*][ ],3,8,Player 2 wins
+[ ][ ][*][*][ ],4,25,Player 0 wins
+[ ][ ][*][*][ ],5,10,Player 3 wins
+[ ][ ][*][*][ ],6,10,Player 5 wins
+[ ][ ][*][*][ ],7,16,Player 5 wins
+[ ][ ][*][*][ ],8,16,Player 3 wins
+[ ][ ][*][*][ ],9,7,Only action cards left
+[ ][ ][*][*][ ],10,4,Only action cards left
+[ ][ ][ ][*][*],2,34,Player 1 wins
+[ ][ ][ ][*][*],3,22,Player 0 wins
+[ ][ ][ ][*][*],4,11,Player 3 wins
+[ ][ ][ ][*][*],5,6,Player 2 wins
+[ ][ ][ ][*][*],6,15,Only action cards left
+[ ][ ][ ][*][*],7,10,Player 0 wins
+[ ][ ][ ][*][*],8,13,Only action cards left
+[ ][ ][ ][*][*],9,6,Player 1 wins
+[ ][ ][ ][*][*],10,7,Only action cards left
+[*][ ][*][ ][ ],2,26,Player 0 wins
+[*][ ][*][ ][ ],3,18,Player 0 wins
+[*][ ][*][ ][ ],4,19,Player 1 wins
+[*][ ][*][ ][ ],5,20,Player 1 wins
+[*][ ][*][ ][ ],6,10,Player 3 wins
+[*][ ][*][ ][ ],7,16,Only action cards left
+[*][ ][*][ ][ ],8,13,Only action cards left
+[*][ ][*][ ][ ],9,7,Player 2 wins
+[*][ ][*][ ][ ],10,16,Only action cards left
+[ ][*][ ][*][ ],2,31,Player 0 wins
+[ ][*][ ][*][ ],3,11,Player 1 wins
+[ ][*][ ][*][ ],4,16,Player 3 wins
+[ ][*][ ][*][ ],5,12,Player 0 wins
+[ ][*][ ][*][ ],6,11,Only action cards left
+[ ][*][ ][*][ ],7,18,Player 4 wins
+[ ][*][ ][*][ ],8,10,Only action cards left
+[ ][*][ ][*][ ],9,22,Only action cards left
+[ ][*][ ][*][ ],10,7,Only action cards left
+[ ][ ][*][ ][*],2,12,Player 1 wins
+[ ][ ][*][ ][*],3,26,Player 2 wins
+[ ][ ][*][ ][*],4,38,Player 0 wins
+[ ][ ][*][ ][*],5,27,Player 2 wins
+[ ][ ][*][ ][*],6,11,Player 4 wins
+[ ][ ][*][ ][*],7,44,Player 6 wins
+[ ][ ][*][ ][*],8,6,Player 2 wins
+[ ][ ][*][ ][*],9,7,Only action cards left
+[ ][ ][*][ ][*],10,5,Only action cards left
+[*][ ][ ][*][ ],2,16,Player 0 wins
+[*][ ][ ][*][ ],3,22,Player 2 wins
+[*][ ][ ][*][ ],4,8,Player 0 wins
+[*][ ][ ][*][ ],5,24,Player 4 wins
+[*][ ][ ][*][ ],6,10,Player 0 wins
+[*][ ][ ][*][ ],7,20,Only action cards left
+[*][ ][ ][*][ ],8,9,Only action cards left
+[*][ ][ ][*][ ],9,19,Only action cards left
+[*][ ][ ][*][ ],10,10,Only action cards left
+[ ][*][ ][ ][*],2,25,Player 0 wins
+[ ][*][ ][ ][*],3,23,Player 1 wins
+[ ][*][ ][ ][*],4,22,Player 0 wins
+[ ][*][ ][ ][*],5,20,Player 4 wins
+[ ][*][ ][ ][*],6,13,Player 4 wins
+[ ][*][ ][ ][*],7,13,Only action cards left
+[ ][*][ ][ ][*],8,8,Only action cards left
+[ ][*][ ][ ][*],9,5,Only action cards left
+[ ][*][ ][ ][*],10,4,Only action cards left
+[*][ ][ ][ ][*],2,9,Player 1 wins
+[*][ ][ ][ ][*],3,22,Player 1 wins
+[*][ ][ ][ ][*],4,12,Player 2 wins
+[*][ ][ ][ ][*],5,7,Player 1 wins
+[*][ ][ ][ ][*],6,8,Player 2 wins
+[*][ ][ ][ ][*],7,10,Player 0 wins
+[*][ ][ ][ ][*],8,8,Player 0 wins
+[*][ ][ ][ ][*],9,14,Only action cards left
+[*][ ][ ][ ][*],10,7,Player 5 wins

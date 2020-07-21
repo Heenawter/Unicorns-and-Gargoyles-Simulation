@@ -6,7 +6,10 @@
 #include <string>
 #include <tuple>
 #include "Player.h"
+<<<<<<< HEAD
 #include "GameStates.h"
+=======
+>>>>>>> f3b237074d3a5d2d20e6bc36e1c3809893dfc6a8
 
 class AggressivePlayer : public Player
 {

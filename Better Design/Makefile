@@ -1,8 +1,13 @@
 
 all: executable 
 
+<<<<<<< HEAD
 executable: Main.o Game.o Deck.o Player.o Cards.o Hand.o Player_Greedy.o Player_Random.o Player_Aggressive.o
 	g++ -std=c++11 -o executable Main.o Game.o Deck.o Player.o Cards.o Hand.o Player_Greedy.o Player_Random.o Player_Aggressive.o
+=======
+main.exe: Main.o Game.o Deck.o Player.o Cards.o Hand.o Player_Greedy.o Player_Random.o Player_Aggressive.o
+	g++ -std=c++11 -o main.exe Main.o Game.o Deck.o Player.o Cards.o Hand.o Player_Greedy.o Player_Random.o Player_Aggressive.o
+>>>>>>> f3b237074d3a5d2d20e6bc36e1c3809893dfc6a8
 
 Main.o: Main.cpp Debugging.h Game.h Player.h Deck.h Hand.h Cards.h Constants.h GameStates.h Player_Greedy.h Player_Random.h Player_Aggressive.h
 	g++ -std=c++11 -c Main.cpp

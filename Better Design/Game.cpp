@@ -91,6 +91,7 @@ Game::Game(int numPlayers, std::vector<std::string> playerTypes, std::string goa
 
     for(int i = 0; i < this->numPlayers; i++)
     {
+<<<<<<< HEAD
         Player* newPlayer;
         std::string type = playerTypes[i];
         if(type == "aggressive") {
@@ -103,6 +104,9 @@ Game::Game(int numPlayers, std::vector<std::string> playerTypes, std::string goa
 
 
         players.push_back(newPlayer);
+=======
+        players.push_back(new AggressivePlayer(deck, goal, cardInfo, i));
+>>>>>>> f3b237074d3a5d2d20e6bc36e1c3809893dfc6a8
     }
 
     for(int i = 0; i < this->numPlayers; i++) {

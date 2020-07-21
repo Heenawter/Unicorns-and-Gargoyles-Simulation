@@ -20,6 +20,7 @@ void generateGoals(int minLength, int maxLength, int maxUnicorns);
 
 int main()
 {
+<<<<<<< HEAD
 
     // if (__cplusplus == 201703L) std::cout << "C++17\n";
     // else if (__cplusplus == 201402L) std::cout << "C++14\n";
@@ -38,6 +39,11 @@ int main()
     // generateGoals(1, 10, 8);
 
 
+=======
+    // std::cout << "main" << std::endl;
+    runAnalysis();
+
+>>>>>>> f3b237074d3a5d2d20e6bc36e1c3809893dfc6a8
     // std::ofstream outputFile;
     // outputFile.open("./test.txt");
 
@@ -45,14 +51,21 @@ int main()
 
     // outputFile.close();
     // testPlayerType();
+<<<<<<< HEAD
 
     return 0;
+=======
+>>>>>>> f3b237074d3a5d2d20e6bc36e1c3809893dfc6a8
 }
 
 void testPlayerType(int numPlayers, std::string type)
 {
+<<<<<<< HEAD
     std::vector<std::string> playerTypes(numPlayers, type);
     Game *game = new Game(numPlayers, playerTypes, "[ ][ ][ ][*]");
+=======
+    Game *game = new Game(5, "[ ][ ][ ][*]");
+>>>>>>> f3b237074d3a5d2d20e6bc36e1c3809893dfc6a8
     Player* current;
     for(int i = 0; i < 5; i++)
     {
@@ -125,6 +138,7 @@ void runAnalysis(int numPlayers)
     goalsFile.open("./GameInfo/LongGoals.txt");
 
     std::ofstream outputFile;
+<<<<<<< HEAD
     outputFile.open("./Analysis/Data/" + std::to_string(numPlayers) + "Players_AllPossibleGoals_AllAggressive.csv");
     std::ofstream handSizeOutputFile;
     handSizeOutputFile.open("./Analysis/Data/" + std::to_string(numPlayers) + "Players_AllPossibleGoals_AllAggressive_HandSize.csv");
@@ -133,6 +147,9 @@ void runAnalysis(int numPlayers)
     std::vector<std::string> playerTypes (numPlayers, "aggressive");
     // std::vector<std::string> playerTypes { "aggressive", "aggressive", "aggressive", "aggressive", "aggressive",
                                         //    "aggressive", "aggressive", "aggressive", "aggressive", "aggressive" };              
+=======
+    outputFile.open("./GameInfo/AggressiveResults_fixed.csv");
+>>>>>>> f3b237074d3a5d2d20e6bc36e1c3809893dfc6a8
 
     if (goalsFile.is_open() && outputFile.is_open() && handSizeOutputFile.is_open())
     {

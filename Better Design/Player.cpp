@@ -244,8 +244,12 @@ std::string Player::toString()
     std::string numCards = std::to_string(this->getHandSize());
     std::string distance = std::to_string(this->getDistance());
 
+<<<<<<< HEAD
     return "- Player " + std::to_string(this->playerNum) + " (" + this->type + "): " 
             + handString + " (" + numCards + ") " + " --> " + generatedString + " (" + distance + ") ";
+=======
+    return handString + " (" + numCards + ") " + " --> " + generatedString + " (" + distance + ") ";
+>>>>>>> f3b237074d3a5d2d20e6bc36e1c3809893dfc6a8
 }
 
 std::vector<Player *> Player::getPlayersWithUnicorns()

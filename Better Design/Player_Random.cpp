@@ -125,6 +125,7 @@ TrollPlayer::TrollPlayer(Deck *deck, std::string goalString, Cards *cardInfo, in
     this->randomGenerator = std::mt19937(seed);
 }
 
+<<<<<<< HEAD
 TrollPlayer::~TrollPlayer()
 {
     sleep(0.5);
@@ -135,6 +136,13 @@ TrollPlayer::~TrollPlayer()
               obviously, if there is not more than 1 card in your hand, just draw;
               otherwise, randomly decide between drawing and rearranging */
     char TrollPlayer::takeTurn()
+=======
+/*  Function: takeTurn()
+    Goal:     Randomly decide to either draw a card or randomly rearrange your cards...
+              obviously, if there is not more than 1 card in your hand, just draw;
+              otherwise, randomly decide between drawing and rearranging */
+char TrollPlayer::takeTurn()
+>>>>>>> f3b237074d3a5d2d20e6bc36e1c3809893dfc6a8
 {
     LOG(" Take turn ... ");
     char card = ' ';
