@@ -21,11 +21,6 @@ private:
 
     Cards* cardInfo;
     
-    void combinationUtil(std::vector<char> hand, std::vector<char> tempHand,
-                         std::vector<char> &bestHand, int &bestDistance,
-                         std::string goalString,
-                         int start, int end,
-                         int index, int r);
     int stringDistance(const std::string &string1, const std::string &string2);
     std::string generateString();
     std::string generateString(std::vector<char> cards); // used in combinationUtil
@@ -35,11 +30,6 @@ public:
     Hand(const Hand &oldHand);  // copy constructor
     Hand(Hand oldHand, int r); // copy cards from 0 to r
 
-    std::string getCardName(char type);
-
-    bool operator < (const Hand &otherHand);
-    bool operator <= (const Hand &otherHand);
-    bool operator == (const Hand &otherHand);
     std::string toString();
 
     void addToHand(char card);
@@ -56,7 +46,7 @@ public:
     std::string getCurrentString() { return this->currentString; }
     std::string getGoalString() { return this->goalString; }
 
-    std::vector<char> setDifference(Hand otherHand);
+    std::vector<int> setDifference(Hand otherHand);
 };
 
 #endif

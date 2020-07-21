@@ -46,7 +46,7 @@ Deck::Deck(std::map<char, int> cardCounts, Cards *cardInfo)
 void Deck::shuffleDeck()
 {
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-    std::shuffle(cards.begin(), cards.end(), std::default_random_engine(seed));
+    std::shuffle(cards.begin(), cards.end(), std::mt19937(seed));
 }
 
 /*  Function: drawNextCard()
@@ -138,7 +138,7 @@ bool Deck::hasNonActionCard()
 
 std::string Deck::getCardName(char card)
 {
-    cardInfo->getCardName(card);
+    return cardInfo->getCardName(card);
 }
 
 std::string Deck::toString() 

@@ -47,13 +47,7 @@ std::tuple<Player *, int> TrollPlayer::action_poisonUnicorn()
 {
     // first, narrow down to only players who HAVE unicorns
     int numOtherPlayers = this->otherPlayers.size();
-    std::vector<Player *> playersWithUnicorns;
-    for (int i = 0; i < numOtherPlayers; i++)
-    {
-        if (this->otherPlayers[i]->getUnicornCount() != 0)
-            playersWithUnicorns.push_back(this->otherPlayers[i]);
-    }
-
+    std::vector<Player *> playersWithUnicorns = this->getPlayersWithUnicorns();
     int numPlayersWithUnicorns = playersWithUnicorns.size();
     Player *targetPlayer = NULL;
     int targetUnicorn = -1;
@@ -125,18 +119,25 @@ std::tuple<Player *, int> TrollPlayer::action_stealCard()
 TrollPlayer::TrollPlayer(Deck *deck, std::string goalString, Cards *cardInfo, int playerNum)
     : Player(deck, goalString, cardInfo, playerNum)
 {
+    this->type = "troll";
+
     int seed = std::chrono::system_clock::now().time_since_epoch().count();
     this->randomGenerator = std::mt19937(seed);
 }
 
-char TrollPlayer::takeTurn()
+TrollPlayer::~TrollPlayer()
+{
+    sleep(0.5);
+}
+
+    /*  Function: takeTurn()
+    Goal:     Randomly decide to either draw a card or randomly rearrange your cards...
+              obviously, if there is not more than 1 card in your hand, just draw;
+              otherwise, randomly decide between drawing and rearranging */
+    char TrollPlayer::takeTurn()
 {
     LOG(" Take turn ... ");
     char card = ' ';
-
-    // randomly decide to either draw a card or randomly rearrange your cards...
-    // obviously, if there is not more than 1 card in your hand, just draw;
-    // otherwise, randomly decide between drawing and rearranging
 
     if(this->getHandSize() > 1)
     {

@@ -43,6 +43,7 @@ char Player::drawCard()
               the action card drawn  */
 void Player::handleActionCard(char type)
 {
+    LOG("handling action card ... ");
     switch (type)
     {
     case ACTION_CARD_DRAW:
@@ -63,7 +64,7 @@ void Player::handleActionCard(char type)
     default:
         break;
     }
-
+    
     this->deck->discardCard(type); // discard the action card after use
 }
 
@@ -84,6 +85,7 @@ void Player::action_drawNonActionCard_helper()
         {
             this->otherPlayers[i]->action_drawNonActionCard();
         }
+        LOG("done drawing ... \n");
     }
     catch (RanOutOfCardsException &e1)
     {
@@ -108,6 +110,7 @@ void Player::action_discardCard_helper()
     {
         this->otherPlayers[i]->action_discardCard();
     }
+    LOG("done discarding ... \n");
 }
 
 /*  Function: action_springCleaning_helper()
@@ -123,6 +126,7 @@ void Player::action_springCleaning_helper()
     {
         this->otherPlayers[i]->action_springCleaning();
     }
+    LOG("\n");
 }
 
 /*  Function: action_poisonUnicorn_helper()
@@ -138,11 +142,12 @@ void Player::action_poisonUnicorn_helper()
 
     if(targetPlayer != NULL) 
     {
+        LOG("Target Player " + std::to_string(targetPlayer->getPlayerNum()) + " ");
+        LOG("and poison unicorn " + std::to_string(targetPlayer->getCard(targetUnicorn)) + " ... ");
         targetPlayer->hand->removeUnicorn(targetUnicorn);
         this->deck->discardCard(UNICORN);
-
-        std::cout << std::endl << targetPlayer->toString() << ", distance: " << targetPlayer->getHand()->getDistance() << std::endl;
     }
+    LOG("done poisoning ... \n");
 }
 
 /*  Function: action_stealCard_helper()
@@ -158,8 +163,11 @@ void Player::action_stealCard_helper()
 
     if (targetPlayer != NULL)
     {
-        this->hand->addToHand(targetPlayer->hand->removeCard(targetCard));
+        LOG("Target Player " + std::to_string(targetPlayer->getPlayerNum()) + " ");
+        LOG("and steal " + cardInfo->getCardName(targetPlayer->getCard(targetCard)) + " ... ");
+        this->hand->addToHand(targetPlayer->getHand()->removeCard(targetCard));
     }
+    LOG("done stealing ... ");
 }
 
 /*  Function: action_drawNonActionCard()
@@ -233,8 +241,33 @@ std::string Player::toString()
 {
     std::string handString = this->hand->toString();
     std::string generatedString = this->hand->getCurrentString();
+    std::string numCards = std::to_string(this->getHandSize());
+    std::string distance = std::to_string(this->getDistance());
 
-    return handString + " --> " + generatedString;
+    return "- Player " + std::to_string(this->playerNum) + " (" + this->type + "): " 
+            + handString + " (" + numCards + ") " + " --> " + generatedString + " (" + distance + ") ";
+}
+
+std::vector<Player *> Player::getPlayersWithUnicorns()
+{
+    std::vector<Player *> playersWithUnicorns;
+    for (int i = 0; i < this->otherPlayers.size(); i++)
+    {
+        if (this->otherPlayers[i]->getUnicornCount() != 0)
+            playersWithUnicorns.push_back(this->otherPlayers[i]);
+    }
+    return playersWithUnicorns;
+}
+
+std::vector<Player *> Player::getPlayersWithCards()
+{
+    std::vector<Player *> playersWithCards;
+    for (int i = 0; i < this->otherPlayers.size(); i++)
+    {
+        if (this->otherPlayers[i]->getHandSize() != 0)
+            playersWithCards.push_back(this->otherPlayers[i]);
+    }
+    return playersWithCards;
 }
 
 /*  Function: discardCard()

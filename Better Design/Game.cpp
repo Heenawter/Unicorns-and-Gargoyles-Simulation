@@ -29,7 +29,6 @@ void Game::readCards()
             addToMaps(line, cardCounter);
             cardCounter++;
         }
-
         file.close();
     }
 }
@@ -39,7 +38,13 @@ void Game::readCards()
 void Game::addToMaps(std::string line, char cardType)
 {
     std::string cardName = line.substr(0, line.find_first_of(','));
-    int count = int(line[line.length() - 1]) - 48; // -48 to convert from ascii to int
+    int count;
+    if(IS_LINUX)
+        count = int(line[line.length() - 2]) - 48; // -48 to convert from ascii to int
+    else
+        count = int(line[line.length() - 1]) - 48;
+
+    // std::cout << cardName << ": " << count << std::endl;
 
     cardMap[cardType] = cardName;
     cardCounts[cardType] = count;
@@ -75,17 +80,29 @@ void Game::actionCard_reverse()
               requires the number of players and the goal for that round. 
               Reads the card info (MOST LIKELY SHOULD MOVE TO SIMULATION)
               Creates the card, table, and player objects. */
-Game::Game(int numPlayers, std::string goal)
+Game::Game(int numPlayers, std::vector<std::string> playerTypes, std::string goal)
 {
     this->numPlayers = numPlayers;
 
     readCards();
     cardInfo = new Cards(cardMap);
     deck = new Deck(cardCounts, cardInfo);
+    // std::cout << deck->toString() << std::endl;
 
     for(int i = 0; i < this->numPlayers; i++)
     {
-        players.push_back(new GreedyPlayer(deck, goal, cardInfo, i));
+        Player* newPlayer;
+        std::string type = playerTypes[i];
+        if(type == "aggressive") {
+            newPlayer = new AggressivePlayer(deck, goal, cardInfo, i);
+        } else if (type == "greedy") {
+            newPlayer = new GreedyPlayer(deck, goal, cardInfo, i);
+        } else if (type == "troll") {
+            newPlayer = new TrollPlayer(deck, goal, cardInfo, i);
+        }
+
+
+        players.push_back(newPlayer);
     }
 
     for(int i = 0; i < this->numPlayers; i++) {
@@ -107,7 +124,7 @@ Game::~Game()
     delete deck;
     for (int i = 0; i < this->numPlayers; i++)
     {
-        delete(players[i]);
+        delete players[i];
     }
 }
 
@@ -125,7 +142,6 @@ bool Game::gameRound()
         // every player will go in a round.
 
         LOG("Player " + std::to_string(this->currentPlayer->getPlayerNum()) + ": ");
-        // playerTurn(goalString, playerNum);
         try
         {
             newestCard = this->currentPlayer->takeTurn();
@@ -144,22 +160,33 @@ bool Game::gameRound()
             throw e4;
         }
 
-        if(this->currentPlayer->matchesGoal())
+        if (this->currentPlayer->matchesGoal())
         {
             win = true;
             winningPlayer = this->currentPlayer->getPlayerNum();
             LOG("Player " + std::to_string(this->currentPlayer->getPlayerNum()) + " wins!! \n");
         }
-        else
+        else if (this->cardInfo->isActionCard(newestCard))
         {
-            currentPlayer = getNextPlayer(currentPlayer); // advance to the next player
-            count++;                                      // and increase the counter for the number of turns in this round
-            LOG("\n");
+            // some action cards will allow OTHER players to win other than current; 
+            // need to account for this by checking ALL players            
+            for(int i = 0; i < numPlayers && !win; i++)
+            {
+                if(this->players[i]->matchesGoal())
+                {
+                    win = true;
+                    winningPlayer = this->currentPlayer->getPlayerNum();
+                    LOG("Player " + std::to_string(this->currentPlayer->getPlayerNum()) + " wins!! \n");
+                }
+            }
         }
+        currentPlayer = getNextPlayer(currentPlayer); // advance to the next player
+        count++;                                      // and increase the counter for the number of turns in this round
+        LOG("\n");
     }
 
     for(int i = 0; i < numPlayers; i++) {
-        LOG("- Player " + std::to_string(i) + ": ");
+        // LOG("- Player " + std::to_string(i) + ": ");
         LOG(players[i]->toString() + "\n");
     }
     LOG("Deck size:    " + std::to_string(this->deck->getDeckSize()) + "\n");

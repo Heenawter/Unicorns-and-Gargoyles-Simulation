@@ -22,6 +22,7 @@ protected:
     std::vector<Player*> otherPlayers;
 
     int playerNum;
+    std::string type;
 
     char drawCard();
     void handleActionCard(char type);
@@ -30,7 +31,7 @@ protected:
     void action_discardCard_helper();
     void action_springCleaning_helper();
     // void action_poisonUnicorn_helper();
-    void action_stealCard_helper();
+    // void action_stealCard_helper();
 
     /**** ACTION CARDS ****/
     // void action_drawNonActionCard();
@@ -40,8 +41,8 @@ protected:
     virtual std::tuple<Player *, int> action_stealCard() = 0;
 
 public:
-    Player(Deck *deck, std::string goalString, Cards* cardInfo, int playerNum);
-    ~Player();
+    Player(Deck *deck, std::string goalString, Cards *cardInfo, int playerNum);
+    virtual ~Player();
 
     void initOtherPlayers(std::vector<Player *> otherPlayers);
     virtual char takeTurn() = 0;
@@ -49,15 +50,21 @@ public:
 
     std::string toString();
 
-    void action_drawNonActionCard(); // MAKE ME PRIVATE WHEN NOT TESTING
+    void action_drawNonActionCard();    // MAKE ME PRIVATE WHEN NOT TESTING
     void action_poisonUnicorn_helper(); // MAKE ME PRIVATE WHEN NOT TESTING
+    void action_stealCard_helper();     // MAKE ME PRIVATE WHEN NOT TESTING
+
 
     int getUnicornCount() { return this->hand->getNumUnicorns(); }
     int getHandSize() { return this->hand->getNumCards(); }
     char getCard(int i) { return this->hand->getCard(i); }
     int getPlayerNum() { return playerNum; }
+    int getDistance() { return this->hand->getDistance(); }
     Hand* getHand() { return this->hand; }
+    std::string getType() { return this->type; }
 
+    std::vector<Player *> getPlayersWithUnicorns();
+    std::vector<Player *> getPlayersWithCards();
     void discardCard(int card);
     void moveCard(int oldIndex, int newIndex);
 };
