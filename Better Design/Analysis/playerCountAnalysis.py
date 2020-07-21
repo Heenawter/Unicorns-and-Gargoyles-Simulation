@@ -33,6 +33,7 @@ ax1 = plt.bar(playerCounts, winPercentages, color='#f7a609',
         edgecolor='white', width=0.85, label="Completed")
 
 
+# this is a test comment
 for r1, r2 in zip(ax1, ax2):
     h1 = r1.get_height()
     h2 = r2.get_height()
