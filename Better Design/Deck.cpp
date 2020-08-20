@@ -87,6 +87,8 @@ char Deck::drawNonActionCard()
     char nextCard;
     bool nonActionCardExists = hasNonActionCard();
 
+    // std::cout << this->toString() << std::endl;
+
     // first, this can only be done IF A NON-ACTION CARD exists
     // in either the main deck or the discard deck; so, check this.
     if(!nonActionCardExists)

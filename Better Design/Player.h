@@ -28,8 +28,8 @@ protected:
     void handleActionCard(char type);
 
     void action_drawNonActionCard_helper();
-    void action_discardCard_helper();
-    void action_springCleaning_helper();
+    // void action_discardCard_helper();
+    // void action_springCleaning_helper();
     // void action_poisonUnicorn_helper();
     // void action_stealCard_helper();
 
@@ -50,6 +50,8 @@ public:
 
     std::string toString();
 
+    void action_discardCard_helper();       // MAKE ME PRIVATE WHEN NOT TESTING
+    void action_springCleaning_helper(); // MAKE ME PRIVATE WHEN NOT TESTING
     void action_drawNonActionCard();    // MAKE ME PRIVATE WHEN NOT TESTING
     void action_poisonUnicorn_helper(); // MAKE ME PRIVATE WHEN NOT TESTING
     void action_stealCard_helper();     // MAKE ME PRIVATE WHEN NOT TESTING

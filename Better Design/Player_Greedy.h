@@ -7,6 +7,7 @@
 #include <tuple>
 #include <functional>
 #include "Player.h"
+#include "GameStates.h"
 
 class GreedyPlayer : public Player
 {

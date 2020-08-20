@@ -42,19 +42,20 @@ void GreedyPlayer::action_discardCard()
 
 /*  Function: springCleaning()
     Goal:     Remove a card; if the solution gets better, continue with 
-              that hand and try removing another card.
-              Basically, go through the hand ONCE and, every time you 
-              encounter a card such that, when it is removed, the hand
-              gets closer to the goal, remove it and continue */
+              that hand and try removing another card from the start of
+              the new tableau. NO BACKTRACKING */
 void GreedyPlayer::action_springCleaning()
 {
     Hand testHand = Hand(*this->hand); // use copy constructor to make a copy
-    Hand currentHand = Hand(*this->hand);
+    // Hand currentHand = Hand(*this->hand);
     int testDistance;
-    int currentDistance = currentHand.getDistance();
+    int currentDistance = this->hand->getDistance();
 
-    for (int i = 0; i < testHand.getNumCards(); i++)
+    // std::cout << "\n---> STARTING HAND::    " << this->hand->toString() << std::endl;
+    // std::cout << "---> STARTING DIST::    " << currentDistance << std::endl;
+    for (int i = 0; i < this->hand->getNumCards(); i++)
     {
+        // std::cout << "---> " << i << ", " << this->hand->getNumCards() << std::endl;
         testHand.removeCard(i);
         testDistance = testHand.getDistance();
 
@@ -67,26 +68,27 @@ void GreedyPlayer::action_springCleaning()
         {
             // std::cout << "... remove card " << i << " ... " << std::endl;
             // LOG("removed card " + std::to_string(i) + " ... ");
-            currentHand.removeCard(i);
-            currentDistance = currentHand.getDistance();
-            i--;
+            // currentHand.removeCard(i);
+            this->discardCard(i);
+            currentDistance = this->hand->getDistance();
+            i = -1;
         }
-        testHand = Hand(currentHand);
+        testHand = Hand(*this->hand);
         // std::cout << "Test hand: " << testHand.toString() << std::endl;
     }
 
-    std::vector<int> setDifference = this->hand->setDifference(currentHand);
-    for (int i = 0; i < setDifference.size(); i++)
-    {
-        LOG("removed card " + std::to_string(i) + " ... ");
-        this->discardCard(setDifference[i]);
+    // std::vector<int> setDifference = this->hand->setDifference(currentHand);
+    // for (int i = 0; i < setDifference.size(); i++)
+    // {
+    //     LOG("removed card " + std::to_string(setDifference[i]) + " ... ");
+    //     this->discardCard(setDifference[i]);
 
-        // adjust next indeces, since hand is now 1 smaller
-        for (int j = i + 1; j < setDifference.size(); j++)
-        {
-            setDifference[j]--;
-        }
-    }
+    //     // adjust next indeces, since hand is now 1 smaller
+    //     for (int j = i + 1; j < setDifference.size(); j++)
+    //     {
+    //         setDifference[j]--;
+    //     }
+    // }
 
     // delete this->hand;
     // this->hand = new Hand(currentHand);
@@ -341,6 +343,12 @@ GreedyPlayer::GreedyPlayer(Deck *deck, std::string goalString, Cards *cardInfo, 
               if swapping does not help, draw a new card */
 char GreedyPlayer::takeTurn()
 {
+    if(this->getHandSize() >= 20)
+    {
+        throw(TooManyCardsException());
+    }
+
+
     LOG(" Take turn ... ");
     char card = ' ';
 

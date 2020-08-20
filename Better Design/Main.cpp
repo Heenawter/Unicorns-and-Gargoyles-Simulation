@@ -11,7 +11,12 @@
 */
 
 void testPlayerType(int numPlayers, std::string type);
-void runAnalysis(int numPlayers);
+
+void runAnalysis_files(std::vector<std::string> playerTypes, std::ifstream &goalsFile,
+                       std::ofstream &outputFile, std::ofstream &handSizeOutputFile);
+void runAnalysis(std::vector<std::string> playerTypes);
+void runAnalysis_permutations(std::vector<std::string> playerTypes);
+
 void runGame(int numPlayers, std::vector<std::string> playerTypes,
              std::string goal, std::ofstream &outputFile, std::ofstream &handOutputFile);
 void generateGoals_Recursive(std::ofstream &outputFile, std::string prefix, int k, int maxUnicorns);
@@ -20,7 +25,8 @@ void generateGoals(int minLength, int maxLength, int maxUnicorns);
 
 int main()
 {
-<<<<<<< HEAD
+
+    testPlayerType(2, "greedy"); 
 
     // if (__cplusplus == 201703L) std::cout << "C++17\n";
     // else if (__cplusplus == 201402L) std::cout << "C++14\n";
@@ -28,22 +34,39 @@ int main()
     // else if (__cplusplus == 199711L) std::cout << "C++98\n";
     // else std::cout << "pre-standard C++\n";
 
+
+    
+    // // std::vector<std::string> playerTypes (numPlayers, "aggressive");
+    // std::vector<std::string> playerTypes { "aggressive", "greedy", "troll" };
+    // auto start = std::chrono::high_resolution_clock::now();
+    // // runAnalysis(playerTypes);
+    // runAnalysis_permutations(playerTypes);       
+    // auto finish = std::chrono::high_resolution_clock::now();
+    // // // std::chrono::duration<double> elapsed = finish - start;
+
+    // auto elapsed = std::chrono::duration_cast<std::chrono::minutes>(finish - start).count();
+    // std::cout << "------> Elapsed time: " << elapsed << " mins" << std::endl;
+
+    // runAnalysis_permutations(playerTypes);
+
+    // std::srand ( unsigned ( std::time(0) ) );
+    // std::cout << std::rand() << std::endl;
+
+
     // std::cout << "main" << std::endl;
-    runAnalysis(3);
-    runAnalysis(4);
-    runAnalysis(6);
-    runAnalysis(7);
-    runAnalysis(8);
-    runAnalysis(9);
+    // runAnalysis(2);
+    // runAnalysis(4);
+    // runAnalysis(3);
+    // runAnalysis(5);
+    // runAnalysis(6);
+    // runAnalysis(7);
+    // runAnalysis(8);
+    // runAnalysis(9);
+    // runAnalysis(10);
 
     // generateGoals(1, 10, 8);
 
 
-=======
-    // std::cout << "main" << std::endl;
-    runAnalysis();
-
->>>>>>> f3b237074d3a5d2d20e6bc36e1c3809893dfc6a8
     // std::ofstream outputFile;
     // outputFile.open("./test.txt");
 
@@ -51,44 +74,49 @@ int main()
 
     // outputFile.close();
     // testPlayerType();
-<<<<<<< HEAD
 
     return 0;
-=======
->>>>>>> f3b237074d3a5d2d20e6bc36e1c3809893dfc6a8
 }
+
 
 void testPlayerType(int numPlayers, std::string type)
 {
-<<<<<<< HEAD
     std::vector<std::string> playerTypes(numPlayers, type);
     Game *game = new Game(numPlayers, playerTypes, "[ ][ ][ ][*]");
-=======
-    Game *game = new Game(5, "[ ][ ][ ][*]");
->>>>>>> f3b237074d3a5d2d20e6bc36e1c3809893dfc6a8
     Player* current;
-    for(int i = 0; i < 5; i++)
+
+    int numRounds = 5;
+    for(int i = 0; i < numRounds; i++)
     {
-        current = game->getPlayer(i);
-        for(int j = 0; j < 4; j++)
+        for(int j = 0; j < numPlayers; j++)
         {
+            // std::cout << "I'm here" << std::endl;1
+            current = game->getPlayer(j);
             current->action_drawNonActionCard();
         }
     }
 
-    for (int i = 0; i < 5; i++)
+    std::cout << std::endl;
+    game->printDeck();
+    std::cout << std::endl << std::endl;
+    for (int i = 0; i < numPlayers; i++)
     {
         current = game->getPlayer(i);
-        std::cout << i << ": " << current->toString() << ", distance: " << current->getHand()->getDistance() << std::endl;
+        std::cout << "Player " << i << " Before: " << current->toString() << std::endl;
     }
     
-
-    current = game->getPlayer(0); 
-    std::cout << "Before: " << current->toString() << std::endl;
-    // current->action_poisonUnicorn_helper();
-    current->takeTurn();
+    current->action_springCleaning_helper();
+    // current->takeTurn();
     // current->action_stealCard_helper();
-    std::cout << "After: " << current->toString() << std::endl;
+
+    for (int i = 0; i < numPlayers; i++)
+    {
+        current = game->getPlayer(i);
+        std::cout << "Player " << i << " After:  " << current->toString() << std::endl;
+    }
+
+    std::cout << std::endl;
+    game->printDeck();
 
     // std::cout << current->toString() << std::endl;
 
@@ -132,56 +160,96 @@ void generateGoals_Recursive(std::ofstream &outputFile, std::string prefix, int 
     }
 }
 
-void runAnalysis(int numPlayers)
+void runAnalysis_permutations(std::vector<std::string> playerTypes)
 {
     std::ifstream goalsFile;
     goalsFile.open("./GameInfo/LongGoals.txt");
 
     std::ofstream outputFile;
-<<<<<<< HEAD
-    outputFile.open("./Analysis/Data/" + std::to_string(numPlayers) + "Players_AllPossibleGoals_AllAggressive.csv");
+    outputFile.open("./Analysis/Data/permutationsOf3Players_AllPossibleGoals_1ofEachType_10runs.csv");
     std::ofstream handSizeOutputFile;
-    handSizeOutputFile.open("./Analysis/Data/" + std::to_string(numPlayers) + "Players_AllPossibleGoals_AllAggressive_HandSize.csv");
-
-    // std::cout << "Files Opened" << std::endl;
-    std::vector<std::string> playerTypes (numPlayers, "aggressive");
-    // std::vector<std::string> playerTypes { "aggressive", "aggressive", "aggressive", "aggressive", "aggressive",
-                                        //    "aggressive", "aggressive", "aggressive", "aggressive", "aggressive" };              
-=======
-    outputFile.open("./GameInfo/AggressiveResults_fixed.csv");
->>>>>>> f3b237074d3a5d2d20e6bc36e1c3809893dfc6a8
+    handSizeOutputFile.open("./Analysis/Data/permutationsOf3Players_AllPossibleGoals_1ofEachType_10runs_HandSize.csv");
 
     if (goalsFile.is_open() && outputFile.is_open() && handSizeOutputFile.is_open())
     {
-        // std::cout << "inside if" << std::endl;
-        std::string goal;
-        int numGoals;
-
-        /* read the goals */
-        goalsFile >> numGoals;         // the number of goals to try
-        std::getline(goalsFile, goal); // garbage read of new line
-
-        outputFile << "Goal,Number of Players,Number of Rounds,End Result" << std::endl;
+        outputFile << "Goal,Number of Players,Player Types,Number of Rounds,End Result" << std::endl;
         handSizeOutputFile << "Goal,Number of Players,Player Number,Type,Winner,Hand Size" << std::endl;
-        for (int i = 0; i < numGoals; i++)
-        {
-            // std::cout << i << std::endl;
-            std::getline(goalsFile, goal);
-            goal = goal.erase(goal.find_last_not_of("\t\n\v\f\r ") + 1);
-            std::cout << goal << std::endl;
 
-            // for (int numPlayers = 2; numPlayers <= 10; numPlayers++)
-            // {
-                for (int j = 0; j < 100; j++)
-                {
-                    std::cout << ".";
-                    std::cout.flush();
-                    runGame(numPlayers, playerTypes, goal, outputFile, handSizeOutputFile);
+        do {
+
+                std::cout << "!! new permutation of players ---> ";
+                for (auto type: playerTypes) { 
+                    std::cout << type << ", ";
                 }
-            // }
-            std::cout << std::endl;
+                std::cout << std::endl; 
 
-        }
+                runAnalysis_files(playerTypes, goalsFile, outputFile, handSizeOutputFile);
+                
+                // goalsFile.clear();
+                goalsFile.seekg(0, goalsFile.beg);
+            
+        } while (std::next_permutation(playerTypes.begin(), playerTypes.end()));
+
+        goalsFile.close();
+        outputFile.close();
+        handSizeOutputFile.close();
+    }
+}
+
+void runAnalysis_files(std::vector<std::string> playerTypes, std::ifstream &goalsFile,
+                       std::ofstream &outputFile, std::ofstream &handSizeOutputFile)
+{
+    // std::cout << "inside if" << std::endl;
+    int numPlayers = playerTypes.size();
+
+    std::string goal;
+    int numGoals;
+
+    /* read the goals */
+    goalsFile >> numGoals;         // the number of goals to try
+    std::getline(goalsFile, goal); // garbage read of new line
+
+    for (int i = 0; i < numGoals; i++)
+    {
+        // std::cout << i << std::endl;
+        std::getline(goalsFile, goal);
+        goal = goal.erase(goal.find_last_not_of("\t\n\v\f\r ") + 1);
+        std::cout << goal << std::endl;
+
+        // for (int numPlayers = 2; numPlayers <= 10; numPlayers++)
+        // {
+            for (int j = 0; j < 10; j++)
+            {
+                std::cout << ".";
+                std::cout.flush();
+                runGame(numPlayers, playerTypes, goal, outputFile, handSizeOutputFile);
+            }
+        // }
+        std::cout << std::endl;
+
+    }
+}
+
+void runAnalysis(std::vector<std::string> playerTypes)
+{
+    int numPlayers = playerTypes.size();
+    std::ifstream goalsFile;
+    goalsFile.open("./GameInfo/LongGoals.txt");
+
+    std::ofstream outputFile;
+    outputFile.open("./Analysis/Data/FIXED_" + std::to_string(numPlayers) + "Players_AllPossibleGoals_1time.csv");
+    std::ofstream handSizeOutputFile;
+    handSizeOutputFile.open("./Analysis/Data/FIXED_" + std::to_string(numPlayers) + "Players_AllPossibleGoals_HandSize_1time.csv");
+
+    // std::cout << "Files Opened" << std::endl;           
+
+    if (goalsFile.is_open() && outputFile.is_open() && handSizeOutputFile.is_open())
+    {
+        outputFile << "Goal,Number of Players,Player Types,Number of Rounds,End Result" << std::endl;
+        handSizeOutputFile << "Goal,Number of Players,Player Number,Type,Winner,Hand Size" << std::endl;
+
+        // std::cout << "inside if" << std::endl;
+        runAnalysis_files(playerTypes, goalsFile, outputFile, handSizeOutputFile);
 
         // std::cout << "before close" << std::endl;
         goalsFile.close();
@@ -203,8 +271,15 @@ void runGame(int numPlayers, std::vector<std::string> playerTypes,
     int winningPlayer = -1;
     std::string endResult = "";
 
+    std::string playerTypesString = "[";
+    for (auto type: playerTypes) { 
+        playerTypesString += type + ";";
+    }
+    playerTypesString.replace(playerTypesString.end()-1,playerTypesString.end(),"]");    
+
     outputFile << goal << ",";
     outputFile << numPlayers << ",";
+    outputFile << playerTypesString << ",";
     try
     {
 
@@ -215,7 +290,6 @@ void runGame(int numPlayers, std::vector<std::string> playerTypes,
         }
         winningPlayer = game->getWinningPlayer();
         endResult = "Player " + std::to_string(winningPlayer) + " wins";
-
     }
     catch (RanOutOfCardsException &e1)
     {
@@ -234,7 +308,7 @@ void runGame(int numPlayers, std::vector<std::string> playerTypes,
     }
 
     outputFile << roundCount << ",";
-    outputFile << endResult << std::endl;
+    outputFile << endResult << std::endl; 
     
     Player* currentPlayer;
     for(int i = 0; i < numPlayers; i++)

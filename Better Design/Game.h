@@ -48,6 +48,7 @@ public:
     std::vector<Player *> getPlayers() { return players; }
     int getWinningPlayer() { return winningPlayer; }
     int getDeckSize() { return deck->getDeckSize(); }
+    void printDeck() { LOG(this->deck->toString() + "\n"); }
 };
 
 #endif

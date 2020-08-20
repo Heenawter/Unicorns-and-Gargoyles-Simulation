@@ -6,7 +6,7 @@
 
 static const unsigned SEED = 1500;
 
-static const bool IS_LINUX = true;
+static const bool IS_LINUX = false;
 
 static const int MAX_INT = 2147483647;
 

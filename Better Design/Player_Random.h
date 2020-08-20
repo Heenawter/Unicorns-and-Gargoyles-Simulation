@@ -9,6 +9,7 @@
 #include <tuple>
 #include <unistd.h>
 #include "Player.h"
+#include "GameStates.h"
 
 class TrollPlayer : public Player
 {

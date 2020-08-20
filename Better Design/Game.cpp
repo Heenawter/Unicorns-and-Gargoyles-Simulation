@@ -11,10 +11,12 @@
 void Game::readCards()
 {
     std::ifstream file;
-    file.open(INPUT_FILE);
+    file.open("./" + INPUT_FILE);
+    std::cout << "./" << INPUT_FILE << std::endl;
 
     if (file.is_open())
     {
+        std::cout << "here" << std::endl;
         std::string line;
         int numCards;
         int i;
@@ -26,6 +28,7 @@ void Game::readCards()
         for (i = 0; i < numCards; i++)
         {
             std::getline(file, line);
+
             addToMaps(line, cardCounter);
             cardCounter++;
         }
@@ -91,7 +94,6 @@ Game::Game(int numPlayers, std::vector<std::string> playerTypes, std::string goa
 
     for(int i = 0; i < this->numPlayers; i++)
     {
-<<<<<<< HEAD
         Player* newPlayer;
         std::string type = playerTypes[i];
         if(type == "aggressive") {
@@ -104,9 +106,6 @@ Game::Game(int numPlayers, std::vector<std::string> playerTypes, std::string goa
 
 
         players.push_back(newPlayer);
-=======
-        players.push_back(new AggressivePlayer(deck, goal, cardInfo, i));
->>>>>>> f3b237074d3a5d2d20e6bc36e1c3809893dfc6a8
     }
 
     for(int i = 0; i < this->numPlayers; i++) {
