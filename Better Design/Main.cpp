@@ -26,7 +26,7 @@ void generateGoals(int minLength, int maxLength, int maxUnicorns);
 int main()
 {
 
-    testPlayerType(2, "greedy"); 
+    testPlayerType(4, "aggressive"); 
 
     // if (__cplusplus == 201703L) std::cout << "C++17\n";
     // else if (__cplusplus == 201402L) std::cout << "C++14\n";
@@ -105,9 +105,10 @@ void testPlayerType(int numPlayers, std::string type)
         std::cout << "Player " << i << " Before: " << current->toString() << std::endl;
     }
     
-    current->action_springCleaning_helper();
+    // current->action_springCleaning_helper();
     // current->takeTurn();
-    // current->action_stealCard_helper();
+    current = game->getPlayer(0);
+    current->action_stealCard_helper();
 
     for (int i = 0; i < numPlayers; i++)
     {

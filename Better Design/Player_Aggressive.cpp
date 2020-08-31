@@ -213,34 +213,38 @@ std::tuple<Player *, int> AggressivePlayer::action_stealCard()
         return std::tuple<Player *, int>(targetPlayer, targetCard);
 
     Player *currentPlayer;
-    std::tuple<Player *, int, int> currentPlayerDamage;
-    std::vector<std::tuple<Player *, int, int>> damageInfo;
+
+    std::tuple<Player *, int, int, int> currentPlayerInfo;
+    std::vector<std::tuple<Player *, int, int, int>> allPlayerInfo;
+    
+    // std::vector<std::tuple<Player *, int, int>> damageInfo;
     for (int i = 0; i < numPlayersWithCards; i++)
     {
         currentPlayer = playersWithCards[i];
         // std::cout << "Player " << currentPlayer->getPlayerNum() << ": ";
         // std::cout << "before: " << currentPlayer->getDistance() << " ... ";
 
-        currentPlayerDamage = findTargetCard(currentPlayer, false);
+        currentPlayerInfo = findCardToSteal(currentPlayer);
+
         // std::cout << "target unicorn: " << std::get<1>(currentPlayerDamage) << " ... ";
         // std::cout << "damage: " << std::get<2>(currentPlayerDamage) << std::endl;
 
-        damageInfo.push_back(currentPlayerDamage);
+        allPlayerInfo.push_back(currentPlayerInfo);
     }
 
-    std::sort(damageInfo.begin(), damageInfo.end(), sortDamageInfo());
-    // for (auto val : damageInfo)
-    // {
-    //     std::cout << "Player " << std::get<0>(val)->getPlayerNum() << ": ";
-    //     std::cout << "damage: " << std::get<2>(val) << " ... ";
-    //     std::cout << "distance: " << std::get<0>(val)->getDistance() << " ... ";
-    //     std::cout << "numCards: " << std::get<0>(val)->getHandSize() << std::endl;
-    // }
+    std::sort(allPlayerInfo.begin(), allPlayerInfo.end(), sortCardsToSteal());
 
-    targetPlayer = std::get<0>(damageInfo[0]);
-    targetCard = std::get<1>(damageInfo[0]);
-    // std::cout << "Targetting Player " << targetPlayer->getPlayerNum();
-    // std::cout << " and card " << targetCard << std::endl;
+    for (auto val : allPlayerInfo)
+    {
+        std::cout << "Player " << std::get<0>(val)->getPlayerNum() << ": ";
+        std::cout << "own distance: " << std::get<3>(val) << " ... ";
+        std::cout << "damage to target: " << std::get<2>(val) << " ... ";
+        std::cout << "distance of target: " << std::get<0>(val)->getDistance() << " ... ";
+        std::cout << "numCards: " << std::get<0>(val)->getHandSize() << std::endl;
+    }
+
+    targetPlayer = std::get<0>(allPlayerInfo[0]);
+    targetCard = std::get<1>(allPlayerInfo[0]);
 
     return std::tuple<Player *, int>(targetPlayer, targetCard);
 }
@@ -334,19 +338,59 @@ std::tuple<Player *, int, int> AggressivePlayer::findTargetCard(Player *targetPl
     {
         // no unicorn causes outright damage, so just target the first
         // std::cout << "here!" << " ... ";
+
         testHand = Hand(*targetPlayer->getHand());
-        testHand.removeUnicorn(1);
-        testDistance = testHand.getDistance();
-        damage = testDistance - targetPlayer->getDistance();
         cardToRemove = 0;
         if (unicornsOnly)
+        {
+            testHand.removeUnicorn(1);   
             cardToRemove++;
+        } else {
+            testHand.removeCard(0);
+        }
+
+        testDistance = testHand.getDistance();
+        damage = testDistance - targetPlayer->getDistance();
     }
 
     damageInfo = std::make_tuple(targetPlayer, cardToRemove, damage);
     // std::cout << "damage: " << damage << " ... " << std::endl;
 
     return damageInfo;
+}
+
+
+std::tuple<Player *, int, int, int> AggressivePlayer::findCardToSteal(Player *targetPlayer)
+{
+    std::vector<std::tuple<int, int, int>> allCardInfo;
+    std::tuple<int, int, int> currentCardInfo;
+
+    Hand targetHandCopy = Hand(*targetPlayer->getHand());
+    Hand currentHandCopy = Hand(*this->getHand());
+    int numCards = targetPlayer->getHandSize();
+    char cardRemoved;
+    for (int i = 0; i < numCards; i++)
+    {
+        cardRemoved = targetHandCopy.removeCard(i);
+        currentHandCopy.addToHand(cardRemoved);
+
+        currentCardInfo = std::make_tuple(i, targetHandCopy.getDistance(), currentHandCopy.getDistance());
+        allCardInfo.push_back(currentCardInfo);
+
+        targetHandCopy = Hand(*targetPlayer->getHand());
+        currentHandCopy = Hand(*this->getHand());
+    }
+
+    std::sort(allCardInfo.begin(), allCardInfo.end(), sortCardInfo());
+    currentCardInfo = allCardInfo[0]; // get the front card after sorting
+    int cardToRemove = std::get<0>(currentCardInfo);
+    int damage = std::get<1>(currentCardInfo) - targetPlayer->getDistance();
+    int bestDistance = std::get<2>(currentCardInfo);
+
+    std::tuple<Player *, int, int, int> finalDecision;
+    finalDecision = std::make_tuple(targetPlayer, cardToRemove, damage, bestDistance);
+
+    return finalDecision;
 }
 
 /*  Function: combinationUtil()
