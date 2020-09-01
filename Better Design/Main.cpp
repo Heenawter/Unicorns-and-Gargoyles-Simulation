@@ -108,7 +108,7 @@ void testPlayerType(int numPlayers, std::string type)
     // current->action_springCleaning_helper();
     // current->takeTurn();
     current = game->getPlayer(0);
-    current->action_stealCard_helper();
+    current->action_discardCard_helper();
 
     for (int i = 0; i < numPlayers; i++)
     {
