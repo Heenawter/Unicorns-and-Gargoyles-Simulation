@@ -26,7 +26,7 @@ void generateGoals(int minLength, int maxLength, int maxUnicorns);
 int main()
 {
 
-    testPlayerType(4, "aggressive"); 
+    testPlayerType(4, "greedy"); 
 
     // if (__cplusplus == 201703L) std::cout << "C++17\n";
     // else if (__cplusplus == 201402L) std::cout << "C++14\n";

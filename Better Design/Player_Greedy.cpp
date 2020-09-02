@@ -18,20 +18,42 @@ void GreedyPlayer::action_discardCard()
     int numCards = getHandSize();
     if (numCards > 0)
     {
-        int cardToRemove = 0;
+        int cardToRemove = MAX_INT;
         // first, try removing a card that makes the hand better
-        bool removed = removeFirst(this, cardToRemove, std::less<int>());
+        // bool removed = removeFirst(this, cardToRemove, std::less<int>());
+
+        Hand testHand = Hand(*this->hand); // use copy constructor to make a copy
+        int testDistance = this->hand->getDistance();
+        int currentDistance = testDistance;
+        bool removed = false;
+
+        for (int i = 0; i < numCards && !removed; i++)
+        {
+            testHand.removeCard(i);
+            testDistance = testHand.getDistance();
+
+            if (testDistance <= currentDistance) // 
+            {
+                std::cout << "FOUND CARD TO REMOVE ... distance: " << testDistance << " -> " << testDistance << ", i = " << i << " ... \n";
+                removed = true;
+                cardToRemove = i;
+            }
+            else
+            {
+                testHand = Hand(*this->hand);
+            }
+        }
 
         if (!removed)
         {
-            // then, remove the first card that doesn't make the hand worse...
-            removed = removeFirst(this, cardToRemove, std::less_equal<int>());
+            // // then, remove the first card that doesn't make the hand worse...
+            // removed = removeFirst(this, cardToRemove, std::less_equal<int>());
 
-            if (!removed)
-            {
-                // then, just remove the first card regardless of the consequences
-                cardToRemove = 0;
-            }
+            // if (!removed)
+            // {
+                // then, just remove the last card regardless of the consequences
+                cardToRemove = numCards - 1;
+            // }
         }
 
         this->discardCard(cardToRemove);
