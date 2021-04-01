@@ -12,11 +12,11 @@ void Game::readCards()
 {
     std::ifstream file;
     file.open("./" + INPUT_FILE);
-    std::cout << "./" << INPUT_FILE << std::endl;
+    // std::cout << "./" << INPUT_FILE << std::endl;
 
     if (file.is_open())
     {
-        std::cout << "here" << std::endl;
+        // std::cout << "here" << std::endl;
         std::string line;
         int numCards;
         int i;
@@ -83,25 +83,25 @@ void Game::actionCard_reverse()
               requires the number of players and the goal for that round. 
               Reads the card info (MOST LIKELY SHOULD MOVE TO SIMULATION)
               Creates the card, table, and player objects. */
-Game::Game(int numPlayers, std::vector<std::string> playerTypes, std::string goal)
-{
+Game::Game(int numPlayers, std::vector<std::string> playerTypes, std::string goal, int seed)
+{   
+    this->gameSeed = seed;
     this->numPlayers = numPlayers;
 
     readCards();
     cardInfo = new Cards(cardMap);
-    deck = new Deck(cardCounts, cardInfo);
-    // std::cout << deck->toString() << std::endl;
+    deck = new Deck(cardCounts, cardInfo, this->gameSeed);
 
     for(int i = 0; i < this->numPlayers; i++)
     {
         Player* newPlayer;
         std::string type = playerTypes[i];
         if(type == "aggressive") {
-            newPlayer = new AggressivePlayer(deck, goal, cardInfo, i);
+            newPlayer = new AggressivePlayer(deck, goal, cardInfo, i, this->gameSeed);
         } else if (type == "greedy") {
-            newPlayer = new GreedyPlayer(deck, goal, cardInfo, i);
+            newPlayer = new GreedyPlayer(deck, goal, cardInfo, i, this->gameSeed);
         } else if (type == "troll") {
-            newPlayer = new TrollPlayer(deck, goal, cardInfo, i);
+            newPlayer = new TrollPlayer(deck, goal, cardInfo, i, this->gameSeed);
         }
 
 
@@ -112,10 +112,11 @@ Game::Game(int numPlayers, std::vector<std::string> playerTypes, std::string goa
         players[i]->initOtherPlayers(players);
     }
 
-    winningPlayer = MAX_INT;
-    gameDirection = 1;
-    startingPlayer = 0;
-    currentPlayer = players[0];
+    this->winningPlayer = MAX_INT;
+    this->gameDirection = 1;
+    this->startingPlayer = 0;
+    this->currentPlayer = players[0];
+    this->numTurns = 0;
 }
 
 /*  Function: ~Game()
@@ -148,11 +149,30 @@ bool Game::gameRound()
         try
         {
             newestCard = this->currentPlayer->takeTurn();
+
             if (newestCard == ACTION_CARD_REVERSE)
             {
                 LOG(" reverse ... \n");
                 actionCard_reverse();
             }
+
+
+            #ifdef _ANTIBUGSTATEMENTS
+                int deckSize = this->deck->getDeckSize();
+                int discardSize = this->deck->getDiscardSize();
+
+                int cardsInPlayCount = 0;
+                for (int i = 0; i <  this->numPlayers; i++)
+                {
+                    cardsInPlayCount += this->getPlayer(i)->getHand()->getNumCards();
+                }
+
+                int totalCards = deckSize + discardSize + cardsInPlayCount;
+                if(totalCards != 72)
+                {
+                    throw(InvalidGameException());
+                }
+            #endif
         }
         catch (RanOutOfCardsException &e1)
         {
@@ -183,6 +203,99 @@ bool Game::gameRound()
                 }
             }
         }
+        currentPlayer = getNextPlayer(currentPlayer); // advance to the next player
+        count++;                                      // and increase the counter for the number of turns in this round
+        this->numTurns++;
+        LOG("\n");
+    }
+
+    for(int i = 0; i < numPlayers; i++) {
+        // LOG("- Player " + std::to_string(i) + ": ");
+        LOG(players[i]->toString() + "\n");
+    }
+    LOG("Deck size:    " + std::to_string(this->deck->getDeckSize()) + "\n");
+    LOG("Discard size: " + std::to_string(this->deck->getDiscardSize()) + "\n"); 
+    LOG(this->deck->toString() + "\n");
+
+    return win;
+}
+
+bool Game::gameRound_limitedTime(int* remainingTime_s, int timePerTurn_s)
+{
+    int count = 0;
+    char newestCard;
+    bool win = false;
+
+    LOG("\n------------------ NEW ROUND ------------------\n");
+    while (count < this->numPlayers && !win && *remainingTime_s >= timePerTurn_s)
+    {
+        // a round always consists of <numPlayers> turns; 
+        // because of the reverse order card, it is not guaranteed that
+        // every player will go in a round.
+
+        LOG("Player " + std::to_string(this->currentPlayer->getPlayerNum()) + ": ");
+        *remainingTime_s -= timePerTurn_s;
+        this->numTurns++;
+
+        try
+        {
+            newestCard = this->currentPlayer->takeTurn();
+
+            if (newestCard == ACTION_CARD_REVERSE)
+            {
+                LOG(" reverse ... \n");
+                actionCard_reverse();
+            }
+
+
+            #ifdef _ANTIBUGSTATEMENTS
+                int deckSize = this->deck->getDeckSize();
+                int discardSize = this->deck->getDiscardSize();
+
+                int cardsInPlayCount = 0;
+                for (int i = 0; i <  this->numPlayers; i++)
+                {
+                    cardsInPlayCount += this->getPlayer(i)->getHand()->getNumCards();
+                }
+
+                int totalCards = deckSize + discardSize + cardsInPlayCount;
+                if(totalCards != 72)
+                {
+                    throw(InvalidGameException());
+                }
+            #endif
+        }
+        catch (RanOutOfCardsException &e1)
+        {
+            throw e1;
+        }
+        catch (OnlyActionCardsException &e4)
+        {
+            // std::cout << "Only action cards left: " <<  this->numTurns << " turns, seed = " << this->gameSeed << std::endl;
+            throw e4;
+        }
+
+        if (this->currentPlayer->matchesGoal())
+        {
+            win = true;
+            winningPlayer = this->currentPlayer->getPlayerNum();
+            LOG("Player " + std::to_string(this->currentPlayer->getPlayerNum()) + " wins!! \n");
+        }
+        else if (this->cardInfo->isActionCard(newestCard))
+        {
+            // some action cards will allow OTHER players to win other than current; 
+            // need to account for this by checking ALL players            
+            for(int i = 0; i < numPlayers && !win; i++)
+            {
+                if(this->players[i]->matchesGoal())
+                {
+                    win = true;
+                    winningPlayer = this->currentPlayer->getPlayerNum();
+                    LOG("Player " + std::to_string(this->currentPlayer->getPlayerNum()) + " wins!! \n");
+                }
+            }
+        }
+
         currentPlayer = getNextPlayer(currentPlayer); // advance to the next player
         count++;                                      // and increase the counter for the number of turns in this round
         LOG("\n");

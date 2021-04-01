@@ -27,8 +27,9 @@ bool Deck::hasNonActionCard(std::vector<char> deck)
 
 /*  Function: Deck(<map>)
     Goal:     Build a deck object with counts */
-Deck::Deck(std::map<char, int> cardCounts, Cards *cardInfo)
+Deck::Deck(std::map<char, int> cardCounts, Cards *cardInfo, int seed)
 {
+    this->gameSeed = seed;
     this->cardInfo = cardInfo;
     for (auto const &x : cardCounts)
     {
@@ -45,8 +46,7 @@ Deck::Deck(std::map<char, int> cardCounts, Cards *cardInfo)
     Goal:     Shuffle the main deck */
 void Deck::shuffleDeck()
 {
-    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-    std::shuffle(cards.begin(), cards.end(), std::mt19937(seed));
+    std::shuffle(cards.begin(), cards.end(), std::mt19937(this->gameSeed));
 }
 
 /*  Function: drawNextCard()

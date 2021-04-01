@@ -37,7 +37,7 @@ class TooManyCardsException : public std::exception
 public:
     virtual const char *what() const throw()
     {
-        return "Too many cards in Aggressive Player's hand - terminate.";
+        return "Too many cards in player's hand - terminate.";
     }
 };
 

@@ -14,18 +14,19 @@
 class TrollPlayer : public Player
 {
 private:
-    std::mt19937 randomGenerator;
+    int findRandomCard();
+
+public:
+    TrollPlayer(Deck *deck, std::string goalString, Cards *cardInfo, int playerNum, int seed);
+    ~TrollPlayer();
+    char takeTurn();
+    Hand trySwapping();
 
     /**** ACTION CARDS ****/
     void action_discardCard();
     void action_springCleaning();
     std::tuple<Player *, int> action_poisonUnicorn();
     std::tuple<Player *, int> action_stealCard();
-
-public:
-    TrollPlayer(Deck *deck, std::string goalString, Cards *cardInfo, int playerNum);
-    ~TrollPlayer();
-    char takeTurn();
 };
 
 #endif

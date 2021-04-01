@@ -1,0 +1,131 @@
+============ 6, 6, 6, 4, 3 =============
+
+Total # of games: 85966
+- Mean per group per session:
+ count    10000.000000
+mean         1.719320
+std          0.332623
+min          1.000000
+25%          1.400000
+50%          1.800000
+75%          2.000000
+max          3.400000
+Name: Number of Games, dtype: float64
+- Mean per session:
+ count    10000.000000
+mean         8.596600
+std          1.663113
+min          5.000000
+25%          7.000000
+50%          9.000000
+75%         10.000000
+max         17.000000
+Name: Number of Games, dtype: float64
+Total # of groups that had a single game (partial or incomplete): 20605
+Total # of groups that couldn't complete a single game: 17286
+Total # of sessions with at least one group that couln't complete a single game: 8578
+- Describe:
+ count    8578.000000
+mean        2.015155
+std         0.949956
+min         1.000000
+25%         1.000000
+50%         2.000000
+75%         3.000000
+max         5.000000
+Name: Group, dtype: float64
+Description of number of games with a winner by session:
+count    10000.000000
+mean         4.060700
+std          1.713858
+min          0.000000
+25%          3.000000
+50%          4.000000
+75%          5.000000
+max         12.000000
+Name: Number of Completed Games, dtype: float64
+Description of number of games with a winner by group:
+count    50000.000000
+mean         0.812140
+std          0.732407
+min          0.000000
+25%          0.000000
+50%          1.000000
+75%          1.000000
+max          5.000000
+Name: Number of Completed Games, dtype: float64
+Class time left after all games:
+ count    50000.000000
+mean       -38.328800
+std         43.300215
+min        -60.000000
+25%        -60.000000
+50%        -40.000000
+75%        -40.000000
+max        180.000000
+Name: Remaining Time, dtype: float64
+Empty DataFrame
+Columns: [Session, Seed, Group, Player Types, Number of Games, End Results, Number of Turns, Remaining Class Times, Number of Greedy, Number of Incomplete Games, Number of Completed Games, Remaining Time, Total Turns, Turns Per Player]     
+Index: []
+Total turns per session per group:
+ count    50000.000000
+mean        68.221280
+std          3.310718
+min         49.000000
+25%         67.000000
+50%         67.000000
+75%         72.000000
+max         72.000000
+Name: Total Turns, dtype: float64
+Turns per player per session:
+ count    50000.000000
+mean        14.734422
+std          4.419550
+min          8.166667
+25%         11.166667
+50%         12.000000
+75%         18.000000
+max         24.000000
+Name: Turns Per Player, dtype: float64
+Average length of games with a winner:
+ count    32086.000000
+mean      1769.287332
+std        720.260776
+min        220.000000
+25%       1220.000000
+50%       1700.000000
+75%       2380.000000
+max       3060.000000
+Name: Length of Completed Games, dtype: float64
+Average length of games that ran out of time:
+ count    50000.000000
+mean      1926.574400
+std       1054.182009
+min        220.000000
+25%        900.000000
+50%       1900.000000
+75%       3060.000000
+max       3060.000000
+Name: Length of Partial Games, dtype: float64
+Average length of games where not a single game was completed:
+ count    20605.000000
+mean      3040.336811
+std         55.446714
+min       2820.000000
+25%       3060.000000
+50%       3060.000000
+75%       3060.000000
+max       3060.000000
+Name: Length of Partial Games, dtype: float64
+Number of games that ended early: 3966
+Number of games that ended late: 46034
+- Describe per session:
+ count    3354.000000
+mean        1.182469
+std         0.428736
+min         1.000000
+25%         1.000000
+50%         1.000000
+75%         1.000000
+max         4.000000
+Name: Remaining Time, dtype: float64

@@ -1,0 +1,80 @@
+----- 50 groups of 3 students, 30 seconds per turn ------
+
+Total # of games: 1656340
+# of games per session trial:
+- mean: 165.634         (average games per trial)
+- std:  19.752408961085646
+# of games per group per trial:
+- mean: 3.3126800000000003      (average games per group in a single trial)
+- std:  0.395048179221713
+
+Total # of trials with at least one group that couldn't complete a single game: 3158 out of 10000
+Description of # of games where not a single game had a winner:
+- mean: 1.4559848005066498       (average # of incomplete games in trials where there are incomplete games)
+- std:  0.8247405572553645
+- min:  1.0
+- 25%:  1.0
+- 50%:  1.0
+- 75%:  2.0
+- max:  11.0
+
+Total # of *completed* games where a winner is declared: 1234504
+- mean: 123.4504         (average # of games with a winner in a single trial)
+- std:  20.97064416348871
+- min:  69.0
+- 25%:  108.0
+- 50%:  121.0
+- 75%:  136.0
+- max:  224.0
+
+Total number of groups in every trial with a winner: 492229 out of 500000
+- mean: 2.469008         (average # of games with a winner in a single trial for a single group)
+- std:  1.049600733259747
+- min:  0.0
+- 25%:  2.0
+- 50%:  2.0
+- 75%:  3.0
+- max:  9.0
+
+Excluding groups that were unable to complete a single game, describe the number of games:
+- mean: 2.507987136068781        (average # of games with a winner in a single trial for a single group)
+- std:  1.0105912635664984
+- min:  1.0
+- 25%:  2.0
+- 50%:  2.0
+- 75%:  3.0
+- max:  9.0
+
+Total # of games excluding partials if group already completed a game: 1226834 out of 1656340
+
+Length of games with a winner:
+- mean: 34.55225738534117        (average length of winning games, in minutes)
+- std:  14.11081410905886
+- min:  3.6666666666666665
+- 25%:  24.666666666666668
+- 50%:  31.333333333333332
+- 75%:  41.333333333333336
+- max:  100.33333333333333
+
+Number of groups that went overtime: 434481 out of 500000
+- of these, 427008 had already won a game
+Number of groups that completed a game: 492229 out of 500000
+Number of groups that couldn't complete a game: 4598 out of 500000
+Description of number of turns typical game lasts:
+- mean: 43.81664333333334        (average number of turns each player takes)
+- std:  2.0374024779185924
+- min:  30.0
+- 25%:  42.666666666666664
+- 50%:  44.666666666666664
+- 75%:  44.666666666666664
+- max:  48.666666666666664
+
+count    492229.000000
+mean         15.836620
+std           7.087132
+min           0.333333
+25%          10.888889
+50%          14.166667
+75%          19.333333
+max          48.666667
+Name: Turns per Winning Game per Player, dtype: float64

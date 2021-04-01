@@ -202,8 +202,10 @@ void Player::action_drawNonActionCard()
               Takes a pointer to the Table instance and
               a pointer to the Cards instance;
               Generates the hand object for the player */
-Player::Player(Deck *deck, std::string goalString, Cards *cardInfo, int playerNum)
+Player::Player(Deck *deck, std::string goalString, Cards *cardInfo, int playerNum, int seed)
 {
+    this->randomGenerator = std::mt19937(seed + playerNum);
+
     this->deck = deck;
     this->cardInfo = cardInfo;
     this->playerNum = playerNum;

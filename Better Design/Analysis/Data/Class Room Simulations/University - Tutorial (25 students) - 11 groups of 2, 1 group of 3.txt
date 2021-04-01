@@ -1,0 +1,88 @@
+Total # of games: 268812
+# of games per session trial:
+- mean: 26.8812         (average games per trial)
+- std:  4.033077377302987
+# of games per group per trial:
+- mean: 2.2401  (average games per group in a single trial)
+- std:  0.3360897814419155 
+
+Total # of trials with at least one group that couldn't complete a single game: 6446 out of 10000
+Description of # of games where not a single game had a winner:
+- mean: 1.8520012410797393       (average # of incomplete games in trials where there are incomplete games)
+- std:  1.1129263199497703
+- min:  1.0
+- 25%:  1.0
+- 50%:  2.0
+- 75%:  2.0
+- max:  9.0
+
+Total # of *completed* games where a winner is declared: 164978
+- mean: 16.4978          (average # of games with a winner in a single trial)
+- std:  4.367940367072911
+- min:  3.0
+- 25%:  13.0
+- 50%:  16.0
+- 75%:  19.0
+- max:  37.0
+
+Total number of groups in every trial with a winner: 106142 out of 120000
+- mean: 1.3748166666666666       (average # of games with a winner in a single trial for a single group)
+- std:  0.8208439242197355
+- min:  0.0
+- 25%:  1.0
+- 50%:  1.0
+- 75%:  2.0
+- max:  6.0 
+
+Excluding groups that were unable to complete a single game, describe the number of games:
+- mean: 1.5543140321456161       (average # of games with a winner in a single trial for a single group)
+- std:  0.6948076344082801
+- min:  1.0
+- 25%:  1.0
+- 50%:  1.0
+- 75%:  2.0
+- max:  6.0
+
+Total # of games excluding partials if group already completed a game: 176447 out of 268812
+
+Length of games with a winner:
+- mean: 26.04792437384719        (average length of winning games, in minutes)
+- std:  10.318005408370873
+- min:  3.6666666666666665
+- 25%:  18.333333333333332
+- 50%:  23.666666666666668
+- 75%:  33.666666666666664
+- max:  51.0
+
+Number of groups that went overtime: 105659 out of 120000
+- of these, 92431 had already won a game
+Number of groups that completed a game: 106142 out of 120000
+Number of groups that couldn't complete a game: 11938 out of 120000
+Description of number of turns typical game lasts:
+- mean: 31.923597222222224       (average number of turns each player takes)
+- std:  3.358612774052313
+- min:  16.333333333333332
+- 25%:  31.5
+- 50%:  33.5
+- 75%:  33.5
+- max:  36.0
+
+count    106142.000000
+mean         16.811268
+std           7.604818
+min           0.333333
+25%          11.000000
+50%          15.250000
+75%          22.000000
+max          36.000000
+Name: Turns per Winning Game per Player, dtype: float64
+Class time left after all games:
+ count    120000.000000
+mean        -31.518333
+std          49.668252
+min         -60.000000
+25%         -60.000000
+50%         -40.000000
+75%         -40.000000
+max         180.000000
+Name: Remaining Time, dtype: float64

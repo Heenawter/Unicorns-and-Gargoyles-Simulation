@@ -15,6 +15,8 @@
 class Player
 {
 protected:
+    std::mt19937 randomGenerator;
+    
     // std::unordered_set<std::vector<char>, vectorHash> allHands;
     Hand *hand;
     Deck *deck;
@@ -33,19 +35,14 @@ protected:
     // void action_poisonUnicorn_helper();
     // void action_stealCard_helper();
 
-    /**** ACTION CARDS ****/
-    // void action_drawNonActionCard();
-    virtual void action_discardCard() = 0;
-    virtual void action_springCleaning() = 0;
-    virtual std::tuple<Player *, int> action_poisonUnicorn() = 0;
-    virtual std::tuple<Player *, int> action_stealCard() = 0;
-
 public:
-    Player(Deck *deck, std::string goalString, Cards *cardInfo, int playerNum);
+    Player(Deck *deck, std::string goalString, Cards *cardInfo, int playerNum, int seed);
     virtual ~Player();
 
     void initOtherPlayers(std::vector<Player *> otherPlayers);
     virtual char takeTurn() = 0;
+    virtual Hand trySwapping() = 0;
+
     bool matchesGoal();
 
     std::string toString();
@@ -56,6 +53,12 @@ public:
     void action_poisonUnicorn_helper(); // MAKE ME PRIVATE WHEN NOT TESTING
     void action_stealCard_helper();     // MAKE ME PRIVATE WHEN NOT TESTING
 
+    /**** ACTION CARDS ****/
+    virtual void action_discardCard() = 0;
+    virtual void action_springCleaning() = 0;
+    virtual std::tuple<Player *, int> action_poisonUnicorn() = 0;
+    virtual std::tuple<Player *, int> action_stealCard() = 0;
+
 
     int getUnicornCount() { return this->hand->getNumUnicorns(); }
     int getHandSize() { return this->hand->getNumCards(); }
@@ -64,6 +67,9 @@ public:
     int getDistance() { return this->hand->getDistance(); }
     Hand* getHand() { return this->hand; }
     std::string getType() { return this->type; }
+    void setHand(Hand hand) { 
+        delete this->hand;
+        this->hand = new Hand(hand); }
 
     std::vector<Player *> getPlayersWithUnicorns();
     std::vector<Player *> getPlayersWithCards();

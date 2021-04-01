@@ -15,6 +15,8 @@
 class Deck
 {
 private:
+    int gameSeed;
+
     std::vector<char> cards;
     std::vector<char> discard;
 
@@ -23,7 +25,7 @@ private:
     bool hasNonActionCard(std::vector<char> deck);
 
 public:
-    Deck(std::map<char, int> cardCounts, Cards *cardInfo);
+    Deck(std::map<char, int> cardCounts, Cards *cardInfo, int seed);
 
     void shuffleDeck();
     char drawNextCard();

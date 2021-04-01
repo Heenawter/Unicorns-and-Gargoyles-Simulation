@@ -18,6 +18,7 @@
 class Game
 {
 private:
+    int gameSeed;
     int numPlayers;
 
     Cards *cardInfo;
@@ -31,6 +32,7 @@ private:
     int winningPlayer;
     int gameDirection;
     int startingPlayer;
+    int numTurns;
 
     void readCards();
     void addToMaps(std::string line, char cardType);
@@ -39,16 +41,22 @@ private:
     void actionCard_reverse();
 
 public:
-    Game(int numPlayers, std::vector<std::string> playerTypes, std::string goal);
+    Game(int numPlayers, std::vector<std::string> playerTypes, std::string goal,
+         int seed = std::chrono::system_clock::now().time_since_epoch().count());
     ~Game();
 
     bool gameRound();
+    bool gameRound_limitedTime(int* remainingTime_s, int timePerTurn_s);
 
     Player *getPlayer(int index) { return players.at(index); }
+    Player *getCurrentPlayer() { return this->currentPlayer; }
     std::vector<Player *> getPlayers() { return players; }
     int getWinningPlayer() { return winningPlayer; }
     int getDeckSize() { return deck->getDeckSize(); }
-    void printDeck() { LOG(this->deck->toString() + "\n"); }
+    Deck* getDeck() { return this->deck; }
+    void printDeck() { std::cout << this->deck->toString() << "\n"; }
+    int getSeed() { return this->gameSeed; }
+    int getTurnCount() { return this->numTurns; }
 };
 
 #endif

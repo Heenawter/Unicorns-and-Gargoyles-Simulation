@@ -14,7 +14,6 @@
               first card in your hand regardless of its impact */
 void GreedyPlayer::action_discardCard()
 {
-    // std::cout << "before: " << this->hand->getDistance() << ", " << this->hand->toString() << std::endl;
     int numCards = getHandSize();
     if (numCards > 0)
     {
@@ -22,19 +21,22 @@ void GreedyPlayer::action_discardCard()
         // first, try removing a card that makes the hand better
         // bool removed = removeFirst(this, cardToRemove, std::less<int>());
 
+        int testDistance;
         Hand testHand = Hand(*this->hand); // use copy constructor to make a copy
-        int testDistance = this->hand->getDistance();
-        int currentDistance = testDistance;
+        int currentDistance = this->hand->getDistance();
         bool removed = false;
 
+        DEBUG("Trying to remove... \n");
         for (int i = 0; i < numCards && !removed; i++)
         {
             testHand.removeCard(i);
             testDistance = testHand.getDistance();
 
+            DEBUG("- remove card " + std::to_string(i) + ", ");
+            DEBUG("distance " + std::to_string(currentDistance) + " -> " + std::to_string(testDistance) + "... ");
             if (testDistance <= currentDistance) // 
             {
-                std::cout << "FOUND CARD TO REMOVE ... distance: " << testDistance << " -> " << testDistance << ", i = " << i << " ... \n";
+                DEBUG("found card to remove... ");
                 removed = true;
                 cardToRemove = i;
             }
@@ -42,23 +44,26 @@ void GreedyPlayer::action_discardCard()
             {
                 testHand = Hand(*this->hand);
             }
+            DEBUG("\n");
         }
 
         if (!removed)
         {
-            // // then, remove the first card that doesn't make the hand worse...
-            // removed = removeFirst(this, cardToRemove, std::less_equal<int>());
-
-            // if (!removed)
-            // {
-                // then, just remove the last card regardless of the consequences
-                cardToRemove = numCards - 1;
-            // }
+            // then, just remove the last card regardless of the consequences
+            DEBUG("Found no valid card to remove... Remove last card.\n");
+            TEST("swapping only makes hand worse")
+            cardToRemove = numCards - 1;
         }
 
+        DEBUG("\nFinal decision: remove card " + std::to_string(cardToRemove) + "\n");
+        DEBUG("- Hand Before:     " + this->hand->toString() + "\n");
+        DEBUG("- Distance Before: " + std::to_string(this->hand->getDistance()) + "\n");
         this->discardCard(cardToRemove);
+        DEBUG("- Hand After:      " + this->hand->toString() + "\n");
+        DEBUG("- Distance After:  " + std::to_string(this->hand->getDistance()));
+
         LOG("Player " + std::to_string(this->playerNum) + " removed card " + std::to_string(cardToRemove) + " ... ");
-        // std::cout << "after:  " << this->hand->getDistance() << ", " << this->hand->toString() << std::endl;
+        TEST("remove " + std::to_string(cardToRemove) + "... ");
     }
 }
 
@@ -69,51 +74,61 @@ void GreedyPlayer::action_discardCard()
 void GreedyPlayer::action_springCleaning()
 {
     Hand testHand = Hand(*this->hand); // use copy constructor to make a copy
-    // Hand currentHand = Hand(*this->hand);
     int testDistance;
     int currentDistance = this->hand->getDistance();
 
-    // std::cout << "\n---> STARTING HAND::    " << this->hand->toString() << std::endl;
-    // std::cout << "---> STARTING DIST::    " << currentDistance << std::endl;
+    #ifdef _DEBUGSTATEMENTS
+        std::string handBefore = this->hand->toString();
+        std::string distanceBefore = std::to_string(this->hand->getDistance());
+        int cardsRemoved = 0;
+    #endif
+
+    #ifdef _TESTSTATEMENTS
+        int cardsRemoved = 0;
+    #endif
+
+    DEBUG("Trying to remove...\n")
     for (int i = 0; i < this->hand->getNumCards(); i++)
     {
-        // std::cout << "---> " << i << ", " << this->hand->getNumCards() << std::endl;
+        DEBUG("- remove card " + std::to_string(i) + ", ");
+
         testHand.removeCard(i);
         testDistance = testHand.getDistance();
 
-        // std::cout << i << ", distance: " << currentHand.getDistance();
-        // std::cout << ", current hand: " << currentHand.toString() << std::endl;
-        // std::cout << i << ", distance: " << testHand.getDistance();
-        // std::cout << ", test hand:    " << testHand.toString() << std::endl;
+        DEBUG("distance " + std::to_string(currentDistance) + " -> " + std::to_string(testDistance) + "... ");
 
         if (testDistance < currentDistance)
         {
-            // std::cout << "... remove card " << i << " ... " << std::endl;
-            // LOG("removed card " + std::to_string(i) + " ... ");
-            // currentHand.removeCard(i);
+            LOG("removed card " + std::to_string(i) + " ... ");
+            TEST("remove " + std::to_string(i) + "... ");
+            DEBUG("remove this card... \n");
+            DEBUG("---> old hand: " + this->hand->toString() + "\n");
             this->discardCard(i);
+            DEBUG("---> new hand: " + this->hand->toString());
+
             currentDistance = this->hand->getDistance();
             i = -1;
+            #ifdef _DEBUGSTATEMENTS
+                cardsRemoved++;
+            #endif
+            #ifdef _TESTSTATEMENTS
+                cardsRemoved++;
+            #endif
         }
         testHand = Hand(*this->hand);
-        // std::cout << "Test hand: " << testHand.toString() << std::endl;
+        DEBUG("\n");
     }
 
-    // std::vector<int> setDifference = this->hand->setDifference(currentHand);
-    // for (int i = 0; i < setDifference.size(); i++)
-    // {
-    //     LOG("removed card " + std::to_string(setDifference[i]) + " ... ");
-    //     this->discardCard(setDifference[i]);
+    #ifdef _TESTSTATEMENTS
+        if(cardsRemoved <= 0) 
+            std::cout << "no cards to remove";
+    #endif
 
-    //     // adjust next indeces, since hand is now 1 smaller
-    //     for (int j = i + 1; j < setDifference.size(); j++)
-    //     {
-    //         setDifference[j]--;
-    //     }
-    // }
-
-    // delete this->hand;
-    // this->hand = new Hand(currentHand);
+    DEBUG("\nFinal decision: removed " + std::to_string(cardsRemoved) + " card(s)\n");
+    DEBUG("- Hand Before:     " + handBefore + "\n");
+    DEBUG("- Distance Before: " + distanceBefore + "\n");
+    DEBUG("- Hand After:      " + this->hand->toString() + "\n");
+    DEBUG("- Distance After:  " + std::to_string(this->hand->getDistance()));
 }
 
 /*  Function: poisonUnicorn()
@@ -138,40 +153,60 @@ std::tuple<Player *, int> GreedyPlayer::action_poisonUnicorn()
     std::vector<Player *> playersWithUnicorns = this->getPlayersWithUnicorns();
     numOtherPlayers = playersWithUnicorns.size();
 
-    if(numOtherPlayers > 0)
+    if (numOtherPlayers == 0)
     {
-        std::function<bool(int, int)> cases[2] = {std::greater<int>(), std::greater_equal<int>()};
+        TEST("no unicorns to poison... ");
+        DEBUG("No unicorns to poison... ");
+        return std::tuple<Player *, int>(targetPlayer, targetUnicorn);
+    }
 
-        for (int currentCase = 0; currentCase < 2 && !removed; currentCase++)
-        {
-            // case 0: check if removing a unicorn can make the hand WORSE
-            // case 1: check if removing a unicorn won't make a difference
-            // case 2: removing a unicorn ONLY makes every hand better
-            // std::cout << "-------- case: " << currentCase << " --------" << std::endl;
-            for (int i = 0; i < numOtherPlayers && !removed; i++)
-            {
-                // for each player, go through their hand and try removing...
-                targetUnicorn = 0;
-                targetPlayer = playersWithUnicorns[i];
-                removed = removeFirstUnicorn(targetPlayer, targetUnicorn, cases[currentCase]);
-            }
-        }
+    std::function<bool(int, int)> cases[2] = {std::greater<int>(), std::greater_equal<int>()};
 
-        if (removed) // case 0 or 1
+    DEBUG("Trying to poison...\n");
+    for (int currentCase = 0; currentCase < 2 && !removed; currentCase++)
+    {
+        // case 0: check if removing a unicorn can make the hand WORSE
+        // case 1: check if removing a unicorn won't make a difference
+        // case 2: removing a unicorn ONLY makes every hand better
+        for (int i = 0; i < numOtherPlayers && !removed; i++)
         {
-            LOG("targetting player " + std::to_string(targetPlayer->getPlayerNum()) + " and poisoning unicorn " + std::to_string(targetUnicorn) + " ... ");
-        }
-        else  // case 2
-        {
-            targetPlayer = playersWithUnicorns[0];
-            targetUnicorn = 1;
-            LOG("targetting first player " + std::to_string(targetPlayer->getPlayerNum()) + " and poisoning unicorn " + std::to_string(targetUnicorn) + " ... ");
+            // for each player, go through their hand and try removing...
+            targetPlayer = playersWithUnicorns[i];
+            DEBUG("- targetting player " + std::to_string(targetPlayer->getPlayerNum()) + "... \n");
+            targetUnicorn =  removeFirstUnicorn(targetPlayer, cases[currentCase]);
+
+            if (targetUnicorn > 0)
+                removed = true;
         }
     }
-    else
+
+    if (removed) // case 0 or 1
     {
-        LOG("no unicorns to remove ... ");
+        LOG("targetting player " + std::to_string(targetPlayer->getPlayerNum()) + " and poisoning unicorn " + std::to_string(targetUnicorn) + " ... ");
+        TEST("targetting player " + std::to_string(targetPlayer->getPlayerNum()) + " and poisoning unicorn " + std::to_string(targetUnicorn) + " ... ");
     }
+    else  // case 2
+    {
+        std::uniform_int_distribution<int> playerDistribution(0, numOtherPlayers - 1);
+        targetPlayer = playersWithUnicorns[playerDistribution(this->randomGenerator)];
+
+        // then target the first unicorn
+        targetUnicorn = 1;
+        LOG("targetting random player " + std::to_string(targetPlayer->getPlayerNum()) + " and poisoning unicorn " + std::to_string(targetUnicorn) + " ... ");
+        TEST("targetting random player " + std::to_string(targetPlayer->getPlayerNum()) + " and poisoning unicorn " + std::to_string(targetUnicorn) + " ... ");
+    }
+    
+    #ifdef _DEBUGSTATEMENTS
+        Hand targetHandAfter = Hand(*targetPlayer->getHand());
+        targetHandAfter.removeUnicorn(targetUnicorn);
+        int targetDistanceAfter = targetHandAfter.getDistance();
+    #endif
+
+    DEBUG("\nFinal decision:  target " + std::to_string(targetPlayer->getPlayerNum()) + " and poison unicorn " + std::to_string(targetUnicorn) + " \n");
+    DEBUG("- Target Hand Before:     " + targetPlayer->getHand()->toString() + "\n");
+    DEBUG("- Target Distance Before: " + std::to_string(targetPlayer->getHand()->getDistance()) + "\n");
+    DEBUG("- Target Hand After:      " + targetHandAfter.toString() + "\n");
+    DEBUG("- Target Distance After:  " + std::to_string(targetDistanceAfter));
 
     return std::tuple<Player *, int>(targetPlayer, targetUnicorn);
 }
@@ -198,115 +233,105 @@ std::tuple<Player *, int> GreedyPlayer::action_stealCard()
     }
     numOtherPlayers = playersWithCards.size();
 
-    if(numOtherPlayers > 0)
-    {
-        bool stolen = false;
-        std::function<bool(int, int)> cases[2] = {std::less<int>(), std::less_equal<int>()};
-        for (int currentCase = 0; currentCase < 2 && !stolen; currentCase++)
-        {
-            // case 0: check if stealing the card will IMPROVE your hand
-            // case 1: check if stealing tha card won't make a difference
-            // case 2: stealing a card only makes you hand worse
-            for (int i = 0; i < numOtherPlayers && !stolen; i++)
-            {
-                // for each player, go through their hand and try stealing...
-                targetCard = 0;
-                targetPlayer = playersWithCards[i];
-
-                stolen = stealFirst(targetPlayer, targetCard, cases[currentCase]);
-                // if(stolen)
-                // {
-                //     std::cout << "current distance: " << this->hand->getDistance() << std::endl;
-                //     std::cout << "stole card " << targetCard << " from Player " << targetPlayer->getPlayerNum() << std::endl;
-                //     this->hand->addToHand(targetPlayer->getCard(targetCard));
-                //     std::cout << "after distance: " << this->hand->getDistance() << std::endl;
-                // }
-            }
-        }
-
-        if (stolen) // case 0 or 1
-        {
-            LOG("targetting player " + std::to_string(targetPlayer->getPlayerNum()) + " and stealing card " + std::to_string(targetCard) + " ... ");
-        }
-        else // case 2
-        {
-            targetPlayer = playersWithCards[0];
-            targetCard = 0;
-            LOG("targetting first player " + std::to_string(targetPlayer->getPlayerNum()) + " and stealing card " + std::to_string(targetCard) + " ... ");
-        }
-    }
-    else
+    if(numOtherPlayers == 0)
     {
         LOG("no cards to steal ... ");
+        TEST("no cards to steal... ");
+        DEBUG("No cards to steal... ");
+        return std::tuple<Player *, int>(targetPlayer, targetCard);
     }
+
+
+    bool stolen = false;
+    std::function<bool(int, int)> cases[2] = {std::less<int>(), std::less_equal<int>()};
+    DEBUG("Trying to steal...\n");
+    for (int currentCase = 0; currentCase < 2 && !stolen; currentCase++)
+    {
+        // case 0: check if stealing the card will IMPROVE your hand
+        // case 1: check if stealing tha card won't make a difference
+        // case 2: stealing a card only makes you hand worse
+        for (int i = 0; i < numOtherPlayers && !stolen; i++)
+        {
+            // for each player, go through their hand and try stealing...
+            targetPlayer = playersWithCards[i];
+            DEBUG("- targetting player " + std::to_string(targetPlayer->getPlayerNum()) + "... \n");
+            targetCard = stealFirst(targetPlayer, cases[currentCase]);
+
+            if (targetCard >= 0)
+                stolen = true;
+        }
+    }
+
+    if (stolen) // case 0 or 1
+    {
+        LOG("targetting player " + std::to_string(targetPlayer->getPlayerNum()) + " and stealing card " + std::to_string(targetCard) + " ... ");
+        TEST("targetting player " + std::to_string(targetPlayer->getPlayerNum()) + " and stealing card " + std::to_string(targetCard) + " ... ");
+    }
+    else // case 2
+    {
+        // target a random player that has cards
+        std::uniform_int_distribution<int> playerDistribution(0, numOtherPlayers - 1);
+        targetPlayer = playersWithCards[playerDistribution(this->randomGenerator)];
+
+        // then target the last card
+        targetCard = targetPlayer->getHandSize() - 1;
+        LOG("targetting random player " + std::to_string(targetPlayer->getPlayerNum()) + " and stealing card " + std::to_string(targetCard) + " ... ");
+        TEST("targetting random player " + std::to_string(targetPlayer->getPlayerNum()) + " and stealing card " + std::to_string(targetCard) + " ... ");
+    }
+
+    #ifdef _DEBUGSTATEMENTS
+        Hand targetHandAfter = Hand(*targetPlayer->getHand());
+        char cardRemoved = targetHandAfter.removeCard(targetCard);
+        int targetDistanceAfter = targetHandAfter.getDistance();
+
+        Hand ownHandAfter = Hand(*this->hand);
+        ownHandAfter.addToHand(cardRemoved);
+        int ownDistanceAfter =  ownHandAfter.getDistance();
+    #endif
+
+    DEBUG("\nFinal decision:  target " + std::to_string(targetPlayer->getPlayerNum()) + " and steal card " + std::to_string(targetCard) + " \n");
+    DEBUG("- Target Hand Before:     " + targetPlayer->getHand()->toString() + "\n");
+    DEBUG("- Target Distance Before: " + std::to_string(targetPlayer->getHand()->getDistance()) + "\n");
+    DEBUG("- Target Hand After:      " + targetHandAfter.toString() + "\n");
+    DEBUG("- Target Distance After:  " + std::to_string(targetDistanceAfter) + "\n");
+    DEBUG("- Own Hand Before:        " + this->hand->toString() + "\n");
+    DEBUG("- Own Distance Before:    " + std::to_string(this->hand->getDistance()) + "\n");
+    DEBUG("- Own Hand After:         " + ownHandAfter.toString() + "\n");
+    DEBUG("- Own Distance After:     " + std::to_string(ownDistanceAfter));
 
     return std::tuple<Player *, int>(targetPlayer, targetCard);
 }
 
-/*  Function: removeFirst()
-    Goal:     Remove the first card such that func(testDistance, currentDistance)
-              returns true; this function expects <, <=, ==, >=, > for func; 
-              for example, if func = < = std::less,
-                    - find and remove the first card such that, when it is 
-                      removed, it makes the hand BETTER (i.e. closer to 
-                      the goal string) */
-bool GreedyPlayer::removeFirst(Player *player, int &cardToRemove, std::function<bool(int, int)> func)
-{
-    Hand testHand = Hand(*this->hand); // use copy constructor to make a copy
-    int testDistance = this->hand->getDistance();
-    int currentDistance = testDistance;
-    bool removed = false;
-
-    for (int i = 0; i < testHand.getNumCards() && !removed; i++)
-    {
-        testHand.removeCard(i);
-        testDistance = testHand.getDistance();
-
-        if (func(testDistance, currentDistance)) // either <, <=, >, >=, or ==
-        {
-            removed = true;
-            // this->hand->removeCard(i);
-            cardToRemove = i;
-        }
-        else
-        {
-            testHand = Hand(*this->hand);
-        }
-    }
-
-    return removed;
-}
-
-bool GreedyPlayer::stealFirst(Player *player, int &cardToSteal, std::function<bool(int, int)> func)
+int GreedyPlayer::stealFirst(Player *player, std::function<bool(int, int)> func)
 {
     Hand testHand = Hand(*this->hand); // use copy constructor to make a copy
     int testDistance = this->hand->getDistance();
     char testCard;
-    int currentDistance = testDistance;
+    int currentDistance = testDistance, cardToSteal = -1;
     bool removed = false;
 
-    // std::cout << "Player " << player->getPlayerNum() << " before distance: " << player->getHand()->getDistance() << std::endl;
     for (int i = 0; i < player->getHandSize() && !removed; i++)
     {
-        // testHand.removeCard(i);
+        DEBUG("-- stealing card " + std::to_string(i) + ", ");
         testCard = player->getCard(i);
         testHand.addToHand(testCard);
         testDistance = testHand.getDistance();
 
+        DEBUG("own distance " + std::to_string(currentDistance) + " -> " + std::to_string(testDistance) + "... ");
         if (func(testDistance, currentDistance)) // either <, <=, >, >=, or ==
         {
+            DEBUG("found potential target... ");
             removed = true;
-            // std::cout << "... removed!" << std::endl;
             cardToSteal = i;
         }
         else
         {
             testHand = Hand(*this->hand);
         }
+        DEBUG("\n");
     }
-    // std::cout << "Player " << player->getPlayerNum() << " after distance: " << testDistance << std::endl;
 
-    return removed;
+    return cardToSteal;
 }
 
 /*  Function: removeFirstUnicorn()
@@ -316,43 +341,45 @@ bool GreedyPlayer::stealFirst(Player *player, int &cardToSteal, std::function<bo
                     - find and remove the first unicorn such that, when it is 
                       removed, it makes the hand WORSE (i.e. farther from 
                       the goal string) */
-bool GreedyPlayer::removeFirstUnicorn(Player* player, int& unicornNumber, std::function<bool(int, int)> func)
+int GreedyPlayer::removeFirstUnicorn(Player* player, std::function<bool(int, int)> func)
 {
     bool removed = false;
 
     Hand* currentHand = player->getHand();
-    char currentCard;
-    int currentDistance;
+    int currentDistance = currentHand->getDistance();
 
     Hand testHand = Hand(*currentHand);
     int testDistance;
+    int unicornToRemove = -1;
 
-    for (int i = 0; i < currentHand->getNumCards() & !removed; i++)
+    for (int i = 1; i < currentHand->getNumUnicorns() + 1 && !removed; i++)
     {
-        currentCard = currentHand->getCard(i);
-        currentDistance = currentHand->getDistance();
-        if (currentCard == UNICORN)
-        {
-            unicornNumber++;
-            testHand = Hand(*currentHand);
-            testHand.removeCard(i);
-            testDistance = testHand.getDistance();
+        DEBUG("-- poison unicorn " + std::to_string(i) + ", ");
 
-            if (func(testDistance, currentDistance))
-            {
-                removed = true;
-            }
+        testHand = Hand(*currentHand);
+        testHand.removeUnicorn(i);
+        testDistance = testHand.getDistance();
+
+        DEBUG("target distance " + std::to_string(currentDistance) + " -> " + std::to_string(testDistance) + "... ");
+
+        if (func(testDistance, currentDistance))
+        {
+            DEBUG("found potential target... ");
+            removed = true;
+            unicornToRemove = i;
         }
+        DEBUG("\n");
+        
     }
-    return removed;
+    return unicornToRemove;
 }
 
 /**************************************************/
 /*                Public Functions                */
 /**************************************************/
 
-GreedyPlayer::GreedyPlayer(Deck *deck, std::string goalString, Cards *cardInfo, int playerNum)
-: Player(deck, goalString, cardInfo, playerNum)
+GreedyPlayer::GreedyPlayer(Deck *deck, std::string goalString, Cards *cardInfo, int playerNum, int seed)
+: Player(deck, goalString, cardInfo, playerNum, seed)
 {
     this->type = "greedy";
 }
@@ -405,6 +432,16 @@ Hand GreedyPlayer::trySwapping()
 
     int numCards = this->getHandSize();
     bool swapped = false;
+    DEBUG("Trying to move...\n");
+    
+    #ifdef _DEBUGSTATEMENTS
+        int actualCard, actualMove;
+    #endif
+
+    #ifdef _TESTSTATEMENTS
+        bool foundCardToSwap;
+    #endif
+
     for (cardToMove = 0; cardToMove < numCards && !swapped; cardToMove++)
     {
         // remove the card so we can insert it somewhere else
@@ -416,17 +453,46 @@ Hand GreedyPlayer::trySwapping()
             {
                 testHand.moveCard(cardToMove, whereToMove);
                 testDistance = testHand.getDistance();
+                DEBUG("- move " + std::to_string(cardToMove) + " to " + std::to_string(whereToMove) + ", ");
+                DEBUG("distance " + std::to_string(currentDistance) + " -> " + std::to_string(testDistance) + "... ");
                 if (testDistance < currentDistance)
                 {
                     swapped = true;
                     bestHand = Hand(testHand);
                     LOG("move " + std::to_string(cardToMove) + " to " + std::to_string(whereToMove) + " ... ");
+                    TEST("move " + std::to_string(cardToMove) + " to " + std::to_string(whereToMove) + "... ");
+                    DEBUG("found a possible move... ");
+                    
+                    #ifdef _TESTSTATEMENTS
+                        foundCardToSwap = true;
+                    #endif
+
+                    #ifdef _DEBUGSTATEMENTS
+                        actualCard = cardToMove;
+                        actualMove = whereToMove;
+                    #endif
+
                 } else {
                     testHand = Hand(*this->hand);
                 }
+                DEBUG("\n");
             }
         }
     }
+
+    
+    #ifdef _TESTSTATEMENTS
+        if(!foundCardToSwap)
+            std::cout << "swapping does not improve hand";
+    #endif
+
+    DEBUG("\nFinal decision: move " + std::to_string(actualCard) + " to " + std::to_string(actualMove) + " \n");
+
+    DEBUG("- Hand Before:     " + this->hand->toString() + "\n");
+    DEBUG("- Distance Before: " + std::to_string(this->hand->getDistance()) + "\n");
+    DEBUG("- Hand After:      " + bestHand.toString() + "\n");
+    DEBUG("- Distance After:  " + std::to_string(bestHand.getDistance()));
+
 
     // return std::make_pair(bestDistance, bestHand);
     return bestHand;

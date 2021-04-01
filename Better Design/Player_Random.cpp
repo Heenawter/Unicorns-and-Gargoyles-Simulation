@@ -5,7 +5,15 @@
 /*               Private Functions                */
 /**************************************************/
 
-/******************************* ACTION CARDS ******************************* /
+/******************************* ACTION CARDS *******************************/
+
+int TrollPlayer::findRandomCard()
+{
+    int numCards = getHandSize();
+    std::uniform_int_distribution<int> distribution(0, numCards - 1);
+    int cardToRemove = distribution(this->randomGenerator);
+    return cardToRemove;
+}
 
 /*  Function: discardCard()
     Goal:     Discard a random card from hand, without caring about
@@ -15,12 +23,18 @@ void TrollPlayer::action_discardCard()
     int numCards = getHandSize();
     if (numCards > 0)
     {
-        std::uniform_int_distribution<int> distribution(0, numCards - 1);
-        int cardToRemove = distribution(this->randomGenerator);
+        int cardToRemove = findRandomCard();
 
+        DEBUG("Final decision: remove card " + std::to_string(cardToRemove) + "\n");
+        
+        DEBUG("- Hand Before:     " + this->hand->toString() + "\n");
+        DEBUG("- Distance Before: " + std::to_string(this->hand->getDistance()) + "\n");
         this->discardCard(cardToRemove);
+        DEBUG("- Hand After:      " + this->hand->toString() + "\n");
+        DEBUG("- Distance After:  " + std::to_string(this->hand->getDistance()));
 
         LOG("Player " + std::to_string(this->playerNum) + " removed card " + std::to_string(cardToRemove) + " ... ");
+        TEST("remove " + std::to_string(cardToRemove) + "... ");
     }
 }
 
@@ -32,12 +46,36 @@ void TrollPlayer::action_springCleaning()
     int numCards = getHandSize();
     std::uniform_int_distribution<int> distribution(0, numCards);
     int numCardsToRemove = distribution(this->randomGenerator);
+    int cardToRemove;
 
-    LOG("remove " + std::to_string(numCardsToRemove) + " cards ... ");
+    #ifdef _DEBUGSTATEMENTS
+        std::string handBefore = this->hand->toString();
+        std::string distanceBefore = std::to_string(this->hand->getDistance());
+    #endif
+
+    LOG("remove " + std::to_string(numCardsToRemove) + " cards... ");
+    DEBUG("Removing " + std::to_string(numCardsToRemove) + " cards... \n");
     for (int i = 0; i < numCardsToRemove; i++)
     {
-        this->action_discardCard();
+        cardToRemove = findRandomCard();
+        DEBUG("- remove card " + std::to_string(cardToRemove) + ", ");
+        DEBUG("distance " + std::to_string(this->hand->getDistance()) + " -> ");
+        this->discardCard(cardToRemove);
+        DEBUG(std::to_string(this->hand->getDistance()) + "... \n");
+        TEST("remove " + std::to_string(cardToRemove) + "... ");
     }
+
+    DEBUG("\nFinal decision: Removed " + std::to_string(numCardsToRemove) + " card(s)\n");
+    DEBUG("- Hand Before:     " + handBefore + "\n");
+    DEBUG("- Distance Before: " + distanceBefore + "\n");
+    DEBUG("- Hand After:      " + this->hand->toString() + "\n");
+    DEBUG("- Distance After:  " + std::to_string(this->hand->getDistance()));
+
+    LOG("Player " + std::to_string(this->playerNum) + " removed card " + std::to_string(cardToRemove) + " ... ");
+    #ifdef _TESTSTATEMENTS
+        if(numCardsToRemove <= 0)
+            std::cout << "don't remove any cards";
+    #endif
 }
 
 /*  Function: poisonUnicorn()
@@ -65,10 +103,25 @@ std::tuple<Player *, int> TrollPlayer::action_poisonUnicorn()
     if (targetPlayer != NULL)
     {
         LOG("targetting player " + std::to_string(targetPlayer->getPlayerNum()) + " and poisoning unicorn " + std::to_string(targetUnicorn) + " ... ");
+        TEST("targetting player " + std::to_string(targetPlayer->getPlayerNum()) + " and poisoning unicorn " + std::to_string(targetUnicorn) + " ... ");
+
+        #ifdef _DEBUGSTATEMENTS
+            Hand targetHandAfter = Hand(*targetPlayer->getHand());
+            targetHandAfter.removeUnicorn(targetUnicorn);
+            int targetDistanceAfter = targetHandAfter.getDistance();
+        #endif
+
+        DEBUG("Final decision:  target " + std::to_string(targetPlayer->getPlayerNum()) + " and poison unicorn " + std::to_string(targetUnicorn) + " \n");
+        DEBUG("- Target Hand Before:     " + targetPlayer->getHand()->toString() + "\n");
+        DEBUG("- Target Distance Before: " + std::to_string(targetPlayer->getHand()->getDistance()) + "\n");
+        DEBUG("- Target Hand After:      " + targetHandAfter.toString() + "\n");
+        DEBUG("- Target Distance After:  " + std::to_string(targetDistanceAfter));
     }
     else
     {
         LOG("no unicorns to remove ... ");
+        TEST("no unicorns to remove... ");
+        DEBUG("No unicorns to remove... ");
     }
     return std::tuple<Player *, int>(targetPlayer, targetUnicorn);
 }
@@ -88,6 +141,7 @@ std::tuple<Player *, int> TrollPlayer::action_stealCard()
     }
 
     int numPlayersWithCards = playersWithCards.size();
+
     Player *targetPlayer = NULL;
     int targetCard = -1;
     if (numPlayersWithCards > 0) // if at least one player has cards...
@@ -99,16 +153,39 @@ std::tuple<Player *, int> TrollPlayer::action_stealCard()
         // then find a random card to steal
         std::uniform_int_distribution<int> cardDistribution(0, targetPlayer->getHandSize() - 1);
         targetCard = cardDistribution(this->randomGenerator); // found the card to steal!
+
+        if (targetPlayer != NULL)
+        {
+            LOG("targetting player " + std::to_string(targetPlayer->getPlayerNum()) + " and stealing card " + std::to_string(targetCard) + " ... ");
+            TEST("targetting player " + std::to_string(targetPlayer->getPlayerNum()) + " and stealing card " + std::to_string(targetCard) + " ... ");
+            DEBUG("targetting player " + std::to_string(targetPlayer->getPlayerNum()) + " and stealing card " + std::to_string(targetCard) + "... ");
+        }
+        
+    } else {
+        TEST("no cards to steal... ");
+        DEBUG("no cards to steal... ");
     }
 
-    if (targetPlayer != NULL)
-    {
-        LOG("targetting player " + std::to_string(targetPlayer->getPlayerNum()) + " and stealing card " + std::to_string(targetCard) + " ... ");
-    }
-    else
-    {
-        LOG("no player targetted ... ");
-    }
+    #ifdef _DEBUGSTATEMENTS
+        Hand targetHandAfter = Hand(*targetPlayer->getHand());
+        char cardRemoved = targetHandAfter.removeCard(targetCard);
+        int targetDistanceAfter = targetHandAfter.getDistance();
+
+        Hand ownHandAfter = Hand(*this->hand);
+        ownHandAfter.addToHand(cardRemoved);
+        int ownDistanceAfter =  ownHandAfter.getDistance();
+    #endif
+
+    DEBUG("\n\nFinal decision:  target " + std::to_string(targetPlayer->getPlayerNum()) + " and steal card " + std::to_string(targetCard) + " \n");
+    DEBUG("- Target Hand Before:     " + targetPlayer->getHand()->toString() + "\n");
+    DEBUG("- Target Distance Before: " + std::to_string(targetPlayer->getHand()->getDistance()) + "\n");
+    DEBUG("- Target Hand After:      " + targetHandAfter.toString() + "\n");
+    DEBUG("- Target Distance After:  " + std::to_string(targetDistanceAfter) + "\n");
+    DEBUG("- Own Hand Before:        " + this->hand->toString() + "\n");
+    DEBUG("- Own Distance Before:    " + std::to_string(this->hand->getDistance()) + "\n");
+    DEBUG("- Own Hand After:         " + ownHandAfter.toString() + "\n");
+    DEBUG("- Own Distance After:     " + std::to_string(ownDistanceAfter));
+
     return std::tuple<Player *, int>(targetPlayer, targetCard);
 }
 
@@ -116,18 +193,15 @@ std::tuple<Player *, int> TrollPlayer::action_stealCard()
 /*                Public Functions                */
 /**************************************************/
 
-TrollPlayer::TrollPlayer(Deck *deck, std::string goalString, Cards *cardInfo, int playerNum)
-    : Player(deck, goalString, cardInfo, playerNum)
+TrollPlayer::TrollPlayer(Deck *deck, std::string goalString, Cards *cardInfo, int playerNum, int seed)
+    : Player(deck, goalString, cardInfo, playerNum, seed)
 {
     this->type = "troll";
-
-    int seed = std::chrono::system_clock::now().time_since_epoch().count();
-    this->randomGenerator = std::mt19937(seed);
 }
 
 TrollPlayer::~TrollPlayer()
 {
-    sleep(0.5);
+    
 }
 
     /*  Function: takeTurn()
@@ -151,27 +225,44 @@ char TrollPlayer::takeTurn()
         int randomChoice = choice(this->randomGenerator);
         if(randomChoice < 50) // draw a card!
         {
+            TEST("draw card... ");
+            DEBUG("draw card... ")
             card = drawCard();
         }
         else // rearrange cards...
         {
-            LOG("Re-arrange cards ... ");
-            std::uniform_int_distribution<int> cardDistribution(0, this->getHandSize() - 1);
-            int targetCard = cardDistribution(this->randomGenerator);
-            int newLocation = cardDistribution(this->randomGenerator);
-            while(newLocation == targetCard)
-            {
-                newLocation = cardDistribution(this->randomGenerator);
-            }
-            LOG("move " + std::to_string(targetCard) + " to " + std::to_string(newLocation) + " ... ");
-
-            this->moveCard(targetCard, newLocation);
+            trySwapping();
         }
     }
     else
     {
         card = drawCard();
     }
-    
+
     return card;
+}
+
+Hand TrollPlayer::trySwapping()
+{
+    LOG("Re-arrange cards ... ");
+    std::uniform_int_distribution<int> cardDistribution(0, this->getHandSize() - 1);
+
+    int targetCard = cardDistribution(this->randomGenerator);
+    int newLocation = cardDistribution(this->randomGenerator);
+    while(newLocation == targetCard)
+    {
+        DEBUG("move " + std::to_string(targetCard) + " to " + std::to_string(newLocation) + "... \n");
+        newLocation = cardDistribution(this->randomGenerator);
+    }
+    LOG("move " + std::to_string(targetCard) + " to " + std::to_string(newLocation) + " ... ");
+    TEST("move " + std::to_string(targetCard) + " to " + std::to_string(newLocation) + "... ");
+    DEBUG("Final decision: move " + std::to_string(targetCard) + " to " + std::to_string(newLocation) + "... \n");
+
+    DEBUG("- Hand Before:     " + this->hand->toString() + "\n");
+    DEBUG("- Distance Before: " + std::to_string(this->hand->getDistance()) + "\n");
+    this->moveCard(targetCard, newLocation);
+    DEBUG("- Hand After:      " + this->hand->toString() + "\n");
+    DEBUG("- Distance After:  " + std::to_string(this->hand->getDistance()));
+
+    return *this->hand;
 }
